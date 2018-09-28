@@ -16,4 +16,4 @@ vocabularies(terminals) from non terminals.
 - [x] Parse grammar based on frequency of appearance in the devset.tree
 - [ ] Convert grammars to CNF
 - [ ] Make it work!
- -[ ] Improve?
+- [ ] Improve?  
