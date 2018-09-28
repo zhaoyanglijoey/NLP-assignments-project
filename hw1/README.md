@@ -1,4 +1,4 @@
-#HW1
+# HW1
 
 
 ## Parsing tree to grammar
@@ -13,5 +13,7 @@ vocabularies(terminals) from non terminals.
 
 ### Tasks
 
-- [x] Parse grammar based on frequency of appearance in the tree
+- [x] Parse grammar based on frequency of appearance in the devset.tree
 - [ ] Convert grammars to CNF
+- [ ] Make it work!
+ -[ ] Improve?
