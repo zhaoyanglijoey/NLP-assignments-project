@@ -1,0 +1,714 @@
+100      TOP      S1
+26       S1       INTJ
+74       S1       NP
+37       S1       SBARQ
+275      S1       S
+55       S1       FRAG
+3        S1       ADVP
+2        S1       PP
+20       S1       SQ
+2        S1       SINV
+1        S1       SBAR
+4        S1       ADJP
+1        S1       X
+1        NNP      B
+1        NNP      W
+2        ADVP     EX
+93       ADVP     RB
+2        ADVP     RB .
+1        ADVP     RB IN DT
+1        ADVP     RB RB
+1        ADVP     DT
+1        ADVP     RP RB
+4        ADVP     IN
+1        ADVP     ADVP NP
+2        ADVP     RP
+1        ADVP     UH
+1        ADVP     DT NN
+4        ADVP     NN
+1        ADVP     NNP
+1        ADVP     DT RBR
+1        ADVP     JJ
+1        ADVP     IN DT
+1        ADVP     RB :
+1        ADVP     UH JJ
+1        ADVP     ADVP VP
+1        INTJ     NNP ADVP .
+4        INTJ     UH .
+31       INTJ     RB
+6        INTJ     NN .
+37       INTJ     UH
+1        INTJ     INTJ , NP ADVP
+11       INTJ     DT
+1        INTJ     NNP RB .
+12       INTJ     NNP
+6        INTJ     RB .
+1        INTJ     UH NN
+9        INTJ     NN
+4        INTJ     VB
+1        INTJ     INTJ : INTJ .
+1        INTJ     INTJ , NP
+1        INTJ     UH INTJ
+3        INTJ     NNP .
+1        INTJ     NNP :
+2        INTJ     JJ NNP
+3        INTJ     JJ
+1        INTJ     DT DT
+1        INTJ     JJ NP .
+1        INTJ     JJ VP .
+1        INTJ     UH : .
+2        INTJ     SYM
+2        INTJ     INTJ : INTJ
+1        INTJ     RB JJ
+1        INTJ     INTJ , INTJ
+1        INTJ     NN PP
+1        INTJ     NP : INTJ
+1        INTJ     DT NN
+1        NN       HELP
+20       NP       NN .
+324      NP       PRP
+80       NP       NNP
+54       NP       NN
+14       NP       NNP NNP
+61       NP       NP PP
+1        NP       NP , NP , NP ,
+102      NP       DT NN
+25       NP       DT NNP
+1        NP       NP , NP , ADJP .
+2        NP       DT JJ CD
+30       NP       DT
+1        NP       PRP$ NN NN NNP
+1        NP       DT NN CC NN
+30       NP       NNS
+34       NP       PRP$ NN
+9        NP       NP SBAR
+1        NP       PRP$ NN CC NN
+1        NP       CD JJ NNS
+10       NP       DT NNS
+23       NP       DT JJ NN
+2        NP       DT NN NN
+3        NP       NP CC NP
+2        NP       NN NNS
+8        NP       NP VP
+8        NP       DT JJ
+8        NP       JJ NNS
+3        NP       DT ADJP NN
+3        NP       NN NN
+14       NP       PRP$ NNS
+2        NP       CD NNS
+5        NP       NP NP
+6        NP       NP ADJP .
+2        NP       WDT
+1        NP       DT NN VBG NNS
+2        NP       PRP$ JJ
+9        NP       CD
+2        NP       CD NN
+6        NP       NP : NP
+1        NP       PRP$ CD NN
+1        NP       JJ DT NN
+1        NP       NNP POS
+8        NP       PRP$ JJ NN
+2        NP       NNP .
+7        NP       EX
+8        NP       IN
+4        NP       VB
+4        NP       NNP NN .
+1        NP       NP , NN .
+2        NP       VBD CD
+4        NP       NP NP .
+4        NP       NP ADJP
+3        NP       NP : NP .
+1        NP       DT `` JJ NN
+2        NP       VBG
+3        NP       JJ NN NN
+1        NP       DT JJ DT POS JJ NNS
+1        NP       DT RB VBP
+1        NP       VB NN
+11       NP       NP , NP
+1        NP       DT WP
+2        NP       NP PP .
+1        NP       DT NNP .
+1        NP       DT PRP
+1        NP       DT NN NNS
+1        NP       NP PRN
+2        NP       DT CD
+1        NP       VBZ
+8        NP       JJ NN
+2        NP       PDT DT NN
+3        NP       DT JJ JJ NN
+1        NP       ADJP NNS
+1        NP       JJR
+1        NP       NP , INTJ : SBARQ .
+1        NP       NP PP ,
+1        NP       DT NN VBG NN
+1        NP       NP , NP ,
+1        NP       NP , VP
+1        NP       NNP NN NN
+1        NP       NP ADVP , VBD NP
+2        NP       NP , INTJ
+1        NP       DT ADJP NNS
+1        NP       PRP$ NNP
+3        NP       JJ NNP NN
+1        NP       NP ,
+1        NP       CC NP
+10       NP       DT NN .
+1        NP       VBP
+6        NP       JJ
+1        NP       JJ NNP
+1        NP       RB
+1        NP       RB DT JJ NN .
+1        NP       WP
+13       NP       DT NNP NNP
+5        NP       PRP$
+1        NP       RBR NNS .
+1        NP       NNP : :
+3        NP       NNS .
+1        NP       ADJP NNS .
+1        NP       PRP$ JJR NNS
+2        NP       PRP$ NN .
+2        NP       NP , NP .
+1        NP       DT NN NNP NNP
+1        NP       NNP NNP POS
+1        NP       NP NNS
+1        NP       JJ JJ NNS
+1        NP       NNP NNP DT NNP
+1        NP       NNP VBD
+1        NP       NP DT RB
+2        NP       DT JJ NNP
+1        NP       NNP RB : S
+1        NP       DT ADVP VBN S
+1        NP       NP PRN NN SBAR
+1        NP       NP : NP : CC NP
+2        NP       NNP NNS
+1        NP       JJ CC NN
+1        NP       JJ NNS JJ
+1        NP       JJ NN NP NN CC NNP VP NN CC S
+1        NP       DT JJ NNS
+3        NP       NP
+1        NP       '' NN .
+1        NP       VBN
+1        NP       VBG NNP
+1        NP       NP PP POS FW FW FW NNP
+1        NP       NN CC NN
+1        NP       DT NP
+1        NP       NNP JJ .
+1        NP       RB VBG
+1        NP       NNP SYM
+1        NP       NNP :
+1        NP       DT PRP$ JJ JJ NNS
+1        NP       PRP VBP
+1        NP       NP RB
+1        NP       NP PP SBAR
+1        NP       DT JJ .
+2        NP       POS
+1        NP       PRP$ JJS NNS
+1        NP       NP PP : .
+2        NP       PRP$ JJ NNS
+1        NP       ADJP NNP NNP
+1        NP       FW NNP NNP NNP
+1        NP       DT JJS NN
+1        NP       VB NNP NNP
+1        NP       JJ NNP NNP
+1        NP       VBP NNP NNP
+1        NP       NP , NP , SBAR
+1        NP       NP RB , NNP SYM
+1        NP       NP ADVP
+1        NP       NP PDT
+1        NP       MD
+1        NP       NN CC NNS
+44       WHNP     WP
+1        WHNP     WP VBD
+2        WHNP     WDT
+1        WHNP     WP$ NNS CC NNS
+4        VP       VBZ ADVP
+2        VP       VBZ NP PP
+34       VP       VB NP
+14       VP       VBP
+17       VP       VB NP PP
+36       VP       MD VP
+3        VP       VBN NP PP
+14       VP       VBP VP
+16       VP       VB PP
+11       VP       VBP PP
+8        VP       VBG NP
+18       VP       VBD NP
+1        VP       VBP JJ NP ADVP
+1        VP       VBN SBAR , PP , PP
+3        VP       IN NP
+1        VP       POS ADJP
+23       VP       VB
+30       VP       VBZ NP
+1        VP       VB ADVP PP
+1        VP       VBP RB NP
+9        VP       NN
+3        VP       VBG SBAR
+6        VP       VBN
+13       VP       VB VP
+1        VP       VBZ RB NP PP
+4        VP       MD RB VP
+2        VP       VBZ RB VP
+3        VP       VB NP SBAR
+6        VP       VP CC VP
+35       VP       TO VP
+1        VP       S : NP
+1        VP       VB NP NP , INTJ
+1        VP       NNS S
+11       VP       VBN PP
+2        VP       POS NP
+3        VP       VBZ S
+1        VP       VBP RB ADJP
+1        VP       VB NP ADVP ADVP
+1        VP       VBD NP ADVP
+1        VP       WRB NP : S
+13       VP       VB S
+1        VP       MD ADVP VP
+1        VP       VBD PP
+2        VP       VBG PRT NP
+5        VP       VBZ
+1        VP       VBZ RB ADJP
+8        VP       VBZ SBAR
+2        VP       VBZ RB
+6        VP       VB ADVP
+2        VP       VBZ ADJP
+1        VP       VBG ADJP
+3        VP       VBP RB
+1        VP       VB ADJP PP
+7        VP       VBZ PP
+13       VP       VBP RB VP
+5        VP       VBP ADJP
+3        VP       VBP NP NP
+5        VP       VB ADJP
+1        VP       VB PRT PP
+4        VP       VBD S
+1        VP       VBN NP NP
+2        VP       VBP SBAR
+1        VP       RB VBG NP
+1        VP       VP NN VP
+1        VP       RB VP
+1        VP       JJ PP PP
+2        VP       VBP ADVP VP
+1        VP       VB `` NP POS
+4        VP       VBN S
+6        VP       VBD VP
+9        VP       VB SBAR
+4        VP       VBD RB VP
+2        VP       VB PRT
+1        VP       VB S , SQ
+4        VP       VBD
+20       VP       VBP NP
+1        VP       NN '' NP : IN '' NN '' PP
+2        VP       VBG S
+2        VP       VBZ ADVP VP
+2        VP       VBZ NP ADVP
+3        VP       VBD SBAR
+4        VP       NN PP
+1        VP       VBG NP PP ADVP
+1        VP       VP , S
+2        VP       MD
+1        VP       VBZ PP SBAR
+1        VP       NN ADVP
+2        VP       VBP NP PP S
+9        VP       VBP S
+3        VP       NNP ADJP
+1        VP       NN NP S
+4        VP       VB NP ADVP
+1        VP       VBD PP PP
+2        VP       VP SBAR
+5        VP       NNP
+1        VP       VBG PP S
+1        VP       TO VB NP
+1        VP       S RB POS
+2        VP       VBD NP PP
+1        VP       VB S NN SBAR
+5        VP       NNP PRT
+1        VP       NN '' NP VP
+1        VP       VBD ADVP S
+1        VP       VBP , S
+1        VP       NNP CC VB NP
+2        VP       VBG VP
+1        VP       VBD RB NP
+1        VP       VBP NP S
+2        VP       NNP , NP
+1        VP       VBP ADVP , NP
+1        VP       POS ADVP
+3        VP       VBD ADJP
+1        VP       VB PP NP
+1        VP       VBP NP , S
+2        VP       NNP PRT ADVP
+1        VP       VBP ADVP ADJP , NP
+6        VP       VBN NP
+1        VP       NN NP
+1        VP       MD NP
+1        VP       NNP POS INTJ
+1        VP       VP , VP
+1        VP       VBG ADVP ADVP
+1        VP       VBP NNS
+1        VP       NNP ADVP ADVP
+2        VP       VBG PP
+5        VP       VBZ VP
+4        VP       VB NP PRT
+5        VP       NNP NP
+2        VP       NNP NP ADVP
+1        VP       VBD NP PRT PP
+1        VP       VBD RB : INTJ
+1        VP       VBZ RB NP
+1        VP       VB NP PRT PP
+1        VP       VB NP , WHNP SQ
+1        VP       VBP NP PRT
+1        VP       VBP ADJP PP
+1        VP       VB PP PP
+3        VP       VP , CC VP
+2        VP       VBD ADVP VP
+1        VP       VBN PRT PP
+1        VP       ADVP JJ NP PP
+1        VP       VBG : PP
+1        VP       VP : NP
+1        VP       VBD ADVP TO VP
+1        VP       ADJP : VP
+1        VP       RB ADVP SBAR
+1        VP       NN , NP
+1        VP       VBZ ADVP NP
+1        VP       VBP NP ADJP PP
+2        VP       NN ADJP
+1        VP       VBP ADVP ADVP PP
+1        VP       NP NP
+1        VP       VBG PP NP
+1        VP       VBZ ADJP PP
+4        VP       VB NP NP
+1        VP       RB
+1        VP       VBG
+1        VP       VBG ADVP
+1        VP       VBZ NP PRT
+1        VP       NNP ADVP , NP ,
+1        VP       VBZ NP S
+1        VP       VBN PP PP
+1        VP       VBN VP
+1        VP       VBD NP SBAR
+1        VP       VP CC VB NP
+1        VP       S , NP
+1        VP       VBP NP PP
+1        VP       NN ADVP , NP
+1        VP       VB PP ADVP
+1        VP       VBP VBN JJ NN IN NN
+1        VP       VBP ADVP
+1        VP       VBN ADJP
+1        VP       VBP NP , INTJ
+2        VP       NN VP
+2        VP       NN S
+1        VP       VBG NP PP : PP
+1        VP       VB PP , S
+1        VP       VP , CC RB VP
+1        VP       VBZ PP , NN CC NN
+1        VP       ADVP VBN NP
+1        VP       VBD NP ADVP PP
+1        VP       VBN SBAR
+1        VP       NN PP ADVP
+1        VP       VBD ADVP , PP , S
+1        VP       VBD ADVP PP
+1        VP       VBD RB ADJP , NP
+1        VP       VBD RB ADVP ADJP
+3        VP       VBD PRT
+1        VP       VBD RB PP VBD S
+1        VP       VBD ADVP
+1        VP       VBD CC VBD
+1        VP       S , CC S
+1        VP       VBN ADVP
+1        VP       NN PRT
+1        VP       VBZ , SBAR
+1        VP       NNS SBAR
+1        VP       ADVP VBG ADVP
+1        VP       JJ NP
+1        VP       VP CC RB VP
+8        SQ       VP
+4        SQ       MD NP VP
+10       SQ       VBP NP VP
+3        SQ       NNP NP VP .
+2        SQ       MD NP VP .
+1        SQ       VBP NP ADJP .
+1        SQ       MD NP VP . .
+1        SQ       INTJ , MD NP VP .
+4        SQ       VBZ NP
+1        SQ       NNP , VBZ RB NP NP .
+1        SQ       VBZ NP ADVP
+1        SQ       VBD NP
+1        SQ       SQ , INTJ
+1        SQ       NN NP VP
+3        SQ       VB NP VP
+1        SQ       S SQ
+3        SQ       VBP NP
+1        SQ       VBZ NP VP
+1        SQ       VBD NP VP
+1        SQ       INTJ , '' WHADVP SQ .
+1        SQ       NNP NP ADVP NP .
+1        SQ       S , SQ .
+1        SQ       IN ADVP .
+1        SQ       '' ADVP NP VP : .
+1        SQ       INTJ , CC MD NP RB ADVP VP .
+1        SQ       VBP NP SBAR
+1        SQ       NP , MD NP VP .
+1        SQ       VBZ NP SQ
+1        SQ       NNP NP ADJP .
+1        SQ       INTJ , INTJ , MD NP VP .
+1        SQ       VBP NP ADVP
+1        SQ       VBP VP
+1        SQ       SQ , S
+1        SQ       VBZ NP NP .
+1        SQ       NN NP .
+19       SBARQ    WHNP SQ .
+1        SBARQ    WHNP , S .
+4        SBARQ    WHADVP SQ .
+1        SBARQ    WHNP , VP .
+1        SBARQ    INTJ , WHADVP SQ .
+1        SBARQ    WHNP S .
+1        SBARQ    SBAR , NP .
+1        SBARQ    ADVP WHNP SQ .
+1        SBARQ    WHNP SQ
+3        SBARQ    INTJ , WHNP SQ .
+1        SBARQ    CC WHNP SQ .
+2        SBARQ    ADVP , WHADVP SQ .
+1        SBARQ    WHNP ADVP VP .
+1        SBARQ    WHNP SQ . .
+78       PRP      I
+173      PP       IN NP
+1        PP       IN
+1        PP       IN NP .
+14       PP       TO NP
+1        PP       IN SBAR
+1        PP       PRT NP
+1        PP       ADVP IN NP
+1        PP       IN RB
+2        PP       TO
+6        PP       IN PP
+1        PP       DT IN
+1        PP       RB NP
+1        PP       PP , RB PP
+1        PP       RB
+2        PP       IN S
+1        PP       RB PP
+1        PP       IN : NP
+1        PP       PP : NP
+1        PP       TO NP .
+1        PP       IN : NN : JJ
+1        PP       IN PRP$ NNP NNP
+1        PP       IN EX
+1        PP       IN ADJP
+1        PP       CONJP PP , CC ADJP
+1        PP       IN ADVP
+1        PP       PP , NNS
+1        PP       TO INTJ
+11       DT       A
+89       S        NP VP .
+47       S        VP .
+69       S        VP
+121      S        NP VP
+4        S        S CC S .
+1        S        NP VBN NP
+6        S        NP VP :
+17       S        INTJ , NP VP .
+1        S        S RB S .
+2        S        ADVP , NP VP .
+1        S        NNP , SBAR , NP VP .
+1        S        INTJ , INTJ , CC RB NP , NP VP .
+1        S        INTJ , INTJ , NP VP :
+1        S        CC ADVP PP NP VP .
+1        S        IN NP VP :
+1        S        ADVP : NP VP .
+1        S        INTJ , S , S .
+1        S        INTJ , S : S .
+4        S        INTJ , NP VP
+5        S        S : S .
+7        S        INTJ , VP .
+1        S        INTJ , VP :
+1        S        NP , S : S .
+1        S        NP `` NP ''
+1        S        `` NP
+1        S        INTJ , NP VP . ''
+2        S        PP NP VP
+1        S        S , '' CC S :
+2        S        NP ADVP VP
+1        S        SBAR VP .
+1        S        INTJ , NP VP :
+3        S        NP , NP VP .
+1        S        UH ADVP NP VP .
+2        S        CC NP VP .
+1        S        PRN : S .
+7        S        ADVP NP VP .
+1        S        SBAR NP VP
+1        S        INTJ , ADVP NP VP .
+2        S        NP PP
+1        S        S : SINV , S .
+3        S        NP ADJP
+1        S        S : SQ .
+4        S        RB VP .
+1        S        ADVP VP .
+4        S        S , CC S .
+1        S        PRP VBP RB
+1        S        NNP , S , NP VP .
+1        S        PRN , VP .
+1        S        PRN , NP VP .
+1        S        NP ADVP VP .
+4        S        NP NP
+1        S        FRAG : S .
+1        S        CC S , S .
+1        S        CC NP : CC S .
+1        S        NNP , VP .
+2        S        S , S .
+2        S        NP
+1        S        CC NP , NP , VP .
+1        S        VP :
+1        S        IN S
+1        S        NP RB RB JJ PP
+1        S        INTJ VP
+1        S        NP RB VP
+1        S        INTJ , PP , VP
+2        S        SBAR , NP VP .
+1        S        CC VP .
+1        S        NP NP VP .
+1        S        NP : S .
+1        S        '' ADVP NP VP .
+1        S        S IN S .
+1        S        SBAR NP VP .
+1        S        S , CC S :
+1        S        S , NP VP .
+1        S        INTJ , INTJ , NP VP
+1        S        S , NP CC NP
+1        S        S , IN : S .
+1        S        INTJ , ADVP VP CC S .
+1        S        SBAR , ADVP NP VP :
+1        S        INTJ , ADVP , INTJ , NNP , NNP , CC PRP VP .
+1        S        INTJ , VP : .
+2        S        NP , VP .
+1        S        NP MD VP
+1        S        NP , S , VP .
+1        S        ADVP , NP VP :
+1        S        RB NP VP .
+1        S        NP VP , CC S
+1        S        NP DT VP
+1        S        S , CC S
+1        S        S , NP .
+3        S        S CC S
+1        S        S , CC S , CC S , CC NP :
+1        S        NP VBZ
+1        S        S : NP VP .
+1        S        NP : NP VP .
+1        S        INTJ , NP , VP .
+1        S        ADVP VP
+1        S        S : NN ADVP
+1        S        S , NP
+1        S        NP ADJP .
+1        S        NP : INTJ , ADVP NP VP .
+1        S        PP NP VP .
+2        S        INTJ VP .
+1        S        UH VP .
+1        S        UH NP VP
+1        S        ADVP , NP VP
+4        ADJP     NN PP
+18       ADJP     JJ
+2        ADJP     CD NN
+3        ADJP     RB
+16       ADJP     RB JJ
+2        ADJP     NN
+1        ADJP     VBN JJ
+1        ADJP     CD : NNS
+1        ADJP     ADJP CC DT JJS
+2        ADJP     JJR
+1        ADJP     VBD
+1        ADJP     RBR
+1        ADJP     JJ , JJ .
+2        ADJP     JJ .
+1        ADJP     RB RB
+1        ADJP     VB
+1        ADJP     VBN
+1        ADJP     VBP
+1        ADJP     ADJP : ADJP
+1        ADJP     JJ CC JJ
+1        ADJP     NP RB JJ
+1        ADJP     ADJP NN
+1        ADJP     VBP SBAR
+1        ADJP     ADJP PP
+1        ADJP     VBD SBAR
+2        ADJP     JJ S
+1        ADJP     VBD RB
+1        ADJP     JJ PP
+1        ADJP     RB VB PP
+1        ADJP     DT NN
+1        VBP      AM
+1        FRAG     CC NP NP .
+8        FRAG     WP .
+1        FRAG     WHNP : NP .
+3        FRAG     INTJ , INTJ :
+1        FRAG     INTJ , ADJP .
+1        FRAG     INTJ , WHADVP RB .
+1        FRAG     INTJ , NP ADVP .
+1        FRAG     RB IN DT .
+1        FRAG     WRB .
+1        FRAG     INTJ , INTJ , ADJP .
+1        FRAG     IN S .
+1        FRAG     INTJ : WHADVP SQ .
+1        FRAG     IN NP , :
+1        FRAG     : CC PP PP :
+1        FRAG     INTJ , WHNP NP PRT .
+1        FRAG     POS NNP NP .
+1        FRAG     INTJ , VP .
+1        FRAG     ADVP
+1        FRAG     INTJ , INTJ PRN VP .
+1        FRAG     NNP RB NP .
+1        FRAG     INTJ , INTJ , NP .
+3        FRAG     INTJ , INTJ .
+1        FRAG     ADVP , ADVP : ,
+1        FRAG     CC ADVP : .
+1        FRAG     INTJ , ADVP , INTJ .
+1        FRAG     PP : NP .
+1        FRAG     CC VP
+1        FRAG     S , INTJ .
+3        FRAG     INTJ , NP .
+1        FRAG     NP , INTJ .
+1        FRAG     PP RB .
+1        FRAG     NP
+1        FRAG     WHNP FRAG .
+1        FRAG     SYM : .
+1        FRAG     INTJ , NNP , NP , CC NP .
+1        FRAG     INTJ , INTJ , SBAR :
+1        FRAG     NNP , NN , VBP , VBP NNP NNP .
+1        FRAG     INTJ , INTJ : NP : INTJ , VP .
+1        FRAG     S , CC :
+1        FRAG     INTJ , INTJ : NP : NP , INTJ , NP : INTJ , S .
+1        FRAG     CC PRP .
+1        FRAG     ADVP NP SBAR .
+1        FRAG     NP , INTJ , ADJP .
+1        FRAG     INTJ , CC RB NP .
+12       SBAR     WHNP S
+17       SBAR     IN S
+25       SBAR     S
+5        SBAR     WHADVP S
+1        SBAR     IN NN S
+1        SBAR     IN S :
+1        SBAR     WHADVP SQ
+1        SBAR     WHPP NP
+1        SBAR     IN JJ S
+1        SBAR     RB IN S
+1        SBAR     SBAR , SBAR
+1        SBAR     SBAR : CC NP
+1        SBAR     SBAR CC SBAR
+1        SBAR     SBAR , NP
+1        SBAR     WHNP
+1        SBAR     ADVP IN S
+15       WHADVP   WRB
+1        WHADVP   DT POS WHADVP
+1        WHADVP   NN
+18       PRT      RP
+8        PRT      IN
+1        PRT      NN
+1        SINV     ADVP VP NP .
+1        SINV     NP : ADVP VP NP .
+1        SINV     VBD NP VP
+1        WHPP     IN WHNP
+1        PRN      : S :
+3        PRN      S
+1        PRN      , S ,
+1        PRN      : ADJP :
+1        PRN      : RB : RB PRN
+1        PRN      : NNP :
+1        PRN      PRN IN PRN
+1        X        IN :
+1        CONJP    RB RB
