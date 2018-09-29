@@ -1,4 +1,5 @@
-# Get more sentences and output them to 
+# Get more sentences and output them to moreSentences.txt.
+# Sentences with in the same context but has non-allowed words will be printed in console.
 
 import re
 import nltk
@@ -53,7 +54,7 @@ def wordsToSentences(words):
   # Exclude the following:
   # a. "SCENE 1 :"
   # b. "[ thud ]"
-  # c. "SOLDIER # 1 :" or "HISTORIAN ' S WIFE" or "CART - MASTER :":
+  # c. "SOLDIER # 1 :" or "HISTORIAN ' S WIFE" or "CART - MASTER :" or "VILLAGER # 2 and 3 :":
   plots = []
   curPlot = []
   potentialTitle = []
@@ -78,7 +79,7 @@ def wordsToSentences(words):
           plots.append(curPlot)
           curPlot = []
         continue
-      elif word.isupper() or word.isdigit() or word == "#" or word == "," or word == "-":
+      elif word.isupper() or word.isdigit() or word in {"#", ",", "-", "and"}:
         # still potentially inside a title (a character name or a scene title)
         potentialTitle.append(word)
         continue
@@ -112,6 +113,40 @@ def wordsToSentences(words):
       j += 1
     sentences.append(plot[i : j])
 
+  # Deal with special cases.
+  # ' ve -> 've
+  # ' re -> 're
+  # ' m -> 'm
+  # ' s -> 's
+  # ' d -> 'd
+  # ' ll -> 'll
+  # ain ' t -> ain't
+  # can ' t -> can't
+  # xxxn ' t -> xxx n't
+  oldSentences = sentences
+  sentences = []
+  for oldSentence in oldSentences:
+    i = 0
+    l = len(oldSentence)
+    sentence = []
+    while i < l:
+      if i + 1 < l and oldSentence[i] == "'" and oldSentence[i + 1] in {"ve", "re", "m", "s", "d", "ll"}:
+          sentence.append("'" + oldSentence[i + 1])
+          i += 1
+      elif i + 2 < l and oldSentence[i + 1] == "'" and oldSentence[i + 2] == "t":
+        if oldSentence[i] == "ain":
+          sentence.append("ain't")
+        elif oldSentence[i] == "can":
+          sentence.append("can't")
+        else:
+          sentence.append(oldSentence[i][0:-1])
+          sentence.append("n't")
+        i += 2
+      else:
+        sentence.append(oldSentence[i])
+      i += 1
+    sentences.append(sentence)
+
   return sentences
 
 
@@ -121,8 +156,11 @@ def formattedSentence(words):
 
 f = open("moreSentences.txt", "w+")
 for sentence in wordsToSentences(text6):
-  # With only allowed words, we don't get many extra sentences than the devset...
-  # if(prohibitedWords(sentence)):
-  f.write(formattedSentence(sentence))
-  f.write("\n")
+  invalidWords = prohibitedWords(sentence)
+  if invalidWords:
+    print(formattedSentence(sentence))
+    print(invalidWords)
+  else:
+    f.write(formattedSentence(sentence))
+    f.write("\n")
 f.close()
