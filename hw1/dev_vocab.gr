@@ -95,9 +95,9 @@
 1        NNP      Well
 9        EX       there
 1        EX       There
-159      .        !
-90       .        ?
-207      .        .
+159      PERIOD   !
+90       PERIOD   ?
+207      PERIOD   .
 3        NN       Halt
 1        NN       son
 8        NN       castle
@@ -495,7 +495,7 @@
 2        PRP      She
 1        PRP      himself
 2        PRP      's
-233      ,        ,
+233      COMA     ,
 60       IN       of
 11       IN       from
 36       IN       in
@@ -558,7 +558,6 @@
 1        DT       Every
 1        DT       those
 1        DT       each
-1        S        
 1        VB       Pull
 7        VB       join
 1        VB       speak
@@ -1044,11 +1043,11 @@
 1        VBD      shut
 1        ''       'em
 11       ''       '
-42       :        --
-38       :        -
-20       :        ...
-5        :        ;
-1        :        :
+42       COLON    --
+38       COLON    -
+20       COLON    ...
+5        COLON    ;
+1        COLON    :
 1        WRB      Where
 1        WRB      where
 1        WRB      Wait

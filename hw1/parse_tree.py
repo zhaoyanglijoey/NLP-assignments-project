@@ -1,6 +1,6 @@
-import nltk
 from nltk import Tree
 from collections import defaultdict
+
 
 class TreesParser():
     def __init__(self):
@@ -45,25 +45,41 @@ class TreesParser():
         # print(tree.label(), '->', rhs)
 
     def to_grammar(self, s1_filename, vocab_filename):
+        def _add_other_allowed_words(grammar_dict: dict):
+            appended_grammar = ""
+            default_freq = 1
+            default_pos = 'Misc'
+            with open('allowed_words.txt', 'r') as f:
+                for line in f:
+                    word = line.strip()
+                    if word not in grammar_dict.values() or 1:
+                        appended_grammar += '{:<8} {:<8} {}\n'.format(default_freq, default_pos, word)
+            return appended_grammar
+
         s1_out = ''
         s1_out += '{:<8} {:<8} S1\n'.format('100', 'TOP')
+        s1_out += '{:<8} {:<8} S2\n'.format('1', 'TOP')
         for start, freq in self.starts.items():
             s1_out += '{:<8} {:<8} {}\n'.format(freq, 'S1', start)
         vocab_out = ''
-        for lhs, dict in self.grammar.items():
-            if lhs =='':
+        for lhs, grammar_dict in self.grammar.items():
+            if lhs == '':
                 continue
 
-            for rhs, freq in dict.items():
+            for rhs, freq in grammar_dict.items():
                 if rhs.isupper():
                     s1_out += '{:<8} {:<8} {}\n'.format(freq, lhs, rhs)
                 else:
                     vocab_out += '{:<8} {:<8} {}\n'.format(freq, lhs, rhs)
 
+        # appended_grammar = _add_other_allowed_words(grammar_dict)
+        # vocab_out += appended_grammar
+
         with open(s1_filename, 'w') as f:
             f.write(s1_out)
         with open(vocab_filename, 'w') as f:
             f.write(vocab_out)
+
 
 filename = 'devset.trees'
 treeParser = TreesParser()
