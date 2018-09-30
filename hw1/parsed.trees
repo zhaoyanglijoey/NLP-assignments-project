@@ -36,16 +36,12 @@
     (NP (NP (JJ sovereign)) (PP (IN of) (NP (DT all) (NNP England))))
     (. !)))
 (ROOT (S (VP (VB Pull) (NP (DT the) (JJ other) (NN one))) (. !)))
+(ROOT (S (NP (PRP I)) (VP (VBP am)) (. .)))
 (ROOT
   (S
-    (S (NP (PRP I)) (VP (VBP am)))
-    (, ,)
-    (CC and)
-    (S
-      (NP (DT this))
-      (VP
-        (VBZ is)
-        (NP (PRP$ my) (JJ trusty) (NX (NNP servant) (NNP Patsy)))))
+    (CC And)
+    (NP (DT this) (JJ my) (NN trusty) (NN servant))
+    (VP (VBZ Patsy))
     (. .)))
 (ROOT
   (S
@@ -80,7 +76,7 @@
                                 (IN in)
                                 (NP
                                   (NP (PRP$ my) (NN court))
-                                  (PP (IN at) (NP (NNP Camelot))))))))))))))))))
+                                  (PP (IN of) (NP (NNP Camelot))))))))))))))))))
     (. .)))
 (ROOT
   (S
@@ -93,9 +89,12 @@
           (IN with)
           (NP (PRP$ your) (NN lord) (CC and) (NN master)))))
     (. .)))
-(ROOT (FRAG (WHNP (WDT What)) (. ?)))
 (ROOT
-  (NP (NP (NNP Ridden)) (PP (IN on) (NP (DT a) (NN horse))) (. ?)))
+  (NP
+    (NP (WP What))
+    (, ,)
+    (NP (NP (NN ridden)) (PP (IN on) (NP (DT a) (NN horse))))
+    (. ?)))
 (ROOT (INTJ (UH Yes) (. !)))
 (ROOT
   (S
@@ -119,9 +118,7 @@
       (NP (PRP you))
       (VP
         (VBP 're)
-        (NP
-          (NP (NP (NN bangin) (POS ')) ('' ') (NN em))
-          (ADVP (RB together)))))
+        (VP (VBN bangin) (S (NP (PRP 'em)) (ADVP (RB together))))))
     (. .)))
 (ROOT (FRAG (ADVP (RB So)) (. ?)))
 (ROOT
@@ -155,13 +152,17 @@
     (SQ
       (MD 'd)
       (NP (PRP you))
-      (VP (VB get) (NP (DT the) (NNS coconuts))))
+      (VP (VB get) (NP (DT the) (NN coconut))))
     (. ?)))
 (ROOT (S (NP (PRP We)) (VP (VBD found) (NP (PRP them))) (. .)))
 (ROOT (SQ (VP (VB Found) (NP (PRP them))) (. ?)))
 (ROOT (FRAG (PP (IN In) (NP (NNP Mercea))) (. ?)))
 (ROOT
   (S
+    (NP (DT The) (NN coconut))
+    (VP (VBZ 's) (ADJP (JJ tropical)))
+    (. !)))
+
     (NP (DT The) (NN coconut))
     (VP (VBZ 's) (ADJP (JJ tropical)))
     (. !)))
