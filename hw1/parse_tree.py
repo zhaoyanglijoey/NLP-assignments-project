@@ -1,48 +1,70 @@
 from nltk import Tree
 from collections import defaultdict
-
+import argparse
 
 class TreesParser():
     def __init__(self):
         self.grammar = defaultdict(lambda: defaultdict(int))
         self.starts = defaultdict(int)
 
-    def parse(self, filename):
-        with open(filename) as f:
-            data = f.read()
-            count = 0
-            treestr = ''
-            for ch in data:
-                treestr += ch
-                if ch == '(':
-                    count += 1
-                elif ch == ')':
-                    count -= 1
-                    if count == 0:
-                        self.parse_treestr(treestr)
-                        treestr = ''
+    def parse(self, files):
+        for filename in files:
+            with open(filename) as f:
+                data = f.read()
+                count = 0
+                treestr = ''
+                for ch in data:
+                    treestr += ch
+                    if ch == '(':
+                        count += 1
+                    elif ch == ')':
+                        count -= 1
+                        if count == 0:
+                            self.parse_treestr(treestr)
+                            treestr = ''
 
     def parse_treestr(self, treestr):
         treestr = treestr.strip()
         tree = Tree.fromstring(treestr)
         tree.chomsky_normal_form()
         self.starts[tree.label()] += 1
+        # print(tree)
+        # tree.pretty_print()
         self.traverse_tree(tree)
 
     def traverse_tree(self, tree):
+        tree.set_label(self.sanitize_nont(tree.label()))
         rhs = ''
         for subtree in tree:
             if type(subtree) == Tree:
-                rhs += subtree.label() + ' '
                 self.traverse_tree(subtree)
+                rhs += subtree.label() + ' '
             else:
-                rhs += subtree
+                rhs += self.sanitize_t(subtree)
         # if tree.label()=='':
         #     tree.pretty_print()
         #     print('setence:', ' '.join(tree.leaves()))
         self.grammar[tree.label()][rhs.strip()] += 1
         # tree.pretty_print()
         # print(tree.label(), '->', rhs)
+
+    def sanitize_nont(self, nont):
+        nont = nont.strip()
+        if nont == '.':
+            nont = 'PERIOD'
+        if nont == ':':
+            nont = 'COLON'
+        if nont == ',':
+            nont = 'COMMA'
+        return nont
+
+    def sanitize_t(self, t):
+        t = t.strip()
+        if t == '-LRB-':
+            t = '('
+        if t == '-RRB-':
+            t = ')'
+        return t
 
     def to_grammar(self, s1_filename, vocab_filename):
         def _add_other_allowed_words(grammar_dict: dict):
@@ -58,7 +80,7 @@ class TreesParser():
 
         s1_out = ''
         s1_out += '{:<8} {:<8} S1\n'.format('100', 'TOP')
-        s1_out += '{:<8} {:<8} S2\n'.format('1', 'TOP')
+        # s1_out += '{:<8} {:<8} S2\n'.format('1', 'TOP')
         for start, freq in self.starts.items():
             s1_out += '{:<8} {:<8} {}\n'.format(freq, 'S1', start)
         vocab_out = ''
@@ -67,6 +89,8 @@ class TreesParser():
                 continue
 
             for rhs, freq in grammar_dict.items():
+                if rhs == '':
+                    continue
                 if rhs.isupper():
                     s1_out += '{:<8} {:<8} {}\n'.format(freq, lhs, rhs)
                 else:
@@ -81,9 +105,17 @@ class TreesParser():
             f.write(vocab_out)
 
 
-filename = 'devset.trees'
-treeParser = TreesParser()
-treeParser.parse(filename)
-treeParser.to_grammar('dev_s1.gr', 'dev_vocab.gr')
+def main():
+    arg_parser = argparse.ArgumentParser()
+    arg_parser.add_argument('-i',dest='gtrees', nargs='+', help='input grammar trees')
+    args = arg_parser.parse_args()
+
+    treeParser = TreesParser()
+    treeParser.parse(args.gtrees)
+    treeParser.to_grammar('dev_s1.gr', 'dev_vocab.gr')
+
+if __name__ == '__main__':
+    main()
+
 
 
