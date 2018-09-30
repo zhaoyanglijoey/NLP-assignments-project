@@ -28,22 +28,43 @@ class TreesParser():
         tree = Tree.fromstring(treestr)
         tree.chomsky_normal_form()
         self.starts[tree.label()] += 1
+        # print(tree)
+        # tree.pretty_print()
         self.traverse_tree(tree)
 
     def traverse_tree(self, tree):
+        tree.set_label(self.sanitize_nont(tree.label()))
         rhs = ''
         for subtree in tree:
             if type(subtree) == Tree:
-                rhs += subtree.label() + ' '
                 self.traverse_tree(subtree)
+                rhs += subtree.label() + ' '
             else:
-                rhs += subtree
+                rhs += self.sanitize_t(subtree)
         # if tree.label()=='':
         #     tree.pretty_print()
         #     print('setence:', ' '.join(tree.leaves()))
         self.grammar[tree.label()][rhs.strip()] += 1
         # tree.pretty_print()
         # print(tree.label(), '->', rhs)
+
+    def sanitize_nont(self, nont):
+        nont = nont.strip()
+        if nont == '.':
+            nont = 'PERIOD'
+        if nont == ':':
+            nont = 'COLON'
+        if nont == ',':
+            nont = 'COMMA'
+        return nont
+
+    def sanitize_t(self, t):
+        t = t.strip()
+        if t == '-LRB-':
+            t = '('
+        if t == '-RRB-':
+            t = ')'
+        return t
 
     def to_grammar(self, s1_filename, vocab_filename):
         def _add_other_allowed_words(grammar_dict: dict):
@@ -68,6 +89,8 @@ class TreesParser():
                 continue
 
             for rhs, freq in grammar_dict.items():
+                if rhs == '':
+                    continue
                 if rhs.isupper():
                     s1_out += '{:<8} {:<8} {}\n'.format(freq, lhs, rhs)
                 else:
