@@ -25,6 +25,7 @@ class TreesParser():
     def parse_treestr(self, treestr):
         treestr = treestr.strip()
         tree = Tree.fromstring(treestr)
+        tree.chomsky_normal_form()
         self.starts[tree.label()] += 1
         self.traverse_tree(tree)
 
