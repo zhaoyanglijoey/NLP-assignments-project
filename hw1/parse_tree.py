@@ -1,26 +1,27 @@
 from nltk import Tree
 from collections import defaultdict
-
+import argparse
 
 class TreesParser():
     def __init__(self):
         self.grammar = defaultdict(lambda: defaultdict(int))
         self.starts = defaultdict(int)
 
-    def parse(self, filename):
-        with open(filename) as f:
-            data = f.read()
-            count = 0
-            treestr = ''
-            for ch in data:
-                treestr += ch
-                if ch == '(':
-                    count += 1
-                elif ch == ')':
-                    count -= 1
-                    if count == 0:
-                        self.parse_treestr(treestr)
-                        treestr = ''
+    def parse(self, files):
+        for filename in files:
+            with open(filename) as f:
+                data = f.read()
+                count = 0
+                treestr = ''
+                for ch in data:
+                    treestr += ch
+                    if ch == '(':
+                        count += 1
+                    elif ch == ')':
+                        count -= 1
+                        if count == 0:
+                            self.parse_treestr(treestr)
+                            treestr = ''
 
     def parse_treestr(self, treestr):
         treestr = treestr.strip()
@@ -58,7 +59,7 @@ class TreesParser():
 
         s1_out = ''
         s1_out += '{:<8} {:<8} S1\n'.format('100', 'TOP')
-        s1_out += '{:<8} {:<8} S2\n'.format('1', 'TOP')
+        # s1_out += '{:<8} {:<8} S2\n'.format('1', 'TOP')
         for start, freq in self.starts.items():
             s1_out += '{:<8} {:<8} {}\n'.format(freq, 'S1', start)
         vocab_out = ''
@@ -81,9 +82,17 @@ class TreesParser():
             f.write(vocab_out)
 
 
-filename = 'devset.trees'
-treeParser = TreesParser()
-treeParser.parse(filename)
-treeParser.to_grammar('dev_s1.gr', 'dev_vocab.gr')
+def main():
+    arg_parser = argparse.ArgumentParser()
+    arg_parser.add_argument('-i',dest='gtrees', nargs='+', help='input grammar trees')
+    args = arg_parser.parse_args()
+
+    treeParser = TreesParser()
+    treeParser.parse(args.gtrees)
+    treeParser.to_grammar('dev_s1.gr', 'dev_vocab.gr')
+
+if __name__ == '__main__':
+    main()
+
 
 
