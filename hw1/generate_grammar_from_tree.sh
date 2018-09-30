@@ -1,9 +1,9 @@
 #!/usr/bin/env bash
 
-TREE=train.trees
-S1_GR=train_s1.gr
-S2_GR=train_s2.gr
-VOCAB_GR=train_vocab.gr
+TREE=text/train.trees
+S1_GR=grammars/train_s1.gr
+S2_GR=grammars/train_s2.gr
+VOCAB_GR=grammars/train_vocab.gr
 
 echo "Parsing tree"
 python parse_tree.py -i $TREE -os1 $S1_GR -ov $VOCAB_GR
