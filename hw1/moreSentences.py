@@ -1,4 +1,4 @@
-# Get more sentences and output them to moreSentences.txt.
+# Get more sentences and output them to more_sentences.txt.
 # Sentences with in the same context but has non-allowed words will be printed in console.
 
 import re
@@ -154,7 +154,7 @@ def formattedSentence(words):
   return ' '.join(words)
 
 
-f = open("moreSentences.txt", "w+")
+f = open("more_sentences.txt", "w+")
 for sentence in wordsToSentences(text6):
   invalidWords = prohibitedWords(sentence)
   if invalidWords:

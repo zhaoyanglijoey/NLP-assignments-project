@@ -2,6 +2,8 @@ from nltk import Tree
 from collections import defaultdict
 import argparse
 
+ROOT_NODE_NAME = "ROOT"
+
 class TreesParser():
     def __init__(self):
         self.grammar = defaultdict(lambda: defaultdict(int))
@@ -26,6 +28,10 @@ class TreesParser():
     def parse_treestr(self, treestr):
         treestr = treestr.strip()
         tree = Tree.fromstring(treestr)
+        if tree.label() != ROOT_NODE_NAME:
+            new_root = Tree.fromstring(f"({ROOT_NODE_NAME})")
+            new_root.insert(0, tree)
+            tree = new_root
         tree.chomsky_normal_form()
         self.starts[tree.label()] += 1
         # print(tree)
@@ -56,6 +62,10 @@ class TreesParser():
             nont = 'COLON'
         if nont == ',':
             nont = 'COMMA'
+        if nont == "''":
+            nont = 'TWOSINGLEQUOTES'
+        if nont == "``":
+            nont = 'TWOGRAVES'
         return nont
 
     def sanitize_t(self, t):
@@ -107,12 +117,15 @@ class TreesParser():
 
 def main():
     arg_parser = argparse.ArgumentParser()
-    arg_parser.add_argument('-i',dest='gtrees', nargs='+', help='input grammar trees')
+    arg_parser.add_argument('-i', dest='gtrees', nargs='+', help='input grammar trees')
+    arg_parser.add_argument('-os1', dest='s1', required=True, help='output s1')
+    arg_parser.add_argument('-ov', dest='vocab', required=True, help='output vocab')
     args = arg_parser.parse_args()
 
     treeParser = TreesParser()
     treeParser.parse(args.gtrees)
-    treeParser.to_grammar('dev_s1.gr', 'dev_vocab.gr')
+    treeParser.to_grammar(args.s1, args.vocab)
+
 
 if __name__ == '__main__':
     main()
