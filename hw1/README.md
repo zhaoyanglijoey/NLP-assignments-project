@@ -5,7 +5,7 @@
 
 ### How to use
 
-Edit input tree location & output grammar locations in side `generate_grammar_from_tree.sh`
+Edit input tree location & output grammar locations inside `generate_grammar_from_tree.sh`
 Then run the script
 ```
 ./generate_grammar_from_tree.sh
