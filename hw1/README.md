@@ -5,11 +5,12 @@
 
 ### How to use
 
+Edit input tree location & output grammar locations in side `generate_grammar_from_tree.sh`
+Then run the script
 ```
-python3 parse_tree.py -i <grammar_trees> [<grammar_trees> ...] 
+./generate_grammar_from_tree.sh
 ```
 
-Eg. `python3 parse_tree.py -i devset.trees`  
 
 ### Issues
 
@@ -25,10 +26,15 @@ and empty non terminal and terminal in the parsed grammar. We should consider
 substitute the parenthesis with other symbol when generating grammar trees.</del> 
 Seems like it is solved by our text parser that generates grammar trees.
 
+- How to test S2.gr? Based on some experiments, when the train set is large enough, and all words are added to Vocab.gr,
+ all sentences can be handled by S1.gr
+
+
 ### Tasks
 
 - [x] Parse grammar based on frequency of appearance in the devset.tree
 - [x] Convert grammars to CNF
 - [x] Make it work!
-- [ ] Add backoff support
+- [x] Add unseen words to vocab, use nltk to assign pos tag
+- [ ] Add & test backoff support
 - [ ] Improve?  
