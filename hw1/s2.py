@@ -23,10 +23,10 @@ def sanitize(nont):
     nont = 'TWOSINGLEQUOTES'
   if nont == "``":
     nont = 'TWOGRAVES'
-  if nont == '-LRB-':
-    nont = '('
-  if nont == '-RRB-':
-    nont = ')'
+  if nont == '(':
+    nont = '-LRB-'
+  if nont == ')':
+    nont = '-RRB-'
   return nont
 
 def main(vocab_file, tree_file, s2_file):
