@@ -1,9 +1,9 @@
 #!/usr/bin/env bash
 
-TREE=text/dev_and_example.trees
-S1_GR=grammars/dev_and_exp_s1.gr
-S2_GR=grammars/dev_and_exp_s2.gr
-VOCAB_GR=grammars/dev_and_exp_vocab.gr
+TREE=text/devset_stanford.trees
+S1_GR=grammars/devset_s1.gr
+S2_GR=grammars/devset_s2.gr
+VOCAB_GR=grammars/devset_vocab.gr
 
 echo "Parsing tree"
 python parse_tree.py -i $TREE -os1 $S1_GR -ov $VOCAB_GR

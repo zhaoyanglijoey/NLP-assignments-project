@@ -15,7 +15,21 @@ class TreesParser():
                 data = f.read()
                 count = 0
                 treestr = ''
-                for ch in data:
+                lastch = None
+                i = 0
+                while i < len(data):
+                    ch = data[i]
+                    if lastch == '(' and ch == '(':
+                        treestr += '-LRB- -LRB-'
+                        i += 3
+                        lastch = None
+                        continue
+                    if lastch == '(' and ch == ')':
+                        treestr += '-RRB- -RRB-'
+                        i += 3
+                        lastch = None
+                        continue
+
                     treestr += ch
                     if ch == '(':
                         count += 1
@@ -24,6 +38,8 @@ class TreesParser():
                         if count == 0:
                             self.parse_treestr(treestr)
                             treestr = ''
+                    lastch = ch
+                    i += 1
 
     def parse_treestr(self, treestr):
         treestr = treestr.strip()
