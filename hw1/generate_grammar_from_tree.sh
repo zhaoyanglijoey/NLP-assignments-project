@@ -12,4 +12,4 @@ echo "Adding unseen words"
 python vocab_generator.py -v $VOCAB_GR -a allowed_words.txt
 
 echo "Generating s2"
-python s2.py -v $VOCAB_GR -s2 $S2_GR
+python s2.py -v $VOCAB_GR -tree $TREE -s2 $S2_GR

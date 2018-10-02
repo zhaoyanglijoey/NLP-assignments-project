@@ -1,4 +1,5 @@
 #### What I have done for this homework
 
-* Participate in the discussion on how this homework should be done
-* Find more texts (from nltk.books) for us to train the grammar and the weights. Format them so that they can be processed properly. See moreSentences.py for details.
+* Participated in the discussion on how this homework should be done
+* Found more texts (from nltk.books) for us to train the grammar and the weights. Formatted them so that they can be processed properly. See moreSentences.py for details.
+* Wrote s2.py to generate S2.gr as a 2-gram.
