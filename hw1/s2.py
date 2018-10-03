@@ -3,7 +3,7 @@ import argparse
 import collections
 
 initialWeight = 1
-stepSize = 1
+stepSize = 0
 
 def startWithTag(tag):
   return "%-15s %s"%("S2", "_" + tag)
