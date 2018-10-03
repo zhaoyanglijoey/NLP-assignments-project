@@ -1,0 +1,210 @@
+(ROOT
+  (S (NP (NNP Arthur)) (VP (VBZ is) (NP (DT the) (NN king))) (. .)))
+(ROOT
+  (S
+    (NP (NNP Arthur))
+    (VP
+      (VBZ rides)
+      (NP
+        (NP (DT the) (NN horse))
+        (PP (IN near) (NP (DT the) (NN castle)))))
+    (. .)))
+(ROOT
+  (S
+    (S (VP (VBG riding) (PP (TO to) (NP (NNP Camelot)))))
+    (VP (VBZ is) (ADJP (JJ hard)))
+    (. .)))
+(ROOT (SQ (VBP do) (NP (NNS coconuts)) (VP (VB speak)) (. ?)))
+(ROOT
+  (SBARQ
+    (WHNP (WP what))
+    (SQ (VBZ does) (NP (NNP Arthur)) (VP (VB ride)))
+    (. ?)))
+(ROOT
+  (SBARQ
+    (WHNP (WP who))
+    (SQ
+      (VBZ does)
+      (NP (NNP Arthur))
+      (VP (VB suggest) (S (NP (PRP she)) (VP (VB carry)))))
+    (. ?)))
+(ROOT
+  (SBARQ
+    (WHADVP (WRB why))
+    (SQ
+      (VBZ does)
+      (NP (NNP England))
+      (VP (VB have) (NP (DT a) (NN king))))
+    (. ?)))
+(ROOT
+  (SQ
+    (VBP are)
+    (NP (PRP they))
+    (VP
+      (VBG suggesting)
+      (NP (NNP Arthur) (NN ride))
+      (PP (TO to) (NP (NNP Camelot))))
+    (. ?)))
+(ROOT
+  (S
+    (NP (CD five) (NNS strangers))
+    (VP (VBP are) (PP (IN at) (NP (DT the) (NNP Round) (NNP Table))))
+    (. .)))
+(ROOT
+  (S
+    (NP (NNP Guinevere))
+    (VP (MD might) (VP (VB have) (VP (VBN known))))
+    (. .)))
+(ROOT
+  (S
+    (NP (NNP Guinevere))
+    (VP
+      (MD should)
+      (VP (VB be) (VP (VBG riding) (PP (IN with) (NP (NNP Patsy))))))
+    (. .)))
+(ROOT
+  (S
+    (NP (PRP it))
+    (VP
+      (VBZ is)
+      (NP
+        (NP (NNP Sir) (NNP Lancelot))
+        (SBAR (WHNP (WP who)) (S (VP (VBZ knows) (NP (NNP Zoot)))))))
+    (. !)))
+(ROOT
+  (S
+    (NP (DT either) (NNP Arthur))
+    (VP (VP (VBZ knows)) (CC or) (ADVP (RB Patsy)) (VP (VBZ does)))
+    (. .)))
+(ROOT
+  (S
+    (NP
+      (CC neither)
+      (NNP Sir)
+      (NNP Lancelot)
+      (CC nor)
+      (NNP Guinevere))
+    (VP (MD will) (VP (VB speak) (PP (IN of) (NP (PRP it)))))
+    (. .)))
+(ROOT
+  (S
+    (NP (DT the) (NNP Holy) (NNP Grail))
+    (VP
+      (VBD was)
+      (VP
+        (VBN covered)
+        (PP (IN by) (NP (DT a) (JJ yellow) (NN fruit)))))
+    (. .)))
+(ROOT
+  (S
+    (NP (NNP Zoot))
+    (VP
+      (MD might)
+      (VP
+        (VB have)
+        (VP
+          (VBN been)
+          (VP (VBN carried) (PP (IN by) (NP (DT a) (NN swallow)))))))
+    (. .)))
+(ROOT
+  (S
+    (NP (NNP Arthur))
+    (VP
+      (VP (VBD rode) (PP (TO to) (NP (NNP Camelot))))
+      (CC and)
+      (VP (VBD drank) (PP (IN from) (NP (PRP$ his) (NN chalice)))))
+    (. .)))
+(ROOT
+  (S
+    (NP (PRP they))
+    (VP
+      (VB migrate)
+      (ADVP (RB precisely))
+      (SBAR
+        (IN because)
+        (S
+          (NP (PRP they))
+          (VP
+            (VBP know)
+            (SBAR (S (NP (PRP they)) (VP (MD will) (VP (VB grow)))))))))
+    (. .)))
+(ROOT (S (VP (VB do) (RB not) (VP (VB speak))) (. !)))
+(ROOT
+  (S
+    (NP (NNP Arthur))
+    (VP
+      (MD will)
+      (VP
+        (VB have)
+        (VP
+          (VBN been)
+          (VP
+            (VBG riding)
+            (PP (IN for) (NP (CD eight) (NNS nights)))))))
+    (. .)))
+(ROOT
+  (S
+    (NP (NP (NNP Arthur)) (, ,) (NP (JJ sixty) (NNS inches)) (, ,))
+    (VP (VBZ is) (NP (DT a) (JJ tiny) (NN king)))
+    (. .)))
+(ROOT
+  (S
+    (NP (NNP Arthur))
+    (VP
+      (VBZ knows)
+      (NP
+        (NP (NNP Patsy))
+        (, ,)
+        (NP (DT the) (JJ trusty) (NN servant))))
+    (. .)))
+(ROOT
+  (S
+    (NP (NNP Arthur) (CC and) (NNP Guinevere))
+    (VP (VB migrate) (ADVP (RB frequently)))
+    (. .)))
+(ROOT
+  (S
+    (NP (PRP he))
+    (VP
+      (VBZ knows)
+      (SBAR
+        (WHNP (WP what))
+        (S
+          (NP (PRP they))
+          (VP
+            (VBP are)
+            (VP
+              (VBG covering)
+              (PP (IN with) (NP (DT that) (NN story))))))))
+    (. .)))
+(ROOT
+  (S
+    (NP (NNP Arthur))
+    (VP
+      (VBD suggested)
+      (SBAR
+        (IN that)
+        (S (NP (DT the) (NN castle)) (VP (VB be) (VP (VBN carried))))))
+    (. .)))
+(ROOT
+  (S
+    (NP (DT the) (NN king))
+    (VP
+      (VBD drank)
+      (PP
+        (TO to)
+        (NP
+          (NP (DT the) (NN castle))
+          (SBAR
+            (WHNP (WDT that))
+            (S (VP (VBD was) (NP (PRP$ his) (NN home))))))))
+    (. .)))
+(ROOT
+  (S
+    (SBAR
+      (WHADVP (WRB when))
+      (S (NP (DT the) (NN king)) (VP (VBZ drinks))))
+    (, ,)
+    (NP (NNP Patsy))
+    (VP (VBZ drinks))
+    (. .)))

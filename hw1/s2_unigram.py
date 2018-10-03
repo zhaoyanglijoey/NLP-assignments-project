@@ -2,7 +2,7 @@ import re
 import argparse
 
 initialWeight = 1
-stepSize = 1
+stepSize = 0
 
 def main(vocab_file, s2_file):
     fileIn = open(vocab_file, "r")

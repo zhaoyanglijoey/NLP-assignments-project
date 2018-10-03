@@ -8828,40 +8828,40 @@
 (ROOT (FRAG (NP (NN Everything)) (. ?)))
 (ROOT (S (NP (DT That)) (VP (VBZ 's) (ADJP (JJ enough))) (. .)))
 (ROOT (INTJ (UH Christ) (. !)))
-(INTJ (NNP Whoa) (ADVP (EX there)) (PERIOD !))
-(NP (NN Halt) (PERIOD !))
-(SBARQ (WHNP (WP Who)) (SQ (VP (VBZ goes) (ADVP (RB there)))) (PERIOD ?))
+(INTJ (NNP Whoa) (ADVP (EX there)) (. !))
+(NP (NN Halt) (. !))
+(SBARQ (WHNP (WP Who)) (SQ (VP (VBZ goes) (ADVP (RB there)))) (. ?))
 (S
   (NP (PRP It))
   (VP
     (VBZ is)
     (NP
       (NP (PRP I))
-      (COMA ,)
+      (, ,)
       (NP (NNP Arthur))
-      (COMA ,)
+      (, ,)
       (NP
         (NP (NN son))
         (PP (IN of) (NP (NNP Uther) (NNP Pendragon))))
-      (COMA ,))
+      (, ,))
     (PP
       (IN from)
       (NP (NP (DT the) (NN castle)) (PP (IN of) (NP (NNP Camelot))))))
-  (PERIOD .))
+  (. .))
 (NP
   (NP (NP (NNP King)) (PP (IN of) (NP (DT the) (NNP Britons))))
-  (COMA ,)
+  (, ,)
   (NP (NP (NN defeator)) (PP (IN of) (NP (DT the) (NNP Saxons))))
-  (COMA ,)
+  (, ,)
   (ADJP (NN sovereign) (PP (IN of) (NP (DT all) (NNP England))))
-  (PERIOD !))
-(S (VP (VB Pull) (NP (DT the) (JJ other) (CD one))) (PERIOD !))
-(S (NP (PRP I)) (VP (VBP am)) (PERIOD .))
+  (. !))
+(S (VP (VB Pull) (NP (DT the) (JJ other) (CD one))) (. !))
+(S (NP (PRP I)) (VP (VBP am)) (. .))
 (FRAG
   (CC And)
   (NP (DT this))
   (NP (PRP$ my) (NN trusty) (NN servant) (NNP Patsy))
-  (PERIOD .))
+  (. .))
 (S
   (NP (PRP We))
   (VP
@@ -8892,7 +8892,7 @@
                         (NP
                           (NP (PRP$ my) (NN court))
                           (PP (IN of) (NP (NNP Camelot)))))))))))))))
-  (PERIOD .))
+  (. .))
 (S
   (NP (PRP I))
   (VP
@@ -8900,15 +8900,15 @@
     (VP
       (VB speak)
       (PP (IN with) (NP (PRP$ your) (NN lord) (CC and) (NN master)))))
-  (PERIOD .))
+  (. .))
 (SBARQ
   (WHNP (WP What))
-  (COMA ,)
+  (, ,)
   (S (VP (VBP ridden) (PP (IN on) (NP (DT a) (NN horse)))))
-  (PERIOD ?))
-(INTJ (UH Yes) (PERIOD !))
-(S (NP (NNP You're)) (VP (VBG using) (NP (NNS coconuts))) (PERIOD !))
-(FRAG (WP What) (PERIOD ?))
+  (. ?))
+(INTJ (UH Yes) (. !))
+(S (NP (NNP You're)) (VP (VBG using) (NP (NNS coconuts))) (. !))
+(FRAG (WP What) (. ?))
 (S
   (S
     (NP (NNP You've))
@@ -8921,8 +8921,8 @@
   (S
     (NP (PRP you))
     (VP (VBP 're) (JJ bangin) (NP ('' 'em)) (ADVP (RB together))))
-  (PERIOD .))
-(ADVP (RB So) (PERIOD ?))
+  (. .))
+(ADVP (RB So) (. ?))
 (S
   (NP (PRP We))
   (VP
@@ -8937,39 +8937,39 @@
             (PP (IN of) (NP (NN winter))))
           (VBN covered)
           (NP (DT this) (NN land))))
-      (COMA ,)
+      (, ,)
       (PP
         (IN through)
         (NP
           (NP (DT the) (NN kingdom))
           (PP (IN of) (NP (NNP Mercea)))))
-      (COMA ,)
+      (, ,)
       (PP (IN through))))
-  (COLON --))
+  (: --))
 (SBARQ
   (WHADVP (WRB Where))
   (SQ
     (MD 'd)
     (NP (PRP you))
     (VP (VB get) (NP (DT the) (NN coconut))))
-  (PERIOD ?))
-(S (NP (PRP We)) (VP (VBD found) (NP (PRP them))) (PERIOD .))
-(S (VP (IN Found) (NP (PRP them))) (PERIOD ?))
-(PP (IN In) (NP (NNP Mercea)) (PERIOD ?))
+  (. ?))
+(S (NP (PRP We)) (VP (VBD found) (NP (PRP them))) (. .))
+(S (VP (IN Found) (NP (PRP them))) (. ?))
+(PP (IN In) (NP (NNP Mercea)) (. ?))
 (S
   (NP (DT The) (NN coconut))
   (VP (POS 's) (ADJP (JJ tropical)))
-  (PERIOD !))
+  (. !))
 (SBARQ
   (WHNP (WP What))
   (SQ (VBP do) (NP (PRP you)) (VP (VB mean)))
-  (PERIOD ?))
+  (. ?))
 (S
   (INTJ (RB Well))
-  (COMA ,)
+  (, ,)
   (NP (DT this))
   (VP (VBZ is) (NP (DT a) (JJ temperate) (NN zone)))
-  (PERIOD .))
+  (. .))
 (S
   (S
     (NP (DT The) (NN swallow))
@@ -9003,33 +9003,33 @@
       (NP
         (NP (NNS strangers))
         (PP (TO to) (NP (PRP$ our) (NN land))))))
-  (PERIOD .))
+  (. .))
 (SQ
   (NNP Are)
   (NP (PRP you))
   (VP
     (VBG suggesting)
     (SBAR (S (NP (NNS coconuts)) (VP (NN migrate)))))
-  (PERIOD ?))
+  (. ?))
 (S
   (ADVP (RB Not) (IN at) (DT all))
-  (COMA ,)
+  (, ,)
   (NP (PRP they))
   (VP (MD could) (VP (VB be) (VP (VBN carried))))
-  (PERIOD .))
+  (. .))
 (FRAG
   (WHNP (WP What))
-  (COLON --)
+  (: --)
   (NP
     (NP (DT a) (JJ swallow))
     (VP (VBG carrying) (NP (DT a) (NN coconut))))
-  (PERIOD ?))
+  (. ?))
 (S
   (NP (PRP It))
   (VP
     (MD could)
     (VP (VB grip) (NP (PRP it)) (PP (IN by) (NP (DT the) (NN husk)))))
-  (PERIOD !))
+  (. !))
 (S
   (NP (PRP It))
   (VP
@@ -9041,7 +9041,7 @@
       (SBAR
         (WHADVP (WRB where))
         (S (NP (PRP he)) (VP (VBZ grips) (NP (PRP it)))))))
-  (PERIOD !))
+  (. !))
 (S
   (NP (PRP It))
   (VP
@@ -9049,20 +9049,20 @@
     (NP
       (NP (DT a) (JJ simple) (NN question))
       (PP (IN of) (NP (JJ weight) (NNS ratios)))))
-  (PERIOD !))
+  (. !))
 (S
   (NP (DT A) (ADJP (CD five) (NN ounce)) (NN bird))
   (VP
     (MD could)
     (RB not)
     (VP (VB carry) (NP (DT a) (ADJP (CD 1) (NN pound)) (NN coconut))))
-  (PERIOD .))
+  (. .))
 (S
   (INTJ (RB Well))
-  (COMA ,)
+  (, ,)
   (NP (PRP it))
   (VP (VBZ does) (RB n't) (VP (VB matter)))
-  (PERIOD .))
+  (. .))
 (SQ
   (MD Will)
   (NP (PRP you))
@@ -9083,19 +9083,19 @@
                 (NP (DT the) (NNP Court))
                 (PP (IN of) (NP (NNP Camelot))))))
           (VP (VBZ is) (ADVP (RB here)))))))
-  (PERIOD .))
+  (. .))
 (S
   (NNP Listen)
-  (COMA ,)
+  (, ,)
   (SBAR
     (IN in)
     (NN order)
     (S
       (VP
         (S (VP (TO to) (VP (VB maintain) (NP (NN air)))))
-        (COLON -)
+        (: -)
         (NP (NN speed) (NN velocity)))))
-  (COMA ,)
+  (, ,)
   (NP (DT a) (JJ swallow))
   (VP
     (NNS needs)
@@ -9106,12 +9106,12 @@
           (VB beat)
           (NP (PRP$ its) (NNS wings))
           (NP (NP (CD 43) (NNS times)) (NP (DT every) (JJ second)))
-          (COMA ,)
+          (, ,)
           (INTJ (RB right))))))
-  (PERIOD ?))
-(INTJ (NN Please) (PERIOD !))
-(SQ (VBP Am) (NP (PRP I)) (ADJP (RB right)) (PERIOD ?))
-(NP (NP (NNP I'm)) (ADJP (RB not) (JJ interested)) (PERIOD !))
+  (. ?))
+(INTJ (NN Please) (. !))
+(SQ (VBP Am) (NP (PRP I)) (ADJP (RB right)) (. ?))
+(NP (NP (NNP I'm)) (ADJP (RB not) (JJ interested)) (. !))
 (S
   (NP (PRP It))
   (VP
@@ -9121,31 +9121,31 @@
       (VP
         (VBN carried)
         (PP (IN by) (NP (DT an) (JJ African) (NN swallow))))))
-  (PERIOD !))
+  (. !))
 (S
   (INTJ (UH Oh))
-  (COMA ,)
+  (, ,)
   (INTJ
     (INTJ (UH yeah))
-    (COMA ,)
+    (, ,)
     (NP (DT an) (JJ African) (NN swallow))
     (ADVP (RB maybe)))
-  (COMA ,)
+  (, ,)
   (CC but)
   (RB not)
   (NP (DT a) (JJ European) (NN swallow))
-  (COMA ,)
+  (, ,)
   (NP (WDT that))
   (VP (POS 's) (NP (PRP$ my) (NN point)))
-  (PERIOD .))
+  (. .))
 (S
   (INTJ (UH Oh))
-  (COMA ,)
+  (, ,)
   (INTJ (UH yeah))
-  (COMA ,)
+  (, ,)
   (NP (PRP I))
   (VP (VBP agree) (PP (IN with) (NP (DT that))))
-  (COLON ...))
+  (: ...))
 (SQ
   (MD Will)
   (NP (PRP you))
@@ -9165,16 +9165,16 @@
                 (VB join)
                 (NP (PRP$ my) (NN court))
                 (PP (IN at) (NP (NNP Camelot))))))))))
-  (PERIOD ?)
-  (PERIOD !))
+  (. ?)
+  (. !))
 (S
   (CC But)
   (ADVP (RB then))
   (PP (IN of) (NP (NN course)))
   (NP (JJ African) (NNS swallows))
   (VP (VBP are) (RB not) (ADJP (JJ migratory)))
-  (PERIOD .))
-(FRAG (INTJ (UH Oh)) (COMA ,) (INTJ (UH yeah)) (COLON ...))
+  (. .))
+(FRAG (INTJ (UH Oh)) (, ,) (INTJ (UH yeah)) (: ...))
 (S
   (IN So)
   (NP (PRP they))
@@ -9186,12 +9186,12 @@
       (NP (DT a) (NN coconut))
       (ADVP (RB back))
       (ADVP (RB anyway))))
-  (COLON ...))
+  (: ...))
 (S
   (VP
     (WRB Wait)
     (NP (DT a) (NN minute))
-    (COLON --)
+    (: --)
     (S
       (VP
         (VBG supposing)
@@ -9199,10 +9199,10 @@
           (S
             (NP (CD two) (NNS swallows))
             (VP (VBD carried) (NP (PRP it)) (ADVP (RB together))))))))
-  (PERIOD ?))
+  (. ?))
 (S
   (INTJ (DT No))
-  (COMA ,)
+  (, ,)
   (NP (PRP they))
   (VP
     (MD 'd)
@@ -9215,65 +9215,65 @@
             (VB have)
             (NP (PRP it))
             (PP (IN on) (NP (DT a) (NN line))))))))
-  (PERIOD .))
-(FRAG (INTJ (RB Well)) (COMA ,) (ADJP (NN simple)) (PERIOD !))
+  (. .))
+(FRAG (INTJ (RB Well)) (, ,) (ADJP (NN simple)) (. !))
 (S
   (NP (PRP They))
   (VP
     (MD 'd)
     (ADVP (RB just))
     (VP (VB use) (NP (DT a) (JJ standard) (NN creeper))))
-  (PERIOD !))
+  (. !))
 (SBARQ
   (WHNP (WP What))
-  (COMA ,)
+  (, ,)
   (VP
     (VBD held)
     (PP
       (IN under)
       (NP (DT the) (NN dorsal) (VBG guiding) (NNS feathers))))
-  (PERIOD ?))
-(FRAG (INTJ (RB Well)) (COMA ,) (WHADVP (WRB why)) (RB not) (PERIOD ?))
-(S (VP (VBG Bring) (PRT (RP out)) (NP (PRP$ your) (JJ dead))) (PERIOD !))
+  (. ?))
+(FRAG (INTJ (RB Well)) (, ,) (WHADVP (WRB why)) (RB not) (. ?))
+(S (VP (VBG Bring) (PRT (RP out)) (NP (PRP$ your) (JJ dead))) (. !))
 (SINV
   (ADVP (RB Here))
   (VP (VBZ 's))
-  (NP (NP (CD one)) (COLON --) (NP (CD nine) (NN pence)))
-  (PERIOD .))
-(NP (NP (NNP I'm)) (ADJP (RB not) (JJ dead)) (PERIOD !))
-(FRAG (WP What) (PERIOD ?))
+  (NP (NP (CD one)) (: --) (NP (CD nine) (NN pence)))
+  (. .))
+(NP (NP (NNP I'm)) (ADJP (RB not) (JJ dead)) (. !))
+(FRAG (WP What) (. ?))
 (SINV
   (NP (NN Nothing))
-  (COLON --)
+  (: --)
   (ADVP (RB here))
   (VP (VBZ 's))
   (NP (PRP$ your) (CD nine) (NN pence))
-  (PERIOD .))
-(NP (NP (NNP I'm)) (ADJP (RB not) (JJ dead)) (PERIOD !))
+  (. .))
+(NP (NP (NNP I'm)) (ADJP (RB not) (JJ dead)) (. !))
 (S
   (ADVP (RB Here))
-  (COLON --)
+  (: --)
   (NP (PRP he))
   (VP
     (VBZ says)
     (SBAR (S (NP (PRP he)) (VP (VBZ 's) (RB not) (ADJP (JJ dead))))))
-  (PERIOD !))
-(S (INTJ (UH Yes)) (COMA ,) (NP (PRP he)) (VP (VBZ is)) (PERIOD .))
-(INTJ (NNP I'm) (RB not) (PERIOD !))
-(S (NP (PRP He)) (VP (VBZ is) (RB n't)) (PERIOD .))
+  (. !))
+(S (INTJ (UH Yes)) (, ,) (NP (PRP he)) (VP (VBZ is)) (. .))
+(INTJ (NNP I'm) (RB not) (. !))
+(S (NP (PRP He)) (VP (VBZ is) (RB n't)) (. .))
 (S
   (INTJ (RB Well))
-  (COMA ,)
+  (, ,)
   (S (NP (PRP he)) (VP (MD will) (VP (VB be) (ADVP (RB soon)))))
-  (COMA ,)
+  (, ,)
   (S (NP (PRP he)) (VP (VBZ 's) (ADJP (RB very) (JJ ill))))
-  (PERIOD .))
-(S (NP (NNP I'm)) (VP (VBG getting) (ADJP (RB better))) (PERIOD !))
+  (. .))
+(S (NP (NNP I'm)) (VP (VBG getting) (ADJP (RB better))) (. !))
 (S
   (INTJ (DT No))
-  (COMA ,)
+  (, ,)
   (S (NP (PRP you)) (VP (VBP 're) (RB not)))
-  (COLON --)
+  (: --)
   (S
     (NP (PRP you))
     (VP
@@ -9282,20 +9282,20 @@
         (VB be)
         (ADJP (VBN stone) (JJ dead))
         (PP (IN in) (NP (DT a) (NN moment))))))
-  (PERIOD .))
+  (. .))
 (S
   (S
     (INTJ (UH Oh))
-    (COMA ,)
+    (, ,)
     (NP (PRP I))
     (VP
       (VBP can't)
       (VP (VB take) (NP (PRP him)) (PP (IN like) (NP (DT that))))))
-  (COLON --)
+  (: --)
   (S
     (NP (PRP it))
     (VP (VBZ 's) (PP (IN against) (NP (NNS regulations)))))
-  (PERIOD .))
+  (. .))
 (S
   (NP (PRP I))
   (VP
@@ -9307,26 +9307,26 @@
         (VP
           (TO to)
           (VP (VB go) (PP (IN in) (NP (DT the) (NN cart))))))))
-  (PERIOD !))
+  (. !))
 (S
   (INTJ (UH Oh))
-  (COMA ,)
+  (, ,)
   (VP (VBP do) (RB n't) (VP (VB be) (NP (JJ such) (DT a) (NN baby))))
-  (PERIOD .))
+  (. .))
 (S
   (NP (PRP I))
   (VP (VBP can't) (VP (VB take) (NP (PRP him))))
-  (COLON ...))
-(S (NP (PRP I)) (VP (VBP feel) (ADJP (JJ fine))) (PERIOD !))
+  (: ...))
+(S (NP (PRP I)) (VP (VBP feel) (ADJP (JJ fine))) (. !))
 (S
   (INTJ (UH Oh))
-  (COMA ,)
+  (, ,)
   (VP (VBP do) (NP (PRP us)) (NP (DT a) (NN favor)))
-  (COLON ...))
-(S (NP (PRP I)) (VP (VBP can't)) (PERIOD .))
+  (: ...))
+(S (NP (PRP I)) (VP (VBP can't)) (. .))
 (SQ
   (INTJ (RB Well))
-  (COMA ,)
+  (, ,)
   (MD can)
   (NP (PRP you))
   (VP
@@ -9334,14 +9334,14 @@
     (PP
       (PRT (IN around))
       (NP (NP (DT a) (NN couple)) (PP (IN of) (NP (NNS minutes))))))
-  (PERIOD ?))
+  (. ?))
 (S
   (NP (PRP He))
   (VP (MD wo) (RB n't) (VP (VB be) (ADJP (RB long))))
-  (PERIOD .))
+  (. .))
 (S
   (NP (NNP Naaah))
-  (COMA ,)
+  (, ,)
   (S
     (NP (PRP I))
     (VP
@@ -9353,18 +9353,18 @@
             (VB go)
             (PRT (IN on))
             (PP (TO to) (NP (NNP Robinson) (POS 's))))))))
-  (COLON --)
+  (: --)
   (S
     (NP (PRP they))
     (VP (VBP 've) (VP (VBN lost) (NP (CD nine)) (NP (NN today)))))
-  (PERIOD .))
+  (. .))
 (SBARQ
   (INTJ (RB Well))
-  (COMA ,)
+  (, ,)
   (WHADVP (WRB when))
   (SQ (VBZ is) (NP (PRP$ your) (JJ next) (NN round)))
-  (PERIOD ?))
-(NP (NNP Thursday) (PERIOD .))
+  (. ?))
+(NP (NNP Thursday) (. .))
 (S
   (NP (PRP I))
   (VP
@@ -9375,44 +9375,44 @@
         (VP
           (MD 'll)
           (VP (VB go) (PP (IN for) (NP (DT a) (NN walk))))))))
-  (PERIOD .))
+  (. .))
 (S
   (NP (NNP You're))
   (VP
     (VP (RB not) (VBG fooling) (NP (NN anyone)))
     (NN y')
     (VP (VBP know)))
-  (PERIOD .))
+  (. .))
 (SQ
   (NNP Look)
-  (COMA ,)
+  (, ,)
   (VBZ is)
   (RB n't)
   (NP (EX there))
   (NP
     (NP (NN something))
     (SBAR (S (NP (PRP you)) (VP (MD can) (VP (VB do))))))
-  (PERIOD ?))
-(S (NP (PRP I)) (VP (VBP feel) (ADJP (JJ happy))) (COLON ...))
-(S (NP (PRP I)) (VP (VBP feel) (ADJP (JJ happy))) (PERIOD .))
+  (. ?))
+(S (NP (PRP I)) (VP (VBP feel) (ADJP (JJ happy))) (: ...))
+(S (NP (PRP I)) (VP (VBP feel) (ADJP (JJ happy))) (. .))
 (FRAG
   (INTJ (NNP Ah))
-  (COMA ,)
+  (, ,)
   (NP (NNS thanks))
   (ADVP (RB very) (RB much))
-  (PERIOD .))
-(FRAG (RB Not) (IN at) (DT all) (PERIOD .))
+  (. .))
+(FRAG (RB Not) (IN at) (DT all) (. .))
 (S
   (VP (VB See) (NP (PRP you)) (PP (IN on) (NP (NNP Thursday))))
-  (PERIOD .))
-(INTJ (RB Right) (PERIOD .))
+  (. .))
+(INTJ (RB Right) (. .))
 (SBARQ
   (WHNP (WP Who))
   (SQ (VBZ 's) (NP (IN that)) (ADVP (RB then)))
-  (PERIOD ?))
-(S (NP (PRP I)) (VP (VBP do) (RB n't) (VP (VB know))) (PERIOD .))
-(S (VP (RB Must) (VP (VB be) (NP (DT a) (NN king)))) (PERIOD .))
-(FRAG (WRB Why) (PERIOD ?))
+  (. ?))
+(S (NP (PRP I)) (VP (VBP do) (RB n't) (VP (VB know))) (. .))
+(S (VP (RB Must) (VP (VB be) (NP (DT a) (NN king)))) (. .))
+(FRAG (WRB Why) (. ?))
 (S
   (NP (PRP He))
   (VP
@@ -9422,10 +9422,10 @@
       (VBN got)
       (NP (VB shit))
       (PP (ADVP (DT all)) (IN over) (NP (PRP him)))))
-  (PERIOD .))
-(NP (NNP Old) (NN woman) (PERIOD !))
-(NP (NN Man) (PERIOD !))
-(NP (NP (NNP Old) (NNP Man)) (COMA ,) (NN sorry) (PERIOD .))
+  (. .))
+(NP (NNP Old) (NN woman) (. !))
+(NP (NN Man) (. !))
+(NP (NP (NNP Old) (NNP Man)) (, ,) (NN sorry) (. .))
 (SBARQ
   (WHNP (WP What) (VBD knight))
   (S
@@ -9433,32 +9433,32 @@
       (JJ live)
       (PP (IN in) (NP (DT that) (NN castle)))
       (PP (IN over) (RB there))))
-  (PERIOD ?))
-(NP (NP (NNP I'm)) (NP (VBD thirty) (CD seven)) (PERIOD .))
-(FRAG (WP What) (PERIOD ?))
+  (. ?))
+(NP (NP (NNP I'm)) (NP (VBD thirty) (CD seven)) (. .))
+(FRAG (WP What) (. ?))
 (NP
   (NP (NP (NNP I'm)) (NP (VBD thirty) (CD seven)))
-  (COLON --)
+  (: --)
   (NP (NP (NNP I'm)) (ADJP (RB not) (JJ old)))
-  (PERIOD !))
+  (. !))
 (S
   (INTJ (RB Well))
-  (COMA ,)
+  (, ,)
   (NP (PRP I))
   (VP
     (VBP can't)
     (ADVP (RB just))
     (VP (VB call) (S (NP (PRP you)) (`` `) (NP (NN Man)) ('' '))))
-  (PERIOD .))
+  (. .))
 (S
   (INTJ (RB Well))
-  (COMA ,)
+  (, ,)
   (NP (PRP you))
   (VP (MD could) (VP (VB say) (`` `) (NP (NNP Dennis)) (POS ')))
-  (PERIOD .))
+  (. .))
 (S
   (INTJ (RB Well))
-  (COMA ,)
+  (, ,)
   (NP (PRP I))
   (VP
     (VBD did)
@@ -9471,11 +9471,11 @@
           (VP
             (VBD were)
             (VP (VBN called) (S (`` `) (NP (NNP Dennis)))))))))
-  (PERIOD .)
+  (. .)
   ('' '))
 (S
   (INTJ (RB Well))
-  (COMA ,)
+  (, ,)
   (NP (PRP you))
   (VP
     (VBD did)
@@ -9483,9 +9483,9 @@
     (VP
       (VB bother)
       (S (VP (TO to) (VP (VB find) (PRT (RP out)))))
-      (COMA ,)
+      (, ,)
       (SQ (VBD did) (NP (PRP you)))))
-  (PERIOD ?))
+  (. ?))
 (S
   (S
     (NP (PRP I))
@@ -9496,14 +9496,14 @@
         (ADJP
           (NN sorry)
           (PP (IN about) (NP (DT the) (`` `) (JJ old) (NN woman)))))))
-  (COMA ,)
+  (, ,)
   ('' ')
   (CC but)
   (S
     (PP (IN from) (NP (DT the) (NN behind)))
     (NP (PRP you))
     (VP (VBD looked)))
-  (COLON --))
+  (: --))
 (S
   (SBAR
     (WHNP (WP What))
@@ -9518,27 +9518,27 @@
           (VB treat)
           (NP (PRP me))
           (PP (IN like) (NP (DT an) (NN inferior)))))))
-  (PERIOD !))
+  (. !))
 (S
   (INTJ (RB Well))
-  (COMA ,)
+  (, ,)
   (NP (PRP I))
   (VP (VBP AM) (NP (VBG king)))
-  (COLON ...))
+  (: ...))
 (FRAG
   (INTJ (UH Oh) (NN king))
-  (COMA ,)
+  (, ,)
   (INTJ (NN eh))
-  (COMA ,)
+  (, ,)
   (ADJP (RB very) (JJ nice))
-  (PERIOD .))
+  (. .))
 (SBARQ
   (WHADVP (DT An) (POS ') (WHADVP (WRB how)))
   (SQ
     (SQ (MD 'd) (NP (PRP you)) (VP (VB get) (NP (IN that))))
-    (COMA ,)
+    (, ,)
     (INTJ (VB eh)))
-  (PERIOD ?))
+  (. ?))
 (FRAG
   (IN By)
   (S
@@ -9546,7 +9546,7 @@
       (NN exploitin)
       ('' ')
       (NP (DT the) (NNS workers))
-      (COLON --)
+      (: --)
       (IN by)
       ('' ')
       (NN angin)
@@ -9571,7 +9571,7 @@
                       (JJ social)
                       (NNS differences))
                     (PP (IN in) (NP (PRP$ our) (NN society))))))))))))
-  (PERIOD !))
+  (. !))
 (SBAR
   (IN If)
   (S
@@ -9582,59 +9582,59 @@
       (VP
         (VBG going)
         (S (VP (TO to) (VP (VB be) (NP (DT any) (NN progress))))))))
-  (COLON --))
+  (: --))
 (S
   (NP (NNP Dennis))
-  (COMA ,)
+  (, ,)
   (NP (EX there))
   (VP
     (VBZ 's)
     (NP (DT some) (RB lovely) (VBP filth))
     (ADVP (RP down) (RB here)))
-  (PERIOD .))
+  (. .))
 (FRAG
   (INTJ (UH Oh))
-  (COLON --)
+  (: --)
   (WHADVP (WRB how))
   (SQ (NN d') (NP (PRP you)) (VP (VBP do)))
-  (PERIOD ?))
+  (. ?))
 (SBARQ
   (SBAR (WHADVP (WRB How)) (SQ (VB do) (NP (PRP you)) (VP (VB do))))
-  (COMA ,)
+  (, ,)
   (NP (VB good) (NN lady))
-  (PERIOD .))
+  (. .))
 (S
   (NP (PRP I))
   (VP
     (VBP am)
     (NP
       (NP (NNP Arthur))
-      (COMA ,)
+      (, ,)
       (NP (NP (NNP King)) (PP (IN of) (NP (DT the) (NNP Britons))))))
-  (PERIOD .))
+  (. .))
 (SBARQ
   (WHNP (WP Who))
   (SQ
     (S (VP (VBZ 's) (NP (NN castle))))
     (SQ (VBZ is) (NP (IN that))))
-  (PERIOD ?))
-(NP (NP (NNP King)) (PP (IN of) (NP (DT the) (WP who))) (PERIOD ?))
-(NP (DT The) (NNP Britons) (PERIOD .))
+  (. ?))
+(NP (NP (NNP King)) (PP (IN of) (NP (DT the) (WP who))) (. ?))
+(NP (DT The) (NNP Britons) (. .))
 (SBARQ
   (WHNP (WP Who))
   (SQ (VBP are) (NP (DT the) (NNS Britons)))
-  (PERIOD ?))
+  (. ?))
 (S
   (INTJ (RB Well))
-  (COMA ,)
+  (, ,)
   (NP (NP (PRP we)) (NP (DT all)))
   (VP (VBP are))
-  (PERIOD .))
+  (. .))
 (S
   (S (VP (IN we're) (NP (DT all) (NNP Britons))))
   (CC and)
   (S (NP (PRP I)) (VP (VBP am) (NP (PRP$ your) (NN king))))
-  (PERIOD .))
+  (. .))
 (S
   (NP (PRP I))
   (VP
@@ -9643,7 +9643,7 @@
     (VP
       (VB know)
       (SBAR (S (NP (PRP we)) (VP (VBD had) (NP (DT a) (NN king)))))))
-  (PERIOD .))
+  (. .))
 (S
   (NP (PRP I))
   (VP
@@ -9652,16 +9652,16 @@
       (S
         (NP (PRP we))
         (VP (VBD were) (NP (DT an) (JJ autonomous) (NN collective))))))
-  (PERIOD .))
-(S (NP (NNP You're)) (VP (VBG fooling) (NP (PRP yourself))) (PERIOD .))
+  (. .))
+(S (NP (NNP You're)) (VP (VBG fooling) (NP (PRP yourself))) (. .))
 (S
   (NP (NNP We're))
   (VP (NN living) (PP (IN in) (NP (DT a) (NN dictatorship))))
-  (PERIOD .))
+  (. .))
 (NP
   (NP (DT A) (PRP self))
   (PRN
-    (COLON -)
+    (: -)
     (S
       (VP
         (VBG perpetuating)
@@ -9670,21 +9670,21 @@
           (SBAR
             (WHPP (IN in) (WHNP (WDT which)))
             (NP (DT the) (NN working) (NNS classes))))))
-    (COLON --)))
+    (: --)))
 (S
   (UH Oh)
   (ADVP (EX there))
   (NP (PRP you))
   (VP
     (VP (VBP go))
-    (COMA ,)
+    (, ,)
     (S
       (VP
         (VBG bringing)
         (NP (NN class))
         (PP (IN into) (NP (PRP it)))
         (ADVP (RB again)))))
-  (PERIOD .))
+  (. .))
 (S
   (NP (DT That))
   (VP
@@ -9700,36 +9700,36 @@
             (IN if)
             (JJ only)
             (S (NP (NNS people)) (VP (MD would))))))))
-  (COLON --))
+  (: --))
 (S
   (INTJ (NNP Please))
-  (COMA ,)
+  (, ,)
   (VP (VB please) (NP (JJ good) (NNS people)))
-  (PERIOD .))
-(S (NP (PRP I)) (VP (VBP am) (PP (IN in) (NP (NN haste)))) (PERIOD .))
+  (. .))
+(S (NP (PRP I)) (VP (VBP am) (PP (IN in) (NP (NN haste)))) (. .))
 (SBARQ
   (WHNP (WP Who))
   (SQ (VP (VBZ lives) (PP (IN in) (NP (DT that) (NN castle)))))
-  (PERIOD ?))
-(S (NP (DT No) (CD one)) (VP (NN live) (ADVP (RB there))) (PERIOD .))
+  (. ?))
+(S (NP (DT No) (CD one)) (VP (NN live) (ADVP (RB there))) (. .))
 (SBARQ
   (ADVP (RB Then))
   (WHNP (WP who))
   (SQ (VP (VBZ is) (NP (PRP$ your) (NN lord))))
-  (PERIOD ?))
+  (. ?))
 (S
   (NP (PRP We))
   (VP (VBP do) (RB n't) (VP (VB have) (NP (DT a) (NN lord))))
-  (PERIOD .))
-(FRAG (WP What) (PERIOD ?))
-(S (NP (PRP I)) (VP (VBD told) (NP (PRP you))) (PERIOD .))
+  (. .))
+(FRAG (WP What) (. ?))
+(S (NP (PRP I)) (VP (VBD told) (NP (PRP you))) (. .))
 (NP
   (NP (NNP We're))
   (NP
     (NP (DT an) (JJ anarcho))
-    (COLON -)
+    (: -)
     (NP (NN syndicalist) (NN commune)))
-  (PERIOD .))
+  (. .))
 (S
   (NP (PRP We))
   (VP
@@ -9750,8 +9750,8 @@
                 (NP
                   (NP (JJ executive) (NN officer))
                   (PP (IN for) (NP (DT the) (NN week)))))))))))
-  (PERIOD .))
-(INTJ (UH Yes) (PERIOD .))
+  (. .))
+(INTJ (UH Yes) (. .))
 (S
   (CC But)
   (NP
@@ -9769,8 +9769,8 @@
             (PP
               (IN at)
               (NP (DT a) (JJ special) (JJ biweekly) (NN meeting))))))))
-  (PERIOD .))
-(S (INTJ (UH Yes)) (COMA ,) (NP (PRP I)) (VP (VBP see)) (PERIOD .))
+  (. .))
+(S (INTJ (UH Yes)) (, ,) (NP (PRP I)) (VP (VBP see)) (. .))
 (FRAG
   (IN By)
   (NP
@@ -9782,67 +9782,67 @@
         (PP
           (IN of)
           (NP (ADJP (RB purely) (JJ internal)) (NNS affairs))))))
-  (COMA ,)
-  (COLON --))
-(S (VP (NNP Be) (ADJP (JJ quiet))) (PERIOD !))
+  (, ,)
+  (: --))
+(S (VP (NNP Be) (ADJP (JJ quiet))) (. !))
 (FRAG
-  (COLON --)
+  (: --)
   (CC but)
   (PP
     (IN by)
-    (NP (DT a) (ADJP (CD two) (COLON -) (NNS thirds)) (NN majority)))
+    (NP (DT a) (ADJP (CD two) (: -) (NNS thirds)) (NN majority)))
   (PP
     (IN in)
     (NP (NP (DT the) (NN case)) (PP (IN of) (NP (JJR more)))))
-  (COLON --))
-(S (VP (NNP Be) (ADJP (JJ quiet))) (PERIOD !))
+  (: --))
+(S (VP (NNP Be) (ADJP (JJ quiet))) (. !))
 (S
   (NP (PRP I))
   (VP
     (NN order)
     (NP (PRP you))
     (S (VP (TO to) (VP (VB be) (ADJP (JJ quiet))))))
-  (PERIOD !))
+  (. !))
 (NP
   (NP (NN Order))
-  (COMA ,)
+  (, ,)
   (INTJ (NN eh))
-  (COLON --)
+  (: --)
   (SBARQ
     (WHNP (WP who))
     (SQ
       (VBZ does)
       (NP (PRP he))
       (VP (VB think) (SBAR (S (NP (PRP he)) (VP (VBZ is)))))))
-  (PERIOD ?))
-(S (NP (PRP I)) (VP (VBP am) (NP (PRP$ your) (NN king))) (PERIOD !))
+  (. ?))
+(S (NP (PRP I)) (VP (VBP am) (NP (PRP$ your) (NN king))) (. !))
 (S
   (INTJ (RB Well))
-  (COMA ,)
+  (, ,)
   (NP (PRP I))
   (VP (VBD did) (RB n't) (VP (VB vote) (PP (IN for) (NP (PRP you)))))
-  (PERIOD .))
+  (. .))
 (S
   (NP (PRP You))
   (VP
     (VBP do)
     (RB n't)
     (VP (VB vote) (PP (IN for) (NP (NNS kings)))))
-  (PERIOD .))
+  (. .))
 (SQ
   (INTJ (RB Well))
-  (COMA ,)
+  (, ,)
   ('' ')
   (WHADVP (NN ow))
   (SQ
     (VBD did)
     (NP (PRP you))
     (VP (VB become) (NP (VBG king)) (ADVP (RB then))))
-  (PERIOD ?))
+  (. ?))
 (NP
   (NP (DT The) (NNP Lady))
   (PP (IN of) (NP (DT the) (NNP Lake)))
-  (COMA ,))
+  (, ,))
 (S
   (NP (PRP$ her) (NN arm))
   (VP
@@ -9851,7 +9851,7 @@
       (IN in)
       (NP
         (NP (DT the) (NN purest) (VBG shimmering) (NN samite))
-        (COMA ,)
+        (, ,)
         (VP
           (VP
             (VBD held)
@@ -9870,11 +9870,11 @@
           (SBAR
             (IN that)
             (S
-              (NP (NP (PRP I)) (COMA ,) (NP (NNP Arthur)) (COMA ,))
+              (NP (NP (PRP I)) (, ,) (NP (NNP Arthur)) (, ,))
               (VP
                 (VBD was)
                 (S (VP (TO to) (VP (VB carry) (NP (NNP Excalibur))))))))))))
-  (PERIOD .))
+  (. .))
 (S
   (NP (DT That))
   (VP
@@ -9882,10 +9882,10 @@
     (SBAR
       (WHADVP (WRB why))
       (S (NP (PRP I)) (VP (VBP am) (NP (PRP$ your) (NN king))))))
-  (PERIOD !))
+  (. !))
 (S
   (PRN (S (VP (NNP Listen))))
-  (COLON --)
+  (: --)
   (S
     (NP
       (NP (JJ strange) (NNS women))
@@ -9902,7 +9902,7 @@
           (NP
             (NP (DT a) (NN system))
             (PP (IN of) (NP (NN government))))))))
-  (PERIOD .))
+  (. .))
 (S
   (NP (NNP Supreme) (NN executive) (NN power))
   (VP
@@ -9913,13 +9913,13 @@
         (NP
           (NP (DT a) (NN mandate))
           (PP (IN from) (NP (DT the) (NNS masses)))))
-      (COMA ,)
+      (, ,)
       (RB not)
       (PP
         (IN from)
         (NP (DT some) (JJ farcical) (JJ aquatic) (NN ceremony)))))
-  (PERIOD .))
-(S (VP (NNP Be) (ADJP (JJ quiet))) (PERIOD !))
+  (. .))
+(S (VP (NNP Be) (ADJP (JJ quiet))) (. !))
 (S
   (ADVP (RB Well))
   (NP (PRP you))
@@ -9944,13 +9944,13 @@
             (VBD threw)
             (NP (DT a) (NN sword))
             (PP (IN at) (NP (PRP you))))))))
-  (PERIOD !))
-(S (VP (NNP Shut) (PRT (RP up))) (PERIOD !))
+  (. !))
+(S (VP (NNP Shut) (PRT (RP up))) (. !))
 (S
   (NP (PRP I))
   (VP
     (VBP mean)
-    (COMA ,)
+    (, ,)
     (S
       (SBAR
         (IN if)
@@ -9979,12 +9979,12 @@
                           (PP (IN at) (NP (PRP me)))))))))))))
       (NP (PRP they))
       (VP (MD 'd) (VP (VB put) (NP (PRP me)) (ADVP (RB away))))))
-  (PERIOD !))
-(S (VP (NNP Shut) (PRT (RP up))) (PERIOD !))
-(SQ (MD Will) (NP (PRP you)) (VP (VB shut) (PRT (RP up))) (PERIOD !))
+  (. !))
+(S (VP (NNP Shut) (PRT (RP up))) (. !))
+(SQ (MD Will) (NP (PRP you)) (VP (VB shut) (PRT (RP up))) (. !))
 (S
   (INTJ (NNP Ah))
-  (COMA ,)
+  (, ,)
   (ADVP (RB now))
   (NP (PRP we))
   (VP
@@ -9992,9 +9992,9 @@
     (NP
       (NP (DT the) (NN violence))
       (ADJP (NN inherent) (PP (IN in) (NP (DT the) (NN system))))))
-  (PERIOD .))
-(S (VP (NNP Shut) (PRT (RP up))) (PERIOD !))
-(INTJ (UH Oh) (PERIOD !))
+  (. .))
+(S (VP (NNP Shut) (PRT (RP up))) (. !))
+(INTJ (UH Oh) (. !))
 (S
   (VP
     (NNP Come)
@@ -10003,28 +10003,28 @@
     (NP
       (NP (DT the) (NN violence))
       (ADJP (NN inherent) (PP (IN in) (NP (DT the) (NN system))))))
-  (PERIOD !))
-(NP (NN HELP) (PERIOD !))
-(S (NP (NNP I'm)) (VP (VBG being) (VP (VBN repressed))) (PERIOD !))
-(NP (NNP Bloody) (NN peasant) (PERIOD !))
+  (. !))
+(NP (NN HELP) (. !))
+(S (NP (NNP I'm)) (VP (VBG being) (VP (VBN repressed))) (. !))
+(NP (NNP Bloody) (NN peasant) (. !))
 (FRAG
   (INTJ (UH Oh))
-  (COMA ,)
+  (, ,)
   (WHNP (WP what))
   (NP (DT a) (JJ give))
   (PRT (NN away))
-  (PERIOD .))
+  (. .))
 (SQ
   (NNP Did)
   (NP
     (NP (PRP you))
     (ADVP (ADVP (RB here)) (NP (IN that)))
-    (COMA ,)
+    (, ,)
     (VBD did)
     (NP (PRP you)))
   (ADVP (RB here))
-  (NP (NP (IN that)) (COMA ,) (INTJ (VB eh)))
-  (PERIOD ?))
+  (NP (NP (IN that)) (, ,) (INTJ (VB eh)))
+  (. ?))
 (S
   (S
     (NP (DT That))
@@ -10033,20 +10033,20 @@
       (SBAR
         (WHNP (WP what))
         (S (NP (NNP I'm)) (PP (IN on) (PP (RB about)))))))
-  (COLON --)
+  (: --)
   (SINV
     (VBD did)
     (NP (PRP you))
     (VP
       (VBP see)
       (S (NP (PRP him)) (VP (VBG repressing) (NP (PRP me))))))
-  (COMA ,)
+  (, ,)
   (S
     (NP (PRP you))
     (VP
       (VBD saw)
       (SBAR (S (NP (PRP it)) (VP (VBD did) (RB n't) (NP (PRP you)))))))
-  (PERIOD ?))
+  (. ?))
 (S
   (NP (PRP You))
   (VP
@@ -10059,18 +10059,18 @@
           (IN of)
           (NP
             (NP (JJ many) (NNS men))
-            (COMA ,)
+            (, ,)
             (NP (NNP Sir) (NNP knight)))))))
-  (PERIOD .))
+  (. .))
 (S
   (NP (PRP I))
   (VP
     (VBP am)
     (NP
       (NP (NNP Arthur))
-      (COMA ,)
+      (, ,)
       (NP (NP (NNP King)) (PP (IN of) (NP (DT the) (NNP Britons))))))
-  (PERIOD .))
+  (. .))
 (S
   (NP (PRP I))
   (VP
@@ -10092,25 +10092,25 @@
             (NP
               (NP (PRP$ my) (NNP Court))
               (PP (IN of) (NP (NNP Camelot)))))))))
-  (PERIOD .))
+  (. .))
 (S
   (S
     (NP (PRP You))
     (VP
       (VBP have)
       (VP (VBN proved) (S (NP (PRP yourself)) (ADJP (JJ worthy))))))
-  (COLON ;)
+  (: ;)
   (SQ (MD will) (NP (PRP you)) (VP (VB join) (NP (PRP me))))
-  (PERIOD ?))
+  (. ?))
 (S
   (NP (PRP You))
   (VP (VBP make) (S (NP (PRP me)) (ADJP (JJ sad))))
-  (PERIOD .))
-(S (RB So) (VP (VB be) (NP (PRP it))) (PERIOD .))
-(S (VP (NNP Come) (COMA ,) (NP (NNP Patsy))) (PERIOD .))
-(S (NP (NN None)) (VP (MD shall) (VP (VB pass))) (PERIOD .))
-(FRAG (WP What) (PERIOD ?))
-(S (NP (NN None)) (VP (MD shall) (VP (VB pass))) (PERIOD .))
+  (. .))
+(S (RB So) (VP (VB be) (NP (PRP it))) (. .))
+(S (VP (NNP Come) (, ,) (NP (NNP Patsy))) (. .))
+(S (NP (NN None)) (VP (MD shall) (VP (VB pass))) (. .))
+(FRAG (WP What) (. ?))
+(S (NP (NN None)) (VP (MD shall) (VP (VB pass))) (. .))
 (S
   (S
     (NP (PRP I))
@@ -10121,19 +10121,19 @@
           (NP
             (NP (DT no) (NN quarrel))
             (PP (IN with) (NP (PRP you))))
-          (COMA ,)
+          (, ,)
           (NP (JJ good) (NNP Sir) (NN knight)))
-        (COMA ,))))
+        (, ,))))
   (CC but)
   (S
     (NP (PRP I))
     (VP (MD must) (VP (VB cross) (NP (DT this) (NN bridge)))))
-  (PERIOD .))
+  (. .))
 (S
   (ADVP (RB Then))
   (NP (PRP you))
   (VP (MD shall) (VP (VB die)))
-  (PERIOD .))
+  (. .))
 (S
   (NP (PRP I))
   (VP
@@ -10143,45 +10143,45 @@
       (IN as)
       (NP (NP (NNP King)) (PP (IN of) (NP (DT the) (NNP Britons)))))
     (S (VP (TO to) (VP (VB stand) (ADVP (RB aside))))))
-  (PERIOD !))
+  (. !))
 (S
   (NP (PRP I))
   (VP (VBP move) (PP (IN for) (NP (DT no) (NN man))))
-  (PERIOD .))
-(S (RB So) (VP (VB be) (NP (PRP it))) (PERIOD !))
+  (. .))
+(S (RB So) (VP (VB be) (NP (PRP it))) (. !))
 (S
   (ADVP (RB Now))
   (VP
     (VBP stand)
     (ADVP (RB aside))
-    (COMA ,)
+    (, ,)
     (NP (JJ worthy) (NN adversary)))
-  (PERIOD .))
-(FRAG (POS ') (NNP Tis) (NP (CC but) (NP (DT a) (NN scratch))) (PERIOD .))
-(NP (DT A) (NN scratch) (PERIOD ?))
-(S (NP (PRP$ Your) (NN arm)) (VP (POS 's) (ADVP (RP off))) (PERIOD !))
-(S (INTJ (DT No)) (COMA ,) (NP (PRP it)) (VP (VBZ is) (RB n't)) (PERIOD .))
+  (. .))
+(FRAG (POS ') (NNP Tis) (NP (CC but) (NP (DT a) (NN scratch))) (. .))
+(NP (DT A) (NN scratch) (. ?))
+(S (NP (PRP$ Your) (NN arm)) (VP (POS 's) (ADVP (RP off))) (. !))
+(S (INTJ (DT No)) (, ,) (NP (PRP it)) (VP (VBZ is) (RB n't)) (. .))
 (SBARQ
   (INTJ (RB Well))
-  (COMA ,)
+  (, ,)
   (WHNP (WP what))
   (SQ (VP (VBZ 's) (NP (DT that)) (ADVP (RB then))))
-  (PERIOD ?))
-(S (NP (NNP I've)) (VP (VBD had) (ADJP (JJR worse))) (PERIOD .))
-(S (NP (PRP You)) (VP (VBP liar)) (PERIOD !))
-(S (VP (VB Come) (PP (IN on) (NP (PRP you))) (NP (VBP pansy))) (PERIOD !))
-(S (NP (NN Victory)) (VP (VBZ is) (NP (JJ mine))) (PERIOD !))
+  (. ?))
+(S (NP (NNP I've)) (VP (VBD had) (ADJP (JJR worse))) (. .))
+(S (NP (PRP You)) (VP (VBP liar)) (. !))
+(S (VP (VB Come) (PP (IN on) (NP (PRP you))) (NP (VBP pansy))) (. !))
+(S (NP (NN Victory)) (VP (VBZ is) (NP (JJ mine))) (. !))
 (S
   (NP (PRP We))
   (VP
     (VBP thank)
     (NP (JJ thee) (NNP Lord))
-    (COMA ,)
+    (, ,)
     (S (NP (IN that)) (PP (IN in) (NP (JJ thy) (NN merc)))))
-  (COLON -))
-(S (VP (NNP Come) (PRT (IN on)) (ADVP (RB then))) (PERIOD .))
-(FRAG (WP What) (PERIOD ?))
-(S (VP (VBP Have) (PP (IN at) (NP (PRP you)))) (PERIOD !))
+  (: -))
+(S (VP (NNP Come) (PRT (IN on)) (ADVP (RB then))) (. .))
+(FRAG (WP What) (. ?))
+(S (VP (VBP Have) (PP (IN at) (NP (PRP you)))) (. !))
 (S
   (S
     (NP (PRP You))
@@ -10189,53 +10189,53 @@
       (VBP are)
       (ADVP (RB indeed))
       (ADJP (JJ brave))
-      (COMA ,)
+      (, ,)
       (NP (NNP Sir) (NNP knight))))
-  (COMA ,)
+  (, ,)
   (CC but)
   (S (NP (DT the) (NN fight)) (VP (VBZ is) (NP (JJ mine))))
-  (PERIOD .))
+  (. .))
 (FRAG
   (INTJ (UH Oh))
-  (COMA ,)
-  (VP (VBD had) (NP (NP (RB enough)) (COMA ,) (INTJ (VB eh))))
-  (PERIOD ?))
+  (, ,)
+  (VP (VBD had) (NP (NP (RB enough)) (, ,) (INTJ (VB eh))))
+  (. ?))
 (S
   (NNP Look)
-  (COMA ,)
+  (, ,)
   (S (PRP you) (VBP stupid) (RB bastard))
-  (COMA ,)
+  (, ,)
   (NP (PRP you))
   (VP
     (VBP 've)
     (VP (VBN got) (NP (NP (DT no) (NNS arms)) (ADJP (VBD left)))))
-  (PERIOD .))
-(S (ADVP (UH Yes)) (NP (PRP I)) (VP (VBP have)) (PERIOD .))
-(S (VP (NN Look)) (PERIOD !))
-(NP (RB Just) (DT a) (JJ flesh) (NN wound) (PERIOD .))
+  (. .))
+(S (ADVP (UH Yes)) (NP (PRP I)) (VP (VBP have)) (. .))
+(S (VP (NN Look)) (. !))
+(NP (RB Just) (DT a) (JJ flesh) (NN wound) (. .))
 (S
   (PRN (S (VP (NNP Look))))
-  (COMA ,)
+  (, ,)
   (VP (NN stop) (NP (WDT that)))
-  (PERIOD .))
-(NP (NN Chicken) (PERIOD !))
+  (. .))
+(NP (NN Chicken) (. !))
 (S
   (PRN (S (VP (NNP Look))))
-  (COMA ,)
+  (, ,)
   (NP (PRP I))
   (VP (MD 'll) (VP (VB have) (NP (PRP$ your) (NN leg))))
-  (PERIOD .))
-(INTJ (RB Right) (PERIOD !))
+  (. .))
+(INTJ (RB Right) (. !))
 (S
   (INTJ (RB Right))
-  (COMA ,)
+  (, ,)
   (NP (PRP I))
   (VP
     (MD 'll)
     (VP (VB do) (NP (PRP you)) (PP (IN for) (NP (DT that)))))
-  (PERIOD !))
-(S (NP (PRP You)) (VP (MD 'll) (NP (WP what))) (PERIOD ?))
-(S (VP (NNP Come) (POS ') (INTJ (NN ere))) (PERIOD !))
+  (. !))
+(S (NP (PRP You)) (VP (MD 'll) (NP (WP what))) (. ?))
+(S (VP (NNP Come) (POS ') (INTJ (NN ere))) (. !))
 (SBARQ
   (WHNP (WP What))
   (SQ
@@ -10248,36 +10248,36 @@
           (TO to)
           (VP
             (VP (VB do))
-            (COMA ,)
+            (, ,)
             (VP (VB bleed) (PP (IN on) (NP (PRP me)))))))))
-  (PERIOD ?))
-(NP (NP (NNP I'm)) (ADJP (JJ invincible)) (PERIOD !))
-(NP (NP (VB You're)) (NP (DT a) (NN loony)) (PERIOD .))
+  (. ?))
+(NP (NP (NNP I'm)) (ADJP (JJ invincible)) (. !))
+(NP (NP (VB You're)) (NP (DT a) (NN loony)) (. .))
 (S
   (NP (DT The) (NNP Black) (NNP Knight))
   (ADVP (RB always))
   (VP (VBP triumphs))
-  (PERIOD !))
-(S (VP (VBP Have) (PP (IN at) (NP (PRP you)))) (PERIOD !))
-(S (VP (NNP Come) (PRT (IN on)) (ADVP (RB then))) (PERIOD .))
+  (. !))
+(S (VP (VBP Have) (PP (IN at) (NP (PRP you)))) (. !))
+(S (VP (NNP Come) (PRT (IN on)) (ADVP (RB then))) (. .))
 (S
   (FRAG (ADVP (DT All) (NN right)))
-  (COLON ;)
+  (: ;)
   (S
     (NP (PRP we))
     (VP
       (MD 'll)
       (VP (VB call) (S (NP (PRP it)) (NP (DT a) (NN draw))))))
-  (PERIOD .))
-(S (VP (NNP Come) (COMA ,) (NP (NNP Patsy))) (PERIOD .))
+  (. .))
+(S (VP (NNP Come) (, ,) (NP (NNP Patsy))) (. .))
 (FRAG
   (INTJ (UH Oh))
-  (COMA ,)
+  (, ,)
   (INTJ (UH oh))
-  (PRN (COMA ,) (S (NP (PRP I)) (VP (VBP see))) (COMA ,))
+  (PRN (, ,) (S (NP (PRP I)) (VP (VBP see))) (, ,))
   (VP (VBG running) (ADVP (RB away)) (ADVP (RB then)))
-  (PERIOD .))
-(S (NP (PRP You)) (VP (VBP yellow) (NNS bastards)) (PERIOD !))
+  (. .))
+(S (NP (PRP You)) (VP (VBP yellow) (NNS bastards)) (. !))
 (S
   (VP
     (VP (NNP Come) (ADVP (RB back)) (ADVP (RB here)))
@@ -10288,25 +10288,25 @@
         (WHNP (WP what))
         (S
           (VP (VBZ 's) (VP (VBG coming) (PP (TO to) (NP (PRP you)))))))))
-  (PERIOD .))
+  (. .))
 (S
   (NP (PRP I))
   (VP
     (MD 'll)
     (VP (VB bite) (NP (PRP$ your) (NNS legs)) (PRT (RP off))))
-  (PERIOD !))
-(NP (DT A) (NN witch) (PERIOD !))
-(S (NP (NNP We've)) (VP (VBD got) (NP (DT a) (NN witch))) (PERIOD !))
-(NP (DT A) (NN witch) (PERIOD !))
+  (. !))
+(NP (DT A) (NN witch) (. !))
+(S (NP (NNP We've)) (VP (VBD got) (NP (DT a) (NN witch))) (. !))
+(NP (DT A) (NN witch) (. !))
 (SQ
   (S
     (NP (PRP We))
     (VP (VBP have) (VP (VBN found) (NP (DT a) (NN witch)))))
-  (COMA ,)
+  (, ,)
   (SQ (MD might) (NP (PRP we)) (VP (VB burn) (NP (PRP her))))
-  (PERIOD ?))
-(S (VP (NNP Burn) (NP (PRP her))) (PERIOD !))
-(INTJ (NN Burn) (PERIOD !))
+  (. ?))
+(S (VP (NNP Burn) (NP (PRP her))) (. !))
+(INTJ (NN Burn) (. !))
 (SBARQ
   (WHADVP (WRB How))
   (SQ
@@ -10315,18 +10315,18 @@
     (VP
       (VB know)
       (SBAR (S (NP (PRP she)) (VP (VBZ is) (NP (DT a) (NN witch)))))))
-  (PERIOD ?))
+  (. ?))
 (S
   (NP (PRP She))
   (VP (VBZ looks) (PP (IN like) (NP (CD one))))
-  (PERIOD .))
-(S (VP (NNP Bring) (NP (PRP$ her)) (ADVP (NN forward))) (PERIOD .))
-(FRAG (NNP I'm) (RB not) (NP (DT a) (NN witch)) (PERIOD .))
+  (. .))
+(S (VP (NNP Bring) (NP (PRP$ her)) (ADVP (NN forward))) (. .))
+(FRAG (NNP I'm) (RB not) (NP (DT a) (NN witch)) (. .))
 (S
   (CC But)
   (NP (PRP you))
   (VP (VBP are) (VP (VBN dressed) (PP (IN as) (NP (CD one)))))
-  (PERIOD .))
+  (. .))
 (S
   (NP (PRP They))
   (VP
@@ -10334,37 +10334,37 @@
     (NP (PRP me))
     (PRT (RP up))
     (PP (IN like) (NP (DT this))))
-  (PERIOD .))
+  (. .))
 (S
   (INTJ (RB No))
-  (COMA ,)
+  (, ,)
   (NP (PRP we))
-  (VP (VBD did) (RB n't) (COLON ...) (INTJ (DT no)))
-  (PERIOD .))
+  (VP (VBD did) (RB n't) (: ...) (INTJ (DT no)))
+  (. .))
 (S
   (CC And)
   (S (NP (DT this)) (VP (VBZ is) (RB n't) (NP (PRP$ my) (JJ nose))))
-  (COMA ,)
+  (, ,)
   (S (NP (PRP it)) (VP (VBZ 's) (NP (DT a) (JJ false) (CD one))))
-  (PERIOD .))
-(INTJ (RB Well) (PERIOD ?))
+  (. .))
+(INTJ (RB Well) (. ?))
 (S
   (INTJ (RB Well))
-  (COMA ,)
+  (, ,)
   (NP (PRP we))
   (VP (VBD did) (VP (VB do) (NP (DT the) (NN nose))))
-  (PERIOD .))
-(NP (DT The) (NN nose) (PERIOD ?))
+  (. .))
+(NP (DT The) (NN nose) (. ?))
 (S
   (CC And)
   (NP (DT the) (NN hat))
-  (COLON --)
+  (: --)
   (CC but)
   (S (NP (PRP she)) (VP (VBZ is) (NP (DT a) (NN witch))))
-  (PERIOD !))
-(S (VP (NNP Burn) (NP (PRP her))) (PERIOD !))
-(NP (NN Witch) (PERIOD !))
-(S (VP (NNP Burn) (NP (PRP her))) (PERIOD !))
+  (. !))
+(S (VP (NNP Burn) (NP (PRP her))) (. !))
+(NP (NN Witch) (. !))
+(S (VP (NNP Burn) (NP (PRP her))) (. !))
 (SQ
   (NNP Did)
   (NP (PRP you))
@@ -10373,20 +10373,20 @@
     (NP (PRP$ her))
     (PRT (RP up))
     (PP (IN like) (NP (DT this))))
-  (PERIOD ?))
-(FRAG (INTJ (DT No)) (COMA ,) (INTJ (DT no)) (COLON ...))
-(INTJ (INTJ (DT no)) (COLON ...) (INTJ (RB yes)) (PERIOD .))
+  (. ?))
+(FRAG (INTJ (DT No)) (, ,) (INTJ (DT no)) (: ...))
+(INTJ (INTJ (DT no)) (: ...) (INTJ (RB yes)) (. .))
 (FRAG
   (INTJ (UH Yes))
-  (COMA ,)
-  (INTJ (INTJ (UH yes)) (COMA ,) (NP (DT a) (NN bit)))
-  (COMA ,)
+  (, ,)
+  (INTJ (INTJ (UH yes)) (, ,) (NP (DT a) (NN bit)))
+  (, ,)
   (NP (DT a) (NN bit))
-  (PERIOD .))
+  (. .))
 (S
   (NP (PRP She))
   (VP (VBZ has) (VP (VBD got) (NP (DT a) (NN wart))))
-  (PERIOD .))
+  (. .))
 (SBARQ
   (WHNP (WP What))
   (SQ
@@ -10398,23 +10398,23 @@
           (VB think)
           (SBAR
             (S (NP (PRP she)) (VP (VBZ is) (NP (DT a) (NN witch)))))))))
-  (PERIOD ?))
+  (. ?))
 (S
   (INTJ (RB Well))
-  (COMA ,)
+  (, ,)
   (NP (PRP she))
   (VP
     (VBD turned)
     (NP (PRP me))
     (PP (IN into) (NP (DT a) (NN newt))))
-  (PERIOD .))
-(NP (DT A) (NN newt) (PERIOD ?))
-(S (NP (PRP I)) (VP (VBD got) (ADJP (RBR better))) (PERIOD .))
-(S (VP (NNP Burn) (NP (PRP$ her)) (ADVP (NN anyway))) (PERIOD !))
-(INTJ (NN Burn) (PERIOD !))
-(S (VP (NNP Burn) (NP (PRP her))) (PERIOD !))
-(ADJP (JJ Quiet) (COMA ,) (JJ quiet) (PERIOD .))
-(ADJP (JJ Quiet) (PERIOD !))
+  (. .))
+(NP (DT A) (NN newt) (. ?))
+(S (NP (PRP I)) (VP (VBD got) (ADJP (RBR better))) (. .))
+(S (VP (NNP Burn) (NP (PRP$ her)) (ADVP (NN anyway))) (. !))
+(INTJ (NN Burn) (. !))
+(S (VP (NNP Burn) (NP (PRP her))) (. !))
+(ADJP (JJ Quiet) (, ,) (JJ quiet) (. .))
+(ADJP (JJ Quiet) (. !))
 (S
   (NP (EX There))
   (VP
@@ -10429,26 +10429,26 @@
             (SBAR
               (IN whether)
               (S (NP (PRP she)) (VP (VBZ is) (NP (DT a) (NN witch))))))))))
-  (PERIOD .))
-(SQ (IN Are) (ADVP (RB there)) (PERIOD ?))
-(SBARQ (WHNP (WP What)) (SQ (VBP are) (NP (PRP they))) (PERIOD ?))
+  (. .))
+(SQ (IN Are) (ADVP (RB there)) (. ?))
+(SBARQ (WHNP (WP What)) (SQ (VBP are) (NP (PRP they))) (. ?))
 (S
   (VP
     (VB Tell)
     (NP (PRP me))
-    (COMA ,)
+    (, ,)
     (WHNP (WP what))
     (SQ
       (VB do)
       (NP (PRP you))
       (VP (VB do) (PP (IN with) (NP (NNS witches))))))
-  (PERIOD ?))
-(INTJ (NN Burn) (PERIOD !))
+  (. ?))
+(INTJ (NN Burn) (. !))
 (S
   (NNP Burn)
-  (COMA ,)
+  (, ,)
   (VP (VBP burn) (NP (PRP them)) (PRT (RP up)))
-  (PERIOD !))
+  (. !))
 (SBARQ
   (CC And)
   (WHNP (WP what))
@@ -10456,28 +10456,28 @@
     (VBP do)
     (NP (PRP you))
     (VP (VB burn) (PP (RB apart) (PP (IN from) (NP (NNS witches))))))
-  (PERIOD ?))
-(NP (RBR More) (NNS witches) (PERIOD !))
-(NP (NN Wood) (PERIOD !))
+  (. ?))
+(NP (RBR More) (NNS witches) (. !))
+(NP (NN Wood) (. !))
 (SBARQ
   (ADVP (RB So))
-  (COMA ,)
+  (, ,)
   (WHADVP (WRB why))
   (SQ (VBP do) (NP (NNS witches)) (VP (VB burn)))
-  (PERIOD ?))
-(NP (NNP B) (COLON --) (COLON ...))
+  (. ?))
+(NP (NNP B) (: --) (: ...))
 (SQ
   ('' ')
   (ADVP (NN cause))
   (NP (PRP they))
   (VP (VBP 're) (VP (VBN made) (PP (IN of) (NP (NN wood)))))
-  (COLON ...)
-  (PERIOD ?))
-(ADJP (JJ Good) (PERIOD !))
-(FRAG (INTJ (UH Oh) (INTJ (NN yeah))) (COMA ,) (INTJ (NN yeah)) (COLON ...))
+  (: ...)
+  (. ?))
+(ADJP (JJ Good) (. !))
+(FRAG (INTJ (UH Oh) (INTJ (NN yeah))) (, ,) (INTJ (NN yeah)) (: ...))
 (SBARQ
   (ADVP (RB So))
-  (COMA ,)
+  (, ,)
   (WHADVP (WRB how))
   (SQ
     (VBP do)
@@ -10489,16 +10489,16 @@
         (S
           (NP (PRP she))
           (VP (VBZ is) (VP (VBN made) (PP (IN of) (NP (NN wood)))))))))
-  (PERIOD ?))
+  (. ?))
 (S
   (VP
     (VB Build)
     (NP (DT a) (NN bridge))
     (PP (IN out) (PP (IN of) (NP (PRP her)))))
-  (PERIOD .))
+  (. .))
 (SQ
   (INTJ (NNP Aah))
-  (COMA ,)
+  (, ,)
   (CC but)
   (MD can)
   (NP (PRP you))
@@ -10508,69 +10508,69 @@
     (VB build)
     (NP (NNS bridges))
     (PP (IN out) (PP (IN of) (NP (NN stone)))))
-  (PERIOD ?))
-(FRAG (INTJ (UH Oh)) (COMA ,) (INTJ (UH yeah)) (PERIOD .))
+  (. ?))
+(FRAG (INTJ (UH Oh)) (, ,) (INTJ (UH yeah)) (. .))
 (SQ
   (NNP Does)
   (NP (NN wood))
   (VP (VB sink) (PP (IN in) (NP (NN water))))
-  (PERIOD ?))
-(FRAG (INTJ (DT No)) (COMA ,) (INTJ (DT no)) (PERIOD .))
-(S (NP (PRP It)) (VP (VBZ floats)) (PERIOD !))
+  (. ?))
+(FRAG (INTJ (DT No)) (, ,) (INTJ (DT no)) (. .))
+(S (NP (PRP It)) (VP (VBZ floats)) (. !))
 (S
   (VP
     (VB Throw)
     (NP (PRP her))
     (PP (IN into) (NP (DT the) (NN pond))))
-  (PERIOD !))
-(NP (DT The) (NN pond) (PERIOD !))
+  (. !))
+(NP (DT The) (NN pond) (. !))
 (SBARQ
   (WHNP (WP What))
   (ADVP (RB also))
   (VP (VBZ floats) (PP (IN in) (NP (NN water))))
-  (PERIOD ?))
-(NP (NN Bread) (PERIOD !))
-(NP (NNS Apples) (PERIOD !))
-(NP (ADJP (RB Very) (JJ small)) (NNS rocks) (PERIOD !))
-(NP (NN Cider) (PERIOD !))
-(NP (NNP Great) (NN gravy) (PERIOD !))
-(NP (NNS Cherries) (PERIOD !))
-(NP (NN Mud) (PERIOD !))
-(NP (NP (NNS Churches)) (COLON --) (NP (NNS churches)) (PERIOD !))
-(NP (NP (NNP Lead)) (COLON --) (NP (JJ lead)) (PERIOD !))
-(NP (DT A) (NN duck) (PERIOD .))
-(INTJ (NNP Oooh) (PERIOD .))
-(ADVP (RB Exactly) (PERIOD !))
-(FRAG (ADVP (RB So)) (COMA ,) (ADVP (RB logically)) (COLON ...) (COMA ,))
-(X (IN If) (COLON ...))
-(NP (NN she.) (PERIOD .))
+  (. ?))
+(NP (NN Bread) (. !))
+(NP (NNS Apples) (. !))
+(NP (ADJP (RB Very) (JJ small)) (NNS rocks) (. !))
+(NP (NN Cider) (. !))
+(NP (NNP Great) (NN gravy) (. !))
+(NP (NNS Cherries) (. !))
+(NP (NN Mud) (. !))
+(NP (NP (NNS Churches)) (: --) (NP (NNS churches)) (. !))
+(NP (NP (NNP Lead)) (: --) (NP (JJ lead)) (. !))
+(NP (DT A) (NN duck) (. .))
+(INTJ (NNP Oooh) (. .))
+(ADVP (RB Exactly) (. !))
+(FRAG (ADVP (RB So)) (, ,) (ADVP (RB logically)) (: ...) (, ,))
+(X (IN If) (: ...))
+(NP (NN she.) (. .))
 (S
   (S
     (VP
       (VBZ weighs)
       (NP (NP (DT the) (JJ same)) (PP (IN as) (NP (DT a) (NN duck))))))
-  (COMA ,)
+  (, ,)
   (S
     (NP (PRP she))
     (VP (VBZ 's) (VP (VBN made) (PP (IN of) (NP (NN wood))))))
-  (PERIOD .))
-(FRAG (CC And) (ADVP (RB therefore)) (COLON --) (PERIOD ?))
-(NP (DT A) (NN witch) (PERIOD !))
+  (. .))
+(FRAG (CC And) (ADVP (RB therefore)) (: --) (. ?))
+(NP (DT A) (NN witch) (. !))
 (S
   (NP (PRP We))
   (VP
     (MD shall)
     (VP (VB use) (NP (PRP$ my) (JJR larger) (NNS scales))))
-  (PERIOD !))
+  (. !))
 (S
   (INTJ (RB Right))
-  (COMA ,)
+  (, ,)
   (VP (VB remove) (NP (DT the) (NNS supports)))
-  (PERIOD !))
-(NP (DT A) (NN witch) (PERIOD !))
-(S (NP (PRP It)) (VP (VBZ 's) (NP (DT a) (JJ fair) (NN cop))) (PERIOD .))
-(S (VP (NNP Burn) (NP (PRP her))) (PERIOD !))
-(INTJ (NN Burn) (PERIOD !))
+  (. !))
+(NP (DT A) (NN witch) (. !))
+(S (NP (PRP It)) (VP (VBZ 's) (NP (DT a) (JJ fair) (NN cop))) (. .))
+(S (VP (NNP Burn) (NP (PRP her))) (. !))
+(INTJ (NN Burn) (. !))
 (SBARQ
   (WHNP (WP Who))
   (SQ
@@ -10587,20 +10587,20 @@
             (NP
               (NP (DT the) (NNS ways))
               (PP (IN of) (NP (NN science)))))))))
-  (PERIOD ?))
+  (. ?))
 (S
   (NP (PRP I))
   (VP
     (VBP am)
     (NP
       (NP (NNP Arthur))
-      (COMA ,)
+      (, ,)
       (NP (NP (NNP King)) (PP (IN of) (NP (DT the) (NNP Britons))))))
-  (PERIOD .))
-(NP (PRP$ My) (NN liege) (PERIOD !))
+  (. .))
+(NP (PRP$ My) (NN liege) (. !))
 (SQ
   (NP (JJ Good) (NNP Sir) (NN knight))
-  (COMA ,)
+  (, ,)
   (MD will)
   (NP (PRP you))
   (VP
@@ -10608,23 +10608,23 @@
       (VB come)
       (PP (IN with) (NP (PRP me)))
       (PP (TO to) (NP (NNP Camelot))))
-    (COMA ,)
+    (, ,)
     (CC and)
     (VP
       (VB join)
       (NP (PRP us))
       (PP (IN at) (NP (DT the) (NNP Round) (NNP Table)))))
-  (PERIOD ?))
-(NP (PRP$ My) (NN liege) (PERIOD !))
+  (. ?))
+(NP (PRP$ My) (NN liege) (. !))
 (S
   (NP (PRP I))
   (VP (MD would) (VP (VB be) (VP (VBN honored))))
-  (PERIOD .))
+  (. .))
 (SBARQ
   (WHNP (WP What))
   (SQ (VBZ is) (NP (PRP$ your) (NN name)))
-  (PERIOD ?))
-(NP (NP (NNP Bedemir)) (COMA ,) (NP (PRP$ my) (NN leige)) (PERIOD .))
+  (. ?))
+(NP (NP (NNP Bedemir)) (, ,) (NP (PRP$ my) (NN leige)) (. .))
 (S
   (ADVP (RB Then))
   (NP (PRP I))
@@ -10634,11 +10634,11 @@
       (NP (PRP you))
       (NP
         (NP (NNP Sir) (NNP Bedemir))
-        (COMA ,)
+        (, ,)
         (NP
           (NP (NNP Knight))
           (PP (IN of) (NP (DT the) (NNP Round) (NNP Table)))))))
-  (PERIOD .))
+  (. .))
 (S
   (S
     (NP (DT The) (NN wise) (NNP Sir) (NNP Bedemir))
@@ -10655,7 +10655,7 @@
                 (NP
                   (NP (NNP King) (NNP Arthur) (POS 's))
                   (NNS knights)))))))))
-  (COMA ,)
+  (, ,)
   (CC but)
   (S
     (NP (JJ other) (JJ illustrious) (NNS names))
@@ -10665,24 +10665,24 @@
       (TO to)
       (VP
         (VP (VB follow))
-        (COLON :)
+        (: :)
         (NP
           (NP (NNP Sir) (NNP Launcelot) (DT the) (NNP Brave))
-          (COLON ;)
+          (: ;)
           (NP (NP (NNP Sir) (VBD Galahad)) (NP (DT the) (NNP Pure)))
-          (COLON ;)
+          (: ;)
           (CC and)
           (NP
             (NP (NP (NNP Sir) (NNP Robin)) (DT the) (RB Not))
             (PRN
               (PRN
-                (COLON -)
+                (: -)
                 (RB quite)
-                (COLON -)
+                (: -)
                 (RB so)
-                (PRN (COLON -) (ADJP (VB brave)) (COLON -)))
+                (PRN (: -) (ADJP (VB brave)) (: -)))
               (IN as)
-              (PRN (COLON -) (NNP Sir) (COLON -)))
+              (PRN (: -) (NNP Sir) (: -)))
             (NN Launcelot)
             (SBAR
               (SBAR
@@ -10697,7 +10697,7 @@
                         (NP
                           (NP (DT the) (NNP Dragon))
                           (PP (IN of) (NP (NNP Agnor))))))))
-                (COMA ,)
+                (, ,)
                 (SBAR
                   (WHNP (WP who))
                   (S
@@ -10728,7 +10728,7 @@
                           (NP
                             (NP (DT the) (NNP Battle))
                             (PP (IN of) (NP (NNP Badon) (NNP Hill)))))))))
-                (COLON ;)
+                (: ;)
                 (CC and)
                 (NP
                   (DT the)
@@ -10738,16 +10738,16 @@
                     (NP
                       (NNP Sir)
                       (RB Not)
-                      (COLON -)
+                      (: -)
                       (S
                         (VP
                           (VBG appearing)
-                          (COLON -)
+                          (: -)
                           (PP
-                            (PP (IN in) (COLON -) (NP (DT this)))
-                            (COLON -)
+                            (PP (IN in) (: -) (NP (DT this)))
+                            (: -)
                             (NP (NN film)))))))))))))))
-  (PERIOD .))
+  (. .))
 (S
   (ADVP (RB Together))
   (NP (PRP they))
@@ -10771,17 +10771,17 @@
                       (PP
                         (IN throughout)
                         (NP (DT the) (NNS centuries))))))))))
-        (COMA ,)
+        (, ,)
         (NP
           (NP (DT the) (NNP Knights))
           (PP (IN of) (NP (DT the) (NNP Round) (NNP Table)))))))
-  (PERIOD .))
+  (. .))
 (S
   (CC And)
   (NP (IN that))
-  (COMA ,)
+  (, ,)
   (NP (PRP$ my) (NN liege))
-  (COMA ,)
+  (, ,)
   (VP
     (VBZ is)
     (SBAR
@@ -10796,14 +10796,14 @@
               (TO to)
               (VP
                 (VB be)
-                (VP (ADJP (VBN banana)) (COLON -) (VP (NN shaped))))))))))
-  (PERIOD .))
+                (VP (ADJP (VBN banana)) (: -) (VP (NN shaped))))))))))
+  (. .))
 (S
   (NP (DT This) (JJ new) (NN learning))
   (VP
     (IN amazes)
-    (NP (NP (PRP me)) (COMA ,) (NP (NNP Sir) (NNP Bedemir))))
-  (PERIOD .))
+    (NP (NP (PRP me)) (, ,) (NP (NNP Sir) (NNP Bedemir))))
+  (. .))
 (S
   (VP
     (RB Explain)
@@ -10820,33 +10820,33 @@
               (VBN employed)
               (S
                 (VP (TO to) (VP (VB prevent) (NP (NNS earthquakes)))))))))))
-  (PERIOD .))
+  (. .))
 (FRAG
   (INTJ (UH Oh))
-  (COMA ,)
+  (, ,)
   (ADVP (RB certainly))
-  (COMA ,)
+  (, ,)
   (INTJ (NN sir))
-  (PERIOD .))
-(S (VP (NN Look) (COMA ,) (NP (PRP$ my) (NN liege))) (PERIOD !))
-(NP (NN Camelot) (PERIOD !))
+  (. .))
+(S (VP (NN Look) (, ,) (NP (PRP$ my) (NN liege))) (. !))
+(NP (NN Camelot) (. !))
 (S
   (NP (PRP It))
   (VP (VBZ 's) (ADVP (RB only)) (NP (DT a) (NN model)))
-  (PERIOD .))
-(INTJ (NN Shhh) (PERIOD !))
+  (. .))
+(INTJ (NN Shhh) (. !))
 (S
   (NP (NNS Knights))
-  (COMA ,)
+  (, ,)
   (NP (PRP I))
   (VP
     (VBP bid)
     (NP (PRP you))
     (ADJP (VBP welcome))
     (PP (TO to) (NP (PRP$ your) (JJ new) (NN home))))
-  (PERIOD .))
-(S (VP (VB Let) (S (NP (PRP us)) (VP (VB ride)))) (COLON ...))
-(PP (TO to) (NP (NNP Camelot)) (PERIOD .))
+  (. .))
+(S (VP (VB Let) (S (NP (PRP us)) (VP (VB ride)))) (: ...))
+(PP (TO to) (NP (NNP Camelot)) (. .))
 (NP
   (NP (NNP We're) (NNS knights))
   (PP (IN of) (NP (DT the) (NN round) (NN table))))
@@ -10864,9 +10864,9 @@
     (NP (NP (NNS routines)) (CC and) (NP (NN parlour) (NNS scenes)))))
 (FRAG
   (PP (IN With) (NP (NP (NN footwork)) (VP (NN impecc))))
-  (COLON -)
+  (: -)
   (NP (JJ Able))
-  (PERIOD .))
+  (. .))
 (S
   (NP (PRP We))
   (VP
@@ -10885,7 +10885,7 @@
   (PP (IN of) (NP (DT the) (NNP Round) (NNP Table))))
 (S
   (NP (PRP$ Our) (NNS shows))
-  (VP (VBP are) (PP (IN for) (COLON -) (NN mid) (COLON -) (JJ able))))
+  (VP (VBP are) (PP (IN for) (: -) (NN mid) (: -) (JJ able))))
 (S
   (IN Though)
   (S
@@ -10895,7 +10895,7 @@
   (NP (DT That))
   (VP
     (VBP are)
-    (ADJP (ADJP (RB quite) (JJ unsing)) (COLON -) (ADJP (JJ able)))))
+    (ADJP (ADJP (RB quite) (JJ unsing)) (: -) (ADJP (JJ able)))))
 (S
   (NP (PRP We))
   (RB not)
@@ -10931,34 +10931,34 @@
       (VP
         (TO to)
         (VP (VB push) (NP (DT the) (NN pram)) (NP (DT a) (NN lot))))))
-  (PERIOD .))
+  (. .))
 (S
   (S
     (INTJ (RB Well))
-    (COMA ,)
+    (, ,)
     (PP (IN on) (NP (JJ second) (NN thought)))
-    (COMA ,)
+    (, ,)
     (VP
       (VB let)
       (S
         (NP (PRP 's))
         (RB not)
         (VP (VB go) (PP (TO to) (NP (NNP Camelot)))))))
-  (COLON --)
+  (: --)
   (S (NP (PRP it)) (VP (VBZ is) (NP (DT a) (JJ silly) (NN place))))
-  (PERIOD .))
-(INTJ (RB Right) (PERIOD .))
-(NP (NNP Arthur) (PERIOD !))
+  (. .))
+(INTJ (RB Right) (. .))
+(NP (NNP Arthur) (. !))
 (NP
   (NP (NNP Arthur))
-  (COMA ,)
+  (, ,)
   (NP (NP (NNP King)) (PP (IN of) (NP (DT the) (NNS Britons))))
-  (PERIOD !))
+  (. !))
 (S
   (INTJ (UH Oh))
-  (COMA ,)
+  (, ,)
   (VP (VBP do) (RB n't) (VP (VB grovel)))
-  (PERIOD !))
+  (. !))
 (S
   (SBAR
     (IN If)
@@ -10969,12 +10969,12 @@
         (NP
           (NP (CD one) (NN thing))
           (SBAR (S (NP (PRP I)) (VP (VBP can't) (VP (RB stand)))))))))
-  (COMA ,)
+  (, ,)
   (NP (PRP it))
   (VP (VBZ 's) (NP (NP (NNS people)) (VP (VBG groveling))))
-  (PERIOD .))
-(INTJ (NNP Sorry) (COLON --))
-(S (CC And) (VP (VBP do) (RB n't) (VP (VB apologize))) (PERIOD .))
+  (. .))
+(INTJ (NNP Sorry) (: --))
+(S (CC And) (VP (VBP do) (RB n't) (VP (VB apologize))) (. .))
 (S
   (NP
     (NP (DT Every) (NN time))
@@ -11003,36 +11003,36 @@
       (S
         (NP (NNP ") (NNP I'm))
         (ADJP (ADJP (RB not) (JJ worthy)) (NN ")))))
-  (PERIOD .))
+  (. .))
 (SBARQ
   (WHNP (WP What))
   (SQ (VBP are) (NP (PRP you)) (VP (VBG doing) (ADVP (RB now))))
-  (PERIOD !)
-  (PERIOD ?))
+  (. !)
+  (. ?))
 (FRAG
   (S (NP (NNP I'm)) (VP (VBG averting) (NP (PRP$ my) (NNS eyes))))
-  (COMA ,)
+  (, ,)
   (INTJ (JJ oh) (NNP Lord))
-  (PERIOD .))
-(S (INTJ (RB Well)) (COMA ,) (VP (VBP do) (RB n't)) (PERIOD .))
+  (. .))
+(S (INTJ (RB Well)) (, ,) (VP (VBP do) (RB n't)) (. .))
 (S
   (S
     (NP (PRP It))
     (VP
       (VBZ 's)
       (PP (IN like) (NP (DT those) (JJ miserable) (NNP Psalms)))))
-  (COLON --)
+  (: --)
   (S (NP (PRP they)) (VP (VBP 're) (ADJP (RB so) (JJ depressing))))
-  (PERIOD .))
-(S (RB Now) (VP (VBZ knock) (NP (PRP it)) (PRT (RP off))) (PERIOD !))
-(FRAG (INTJ (UH Yes)) (COMA ,) (NP (NNP Lord)) (PERIOD .))
-(INTJ (RB Right) (PERIOD !))
+  (. .))
+(S (RB Now) (VP (VBZ knock) (NP (PRP it)) (PRT (RP off))) (. !))
+(FRAG (INTJ (UH Yes)) (, ,) (NP (NNP Lord)) (. .))
+(INTJ (RB Right) (. !))
 (S
   (NP
     (NP (NNP Arthur))
-    (COMA ,)
+    (, ,)
     (NP (NP (NNP King)) (PP (IN of) (NP (DT the) (NNP Britons)))))
-  (COLON --)
+  (: --)
   (S
     (NP
       (NP (PRP$ your) (NNS Knights))
@@ -11051,23 +11051,23 @@
                   (VB make)
                   (S (NP (PRP them)) (NP (DT an) (NN example))))))))
         (PP (IN in) (NP (DT these) (JJ dark) (NNS times))))))
-  (PERIOD .))
-(FRAG (NP (JJ Good) (NN idea)) (COMA ,) (INTJ (JJ oh) (NNP Lord)) (PERIOD !))
+  (. .))
+(FRAG (NP (JJ Good) (NN idea)) (, ,) (INTJ (JJ oh) (NNP Lord)) (. !))
 (S
   ('' ')
   (ADVP (NNP Course))
   (NP (PRP it))
   (VP (VBZ 's) (NP (DT a) (JJ good) (NN idea)))
-  (PERIOD !))
-(S (VP (NN Behold)) (PERIOD !))
+  (. !))
+(S (VP (NN Behold)) (. !))
 (S
   (NP (NNP Arthur))
-  (COMA ,)
+  (, ,)
   (NP (DT this))
   (VP (VBZ is) (NP (DT the) (NNP Holy) (NNP Grail)))
-  (PERIOD .))
+  (. .))
 (S
-  (S (VP (NNP Look) (ADVP (RB well)) (COMA ,) (NP (NNP Arthur)) (COMA ,)))
+  (S (VP (NNP Look) (ADVP (RB well)) (, ,) (NP (NNP Arthur)) (, ,)))
   (IN for)
   (S
     (NP (NP (PRP it)))
@@ -11075,34 +11075,34 @@
       (VBZ is)
       (NP (PRP$ your) (JJ sacred) (NN task))
       (S (VP (TO to) (VP (VB seek) (NP (DT this) (NNP Grail)))))))
-  (PERIOD .))
+  (. .))
 (S
   (NP (DT That))
   (VP
     (VBZ is)
     (NP
       (NP (PRP$ your) (NN purpose))
-      (COMA ,)
+      (, ,)
       (NP
         (NP (NNP Arthur))
-        (COLON --)
+        (: --)
         (NP
           (NP (DT the) (NNP Quest))
           (PP (IN for) (NP (DT the) (NNP Holy) (NNP Grail)))))))
-  (PERIOD .))
-(NP (DT A) (NN blessing) (PERIOD !))
+  (. .))
+(NP (DT A) (NN blessing) (. !))
 (NP
   (NP (DT A) (NN blessing))
   (PP (IN from) (NP (DT the) (NNP Lord)))
-  (PERIOD !))
-(S (NP (NNP God)) (VP (VB be) (VP (VBN praised))) (PERIOD !))
-(NP (NN Halt) (PERIOD !))
-(NP (NN Hallo) (PERIOD !))
-(NP ('' ') (NN Allo) (PERIOD !))
-(SBARQ (WHNP (WP Who)) (SQ (VP (VBZ is) (NP (VBN zis)))) (PERIOD ?))
+  (. !))
+(S (NP (NNP God)) (VP (VB be) (VP (VBN praised))) (. !))
+(NP (NN Halt) (. !))
+(NP (NN Hallo) (. !))
+(NP ('' ') (NN Allo) (. !))
+(SBARQ (WHNP (WP Who)) (SQ (VP (VBZ is) (NP (VBN zis)))) (. ?))
 (S
   (S (NP (PRP It)) (VP (VBZ is) (NP (VBG King) (NNP Arthur))))
-  (COMA ,)
+  (, ,)
   (CC and)
   (S
     (NP (DT these))
@@ -11111,11 +11111,11 @@
       (NP
         (NP (DT the) (NNP Knights))
         (PP (IN of) (NP (DT the) (NNP Round) (NNP Table))))))
-  (PERIOD .))
+  (. .))
 (SBARQ
   (WHNP (WP Who))
   (SQ (VBZ 's) (NP (NN castle)) (SQ (VBZ is) (NP (DT this))))
-  (PERIOD ?))
+  (. ?))
 (S
   (NP (DT This))
   (VP
@@ -11132,7 +11132,7 @@
           (NNP Ramper))
         (( ()
         (VB sp))
-      (PERIOD ?)
+      (. ?)
       () )))))
 (S
   (VP
@@ -11153,7 +11153,7 @@
                 (VBN charged)
                 (PP (IN by) (NP (NNP God)))
                 (PP (IN with) (NP (DT a) (JJ sacred) (NN quest))))))))))
-  (PERIOD .))
+  (. .))
 (S
   (SBAR
     (IN If)
@@ -11178,14 +11178,14 @@
         (NP
           (NP (PRP$ our) (NN quest))
           (PP (IN for) (NP (DT the) (NNP Holy) (NNP Grail)))))))
-  (PERIOD .))
+  (. .))
 (S
   (S
     (INTJ (RB Well))
-    (COMA ,)
+    (, ,)
     (NP (PRP I))
     (VP (MD 'll) (VP (VB ask) (NP (PRP him)))))
-  (COMA ,)
+  (, ,)
   (CC but)
   (S
     (NP (PRP I))
@@ -11198,18 +11198,18 @@
           (S
             (NP (PRP he))
             (VP (MD 'll) (VP (VB be) (ADJP (RB very) (JJ keen)))))))))
-  (COLON ...))
+  (: ...))
 (S
   (S
     (INTJ (NNP Uh))
-    (COMA ,)
+    (, ,)
     (NP (PRP he))
     (VP (VBZ 's) (ADVP (RB already)) (VP (VBD got) (NP (CD one)))))
-  (COMA ,)
+  (, ,)
   (NP (PRP you))
   (VP (VBP see))
-  (PERIOD ?))
-(FRAG (WP What) (PERIOD ?))
+  (. ?))
+(FRAG (WP What) (. ?))
 (S
   (NP (PRP He))
   (VP
@@ -11221,7 +11221,7 @@
           (VBP 've)
           (ADVP (RB already))
           (VP (VBD got) (NP (CD one)))))))
-  (PERIOD !))
+  (. !))
 (SQ
   (NNP Are)
   (NP (PRP you))
@@ -11229,16 +11229,16 @@
     (VBP sure)
     (SBAR
       (S (NP (PRP he)) (VP (VBZ 's) (VP (VBD got) (NP (CD one)))))))
-  (PERIOD ?))
+  (. ?))
 (S
   (S
     (INTJ (UH Oh))
-    (COMA ,)
+    (, ,)
     (INTJ (UH yes))
-    (COMA ,)
+    (, ,)
     (NP (PRP it))
     (VP (VBZ 's) (ADJP (RB very) (JJ nice))))
-  (COLON -)
+  (: -)
   (S
     (NP (DT a) (NP (PRP I)))
     (VP
@@ -11249,31 +11249,31 @@
           (NP (PRP we))
           (ADVP (RB already))
           (VP (VBD got) (NP (CD one)))))))
-  (PERIOD .))
+  (. .))
 (SQ
   (INTJ (RB Well))
-  (COMA ,)
+  (, ,)
   (INTJ (JJ um))
-  (COMA ,)
+  (, ,)
   (MD can)
   (NP (PRP we))
   (VP
     (VP (VB come) (ADVP (RB up)))
     (CC and)
     (VP (VBP have) (NP (DT a) (NN look))))
-  (PERIOD ?))
-(FRAG (PP (IN Of) (NP (NN course))) (RB not) (PERIOD !))
+  (. ?))
+(FRAG (PP (IN Of) (NP (NN course))) (RB not) (. !))
 (S
   (NP (PRP You))
-  (VP (VBP are) (NP (NP (JJ English) (NNS types)) (COLON -) (NP (DT a))))
-  (PERIOD !))
+  (VP (VBP are) (NP (NP (JJ English) (NNS types)) (: -) (NP (DT a))))
+  (. !))
 (SBARQ
   (INTJ (RB Well))
-  (COMA ,)
+  (, ,)
   (WHNP (WP what))
   (SQ (VBP are) (NP (PRP you)) (ADVP (RB then)))
-  (PERIOD ?))
-(NP (NNP I'm) (JJ French) (PERIOD !))
+  (. ?))
+(NP (NNP I'm) (JJ French) (. !))
 (SBARQ
   (WHADVP (WRB Why))
   (SQ
@@ -11287,17 +11287,17 @@
             (VP
               (VBP have)
               (NP (DT this) (JJ outrageous) (NN accent)))))))
-    (COMA ,)
+    (, ,)
     (S (NP (PRP you)) (NP (RB silly) (VBG king))))
-  (PERIOD !))
+  (. !))
 (SBARQ
   (WHNP (WP What))
   (SQ
     (VBP are)
     (NP (PRP you))
     (VP (VBG doing) (PP (IN in) (NP (NNP England)))))
-  (PERIOD ?))
-(S (VP (VB Mind) (NP (PRP$ your) (JJ own) (NN business))) (PERIOD !))
+  (. ?))
+(S (VP (VB Mind) (NP (PRP$ your) (JJ own) (NN business))) (. !))
 (S
   (SBAR
     (IN If)
@@ -11307,7 +11307,7 @@
         (MD will)
         (RB not)
         (VP (VB show) (NP (PRP us)) (NP (DT the) (NNP Grail))))))
-  (COMA ,)
+  (, ,)
   (NP (PRP we))
   (VP
     (MD shall)
@@ -11315,7 +11315,7 @@
       (VB take)
       (NP (PRP$ your) (NN castle))
       (PP (IN by) (NP (NN force)))))
-  (PERIOD !))
+  (. !))
 (S
   (NP (PRP You))
   (VP
@@ -11325,9 +11325,9 @@
       (VB frighten)
       (NP
         (NP (PRP us))
-        (COMA ,)
-        (NP (NP (NNP English) (SYM pig)) (COLON -) (NP (NNS dogs))))))
-  (PERIOD !))
+        (, ,)
+        (NP (NP (NNP English) (SYM pig)) (: -) (NP (NNS dogs))))))
+  (. !))
 (S
   (VP
     (S
@@ -11336,11 +11336,11 @@
         (CC and)
         (VB boil)
         (NP (PRP$ your) (NNS bottoms))))
-    (COMA ,)
+    (, ,)
     (NP
       (NP (NNS sons))
       (PP (IN of) (NP (DT a) (JJ silly) (NN person)))))
-  (PERIOD .))
+  (. .))
 (S
   (S
     (NP (PRP I))
@@ -11348,32 +11348,32 @@
       (VBP blow)
       (NP (PRP$ my) (NN nose))
       (PP (IN at) (NP (PRP you)))))
-  (COMA ,)
+  (, ,)
   (IN so)
-  (COLON -)
+  (: -)
   (S
     (S
       (VP
         (VBN called)
-        (S (NP (NP (NNP Arthur) (COLON -)) (NP (NN king))))))
-    (COMA ,)
+        (S (NP (NP (NNP Arthur) (: -)) (NP (NN king))))))
+    (, ,)
     (NP (PRP you))
     (CC and)
     (NP (DT all) (PRP$ your) (JJ silly) (JJ English) (NNS kaniggets)))
-  (PERIOD .))
-(NP (NN Thppppt) (PERIOD !))
+  (. .))
+(NP (NN Thppppt) (. !))
 (FRAG
   (WHNP (WP What))
   (FRAG (NP (DT a) (JJ strange) (NN person)))
-  (PERIOD .))
+  (. .))
 (S
   (RB Now)
   (VP
     (NN look)
     (ADVP (RB here))
-    (COMA ,)
+    (, ,)
     (NP (PRP$ my) (JJ good) (NN man)))
-  (PERIOD !))
+  (. !))
 (S
   (S
     (NP (PRP I))
@@ -11389,7 +11389,7 @@
               (VB talk)
               (PP (TO to) (NP (PRP you)))
               (ADVP (DT no) (RBR more))))))))
-  (COMA ,)
+  (, ,)
   (S
     (NP (PRP you))
     (VP
@@ -11399,13 +11399,13 @@
       (NN food)
       (IN trough)
       (NN whopper)))
-  (PERIOD !))
+  (. !))
 (S
   (NP (PRP I))
   (VP
     (VBP fart)
     (PP (IN in) (NP (PRP$ your) (JJ general) (NN direction))))
-  (PERIOD !))
+  (. !))
 (S
   (S
     (NP (PRP You) (VBP mother))
@@ -11414,7 +11414,7 @@
   (S
     (NP (PRP$ your) (NN father))
     (VP (NN smelt) (PP (IN of) (NP (NNS eldeberries)))))
-  (PERIOD .))
+  (. .))
 (SQ
   (VBZ Is)
   (NP (EX there))
@@ -11423,10 +11423,10 @@
     (PP (IN up) (EX there))
     (SBAR
       (S (NP (PRP we)) (VP (MD could) (VP (VB talk) (PP (TO to)))))))
-  (PERIOD ?))
+  (. ?))
 (S
   (INTJ (DT No))
-  (COMA ,)
+  (, ,)
   (ADVP (RB now))
   (VP (VBP go) (ADVP (RB away)))
   (CC or)
@@ -11437,30 +11437,30 @@
       (VP
         (VB taunt)
         (NP (PRP you))
-        (NP (NP (DT a) (JJ second) (NN time)) (COLON -) (NP (DT a))))))
-  (PERIOD !))
+        (NP (NP (DT a) (JJ second) (NN time)) (: -) (NP (DT a))))))
+  (. !))
 (S
   (ADVP (RB Now))
-  (COMA ,)
+  (, ,)
   (NP (DT this))
   (VP (VBZ is) (NP (PRP$ your) (JJ last) (NN chance)))
-  (PERIOD .))
+  (. .))
 (S
   (NP (NNP I've))
   (VP
     (VBN been)
     (ADJP (ADJP (JJR more)) (PP (IN than) (ADJP (JJ reasonable)))))
-  (PERIOD .))
+  (. .))
 (NP
   (( ()
-  (NNP Fetchez)
+  (NNP ƒtchez)
   (NNP la)
   (NNP vache)
-  (PERIOD .)
+  (. .)
   () ))
   (NN wha)
-  (PERIOD ?))
-(S (( () (NNP Fetchez) (NNP la) (NN vache) (PERIOD !) () )))
+  (. ?))
+(S (( () (NNP Fetchez) (NNP la) (NN vache) (. !) () )))
 (S
   (SBAR
     (IN If)
@@ -11470,114 +11470,114 @@
         (VBP do)
         (RB not)
         (VP (VB agree) (PP (TO to) (NP (PRP$ my) (NNS commands)))))))
-  (COMA ,)
+  (, ,)
   (ADVP (RB then))
   (NP (PRP I))
   (VP (MD shall))
-  (COLON --))
-(NP (NNP Jesus) (NN Christ) (PERIOD !))
-(INTJ (RB Right) (PERIOD !))
-(NP (NN Charge) (PERIOD !))
+  (: --))
+(NP (NNP Jesus) (NN Christ) (. !))
+(INTJ (RB Right) (. !))
+(NP (NN Charge) (. !))
 (S
   (INTJ (NNP Ah))
-  (COMA ,)
+  (, ,)
   (NP (DT this) (CD one))
   (VP (VBZ is) (PP (IN for) (NP (PRP$ your) (NN mother))))
-  (PERIOD !))
-(S (VP (VB Run) (ADVP (RB away))) (PERIOD !))
-(NP (NN Thpppt) (PERIOD !))
-(NP (NNS Fiends) (PERIOD !))
+  (. !))
+(S (VP (VB Run) (ADVP (RB away))) (. !))
+(NP (NN Thpppt) (. !))
+(NP (NNS Fiends) (. !))
 (S
   (NP (PRP I))
   (VP (MD 'll) (VP (VB tear) (NP (PRP them)) (ADVP (RB apart))))
-  (PERIOD !))
-(FRAG (INTJ (DT No) (DT no)) (COMA ,) (INTJ (DT no)) (PERIOD .))
-(INTJ (NNP Sir) (PERIOD !))
+  (. !))
+(FRAG (INTJ (DT No) (DT no)) (, ,) (INTJ (DT no)) (. .))
+(INTJ (NNP Sir) (. !))
 (S
   (NP (PRP I))
-  (VP (VBP have) (NP (DT a) (NN plan)) (COMA ,) (INTJ (NN sir)))
-  (PERIOD .))
+  (VP (VBP have) (NP (DT a) (NN plan)) (, ,) (INTJ (NN sir)))
+  (. .))
 (S
   (VP
     (NN ce)
     (VP
       (VBZ labon)
       (NP (NP (DT a) (NN bunny)) (VP (VB do) (NP (NNS wha))))))
-  (PERIOD ?))
-(INTJ (JJ un) (NP (NN cadeau)) (PERIOD ?))
-(NP (DT a) (JJ present) (PERIOD !))
-(FRAG (INTJ (UH oh)) (COMA ,) (NP (JJ un) (NN cadeau)) (PERIOD .))
-(INTJ (JJ oui) (VP (NN oui) (VP (NN hurry))) (PERIOD !))
-(FRAG (SYM wha) (COLON -) (PERIOD ?))
-(S (VP (NN let) (S (NP (POS 's)) (VP (VB go)))) (PERIOD !))
+  (. ?))
+(INTJ (JJ un) (NP (NN cadeau)) (. ?))
+(NP (DT a) (JJ present) (. !))
+(FRAG (INTJ (UH oh)) (, ,) (NP (JJ un) (NN cadeau)) (. .))
+(INTJ (JJ oui) (VP (NN oui) (VP (NN hurry))) (. !))
+(FRAG (SYM wha) (: -) (. ?))
+(S (VP (NN let) (S (NP (POS 's)) (VP (VB go)))) (. !))
 (SBARQ
   (WHNP (WP What))
   (SQ (VP (VBZ happens) (ADVP (RB now))))
-  (PERIOD ?))
+  (. ?))
 (S
   (INTJ (RB Well))
-  (COMA ,)
+  (, ,)
   (ADVP (RB now))
-  (COMA ,)
+  (, ,)
   (INTJ (UH uh))
-  (COMA ,)
+  (, ,)
   (NNP Launcelot)
-  (COMA ,)
+  (, ,)
   (NNP Galahad)
-  (COMA ,)
+  (, ,)
   (CC and)
   (PRP I)
   (VP
     (VP (VBP wait) (PP (IN until) (NP (JJ nightfall))))
-    (COMA ,)
+    (, ,)
     (CC and)
     (RB then)
     (VP
       (VB leap)
       (PP (IN out) (PP (IN of) (NP (DT the) (NN rabbit))))
-      (COMA ,)
+      (, ,)
       (S
         (VP
           (VBG taking)
           (NP (DT the) (JJ French))
           (PP (IN by) (NP (NN surprise)))
-          (COLON --)
+          (: --)
           (PP
             (CONJP (RB not) (RB only))
             (PP (IN by) (NP (NN surprise)))
-            (COMA ,)
+            (, ,)
             (CC but)
             (ADJP (RB totally) (JJ unarmed)))))))
-  (PERIOD !))
-(SBARQ (WHNP (WP Who)) (SQ (VP (VBZ leaps) (ADVP (RP out)))) (PERIOD ?))
+  (. !))
+(SBARQ (WHNP (WP Who)) (SQ (VP (VBZ leaps) (ADVP (RP out)))) (. ?))
 (FRAG
   (INTJ (NNP Uh))
-  (COMA ,)
+  (, ,)
   (NNP Launcelot)
-  (COMA ,)
+  (, ,)
   (NP (NNP Galahad))
-  (COMA ,)
+  (, ,)
   (CC and)
   (NP (PRP I))
-  (PERIOD .))
+  (. .))
 (S
   (INTJ (NNP Uh))
-  (COMA ,)
+  (, ,)
   (VP
     (VBZ leap)
     (PP (IN out) (PP (IN of) (NP (DT the) (NN rabbit))))
-    (COMA ,)
+    (, ,)
     (NN uh)
     (CC and)
     (NN uh))
-  (COLON ...)
-  (PERIOD .))
-(INTJ (UH Oh) (COLON ...) (PERIOD .))
+  (: ...)
+  (. .))
+(INTJ (UH Oh) (: ...) (. .))
 (FRAG
   (INTJ (NNP Um))
-  (COMA ,)
-  (INTJ (INTJ (SYM l)) (COLON -) (INTJ (NN look)))
-  (COMA ,)
+  (, ,)
+  (INTJ (INTJ (SYM l)) (: -) (INTJ (NN look)))
+  (, ,)
   (SBAR
     (IN if)
     (S
@@ -11585,15 +11585,15 @@
       (VP
         (VBP built)
         (NP (DT this) (JJ large) (JJ wooden) (NN badger)))))
-  (COLON --))
-(S (VP (VB Run) (ADVP (RB away))) (PERIOD !))
-(FRAG (INTJ (UH Oh)) (COMA ,) (NP (JJ haw) (NN haw) (NN haw)) (PERIOD .))
+  (: --))
+(S (VP (VB Run) (ADVP (RB away))) (. !))
+(FRAG (INTJ (UH Oh)) (, ,) (NP (JJ haw) (NN haw) (NN haw)) (. .))
 (S
   (NP (NP (NNS Pictures)) (PP (IN for) (NP (NNP Schools))))
-  (COMA ,)
+  (, ,)
   (VP (VBP take) (NP (CD 8)))
-  (PERIOD .))
-(NP (NN Action) (PERIOD !))
+  (. .))
+(NP (NN Action) (. !))
 (S
   (NP (NP (NN Defeat)) (PP (IN at) (NP (DT the) (NN castle))))
   (VP
@@ -11607,7 +11607,7 @@
             (ADVP (RB utterly))
             (VBN disheartened)
             (NP (NNP King) (NNP Arthur)))))))
-  (PERIOD .))
+  (. .))
 (S
   (S
     (NP
@@ -11618,7 +11618,7 @@
       (NP (PRP him))
       (ADVP (RB completely))
       (PP (IN by) (NP (NN surprise)))))
-  (COMA ,)
+  (, ,)
   (CC and)
   (S
     (NP (NNP Arthur))
@@ -11657,80 +11657,80 @@
                                   (DT a)
                                   (JJ successful)
                                   (NN conclusion)))))))))))))))))
-  (PERIOD .))
+  (. .))
 (S
   (NP (NNP Arthur))
-  (COMA ,)
+  (, ,)
   (S
     (VP
       (VBG having)
       (VP
         (VBN consulted)
         (NP (PRP$ his) (JJS closest) (NNS knights)))))
-  (COMA ,)
+  (, ,)
   (VP
     (VP
       (VBD decided)
       (SBAR
         (IN that)
         (S (NP (PRP they)) (MD should) (VP (VB separate)))))
-    (COMA ,)
+    (, ,)
     (CC and)
     (VP
       (NN search)
       (PP (IN for) (NP (DT the) (NNP Grail)))
       (ADVP (RB individually))))
-  (PERIOD .))
+  (. .))
 (S
   (ADVP (RB Now))
-  (COMA ,)
+  (, ,)
   (NP (DT this))
   (VP
     (VBZ is)
     (SBAR (WHNP (WP what)) (S (NP (PRP they)) (VP (VBD did)))))
-  (COLON --))
-(NP (NN Greg) (PERIOD !))
+  (: --))
+(NP (NN Greg) (. !))
 (NP
   (NP (DT The) (NNP Tale))
   (PP (IN of) (NP (NNP Sir) (NNP Robin)))
-  (COLON ...)
-  (PERIOD .))
+  (: ...)
+  (. .))
 (S
   (RB So)
   (NP (NP (DT each)) (PP (IN of) (NP (DT the) (NNS knights))))
   (VP (VBD went) (NP (PRP$ their) (JJ separate) (NNS ways)))
-  (PERIOD .))
+  (. .))
 (S
   (NP (NNP Sir) (NNP Robin))
   (VP
     (VBD rode)
     (ADVP (JJ north))
-    (COMA ,)
+    (, ,)
     (PP
       (IN through)
       (NP
         (NP (DT the) (JJ dark) (NN forest))
         (PP (IN of) (NP (NNP Ewing)))))
-    (COMA ,)
+    (, ,)
     (S
       (VP
         (VBN accompanied)
         (PP (IN by) (NP (PRP$ his) (JJ favorite) (NNS minstrels))))))
-  (PERIOD .))
+  (. .))
 (S
   (NP (ADJP (RB Bravely) (JJ bold)) (NNP Sir) (NNP Robin))
-  (COMA ,)
+  (, ,)
   (VP (VBD rode) (ADVP (NN forth)) (PP (IN from) (NP (NNP Camelot))))
-  (PERIOD .))
+  (. .))
 (S
   (NP (PRP He))
   (VP
     (VBD was)
     (RB not)
     (ADJP (JJ afraid) (S (VP (TO to) (VP (VB die)))))
-    (COMA ,)
+    (, ,)
     (NP (FW o) (NNP Brave) (NNP Sir) (NNP Robin)))
-  (PERIOD .))
+  (. .))
 (S
   (NP (PRP He))
   (VP
@@ -11745,18 +11745,18 @@
           (VP
             (VB be)
             (VP (VBN killed) (PP (IN in) (NP (JJ nasty) (NNS ways)))))))))
-  (PERIOD .))
+  (. .))
 (FRAG
   (NNP Brave)
-  (COMA ,)
+  (, ,)
   (NN brave)
-  (COMA ,)
+  (, ,)
   (VBP brave)
-  (COMA ,)
+  (, ,)
   (VBP brave)
   (NNP Sir)
   (NNP Robin)
-  (PERIOD !))
+  (. !))
 (S
   (NP (PRP He))
   (VP
@@ -11771,7 +11771,7 @@
           (VP
             (VB be)
             (VP (VBN mashed) (PP (IN into) (NP (DT a) (NN pulp))))))
-        (COMA ,)
+        (, ,)
         (CC Or)
         (VP
           (TO to)
@@ -11780,10 +11780,10 @@
             (S
               (NP (PRP$ his) (NNS eyes))
               (VP (VBD gouged) (PRT (RP out)))
-              (COMA ,)
+              (, ,)
               (CC and)
               (S (NP (PRP$ his) (NNS elbows)) (VP (VBN broken)))))))))
-  (PERIOD .))
+  (. .))
 (S
   (S
     (VP
@@ -11793,59 +11793,59 @@
           (VP
             (VB have)
             (S (NP (PRP$ his) (NNS kneecaps)) (VP (NN split))))))
-      (COMA ,)
+      (, ,)
       (CC and)
       (S
         (S
           (NP (PRP$ his) (NN body))
           (VP (VBD burned) (ADVP (RB away))))
-        (COMA ,)
+        (, ,)
         (CC And)
         (S
           (NP (PRP$ his) (NN limbs))
           (DT all)
           (VP (VBD hacked) (CC and) (VBD mangled))))))
-  (COMA ,)
+  (, ,)
   (NP (VB brave) (NNP Sir) (NNP Robin))
-  (PERIOD !))
+  (. !))
 (S
   (S
     (S (NP (PRP$ His) (NN head)) (VP (VBN smashed) (ADVP (IN in))))
     (CC and)
     (S (NP (PRP$ his) (NN heart)) (VP (NN cut) (PRT (RP out)))))
-  (COMA ,)
+  (, ,)
   (CC And)
   (S
     (S (NP (PRP$ his) (NN liver)) (VP (VBD removed)))
     (CC and)
     (S (NP (PRP$ his) (NNS bowels)) (VP (VBN unplugged))))
-  (COMA ,)
+  (, ,)
   (CC And)
   (S
     (S (NP (PRP$ his) (NNS nostrils)) (VP (VBD ripped)))
     (CC and)
     (S (NP (PRP$ his) (NN bottom)) (VP (VBD burned) (PRT (RP off)))))
-  (COMA ,)
+  (, ,)
   (CC And)
   (NP (PRP$ his) (NN penis))
-  (COLON --))
+  (: --))
 (S
   (S (NP (DT That)) (VBZ 's))
-  (COLON --)
+  (: --)
   (NP (DT that))
   (VP
     (VBZ 's)
-    (COMA ,)
+    (, ,)
     (SBAR
       (S
         (INTJ (UH uh))
-        (COMA ,)
+        (, ,)
         (NP (DT that))
         (VP
           (VBZ 's)
           (NP (JJ enough) (NN music))
-          (PP (PP (IN for) (ADVP (RB now))) (COMA ,) (NNS lads))))))
-  (PERIOD .))
+          (PP (PP (IN for) (ADVP (RB now))) (, ,) (NNS lads))))))
+  (. .))
 (S
   (VP
     (NNS Looks)
@@ -11854,96 +11854,96 @@
       (S
         (NP (EX there))
         (VP (POS 's) (NP (NP (NN dirty) (NN work)) (VP (NN afoot)))))))
-  (PERIOD .))
+  (. .))
 (S
   (NP (NNP Anarcho))
-  (COLON -)
+  (: -)
   (NP (NN syndicalism))
   (VP
     (VBZ is)
     (NP
       (NP (DT a) (NN way))
       (PP (IN of) (S (VP (VBG preserving) (NP (NN freedom)))))))
-  (PERIOD .))
+  (. .))
 (S
   (INTJ (UH Oh))
-  (COMA ,)
+  (, ,)
   (NP (NNP Dennis))
-  (COMA ,)
+  (, ,)
   (VP (VB forget) (PP (IN about) (NP (NN freedom))))
-  (PERIOD .))
+  (. .))
 (S
   (ADVP (RB Now))
   (NP (NNP I've))
   (VP (VBD dropped) (NP (PRP$ my) (NN mud)))
-  (PERIOD .))
-(NP (NN Halt) (PERIOD !))
-(SBARQ (WHNP (WP Who)) (SQ (VBP art) (NP (NN thou))) (PERIOD ?))
+  (. .))
+(NP (NN Halt) (. !))
+(SBARQ (WHNP (WP Who)) (SQ (VBP art) (NP (NN thou))) (. ?))
 (S
   (NP (PRP He))
   (VP
     (VBZ is)
     (NP
       (NP (JJ brave) (NNP Sir) (NNP Robin))
-      (COMA ,)
+      (, ,)
       (NP (VBP brave) (NNP Sir) (NNP Robin))
-      (COMA ,)
+      (, ,)
       (SBAR (WHNP (WP who)))))
-  (COLON --))
-(S (VP (NNP Shut) (PRT (RP up))) (PERIOD !))
+  (: --))
+(S (VP (NNP Shut) (PRT (RP up))) (. !))
 (FRAG
   (INTJ (NNP Um))
-  (COMA ,)
-  (INTJ (INTJ (SYM n)) (COLON -) (INTJ (JJ n)))
-  (COLON -)
-  (NP (NP (NN nobody)) (RB really) (COMA ,) (NNP I'm) (SYM j))
-  (COLON -)
+  (, ,)
+  (INTJ (INTJ (SYM n)) (: -) (INTJ (JJ n)))
+  (: -)
+  (NP (NP (NN nobody)) (RB really) (, ,) (NNP I'm) (SYM j))
+  (: -)
   (INTJ (RB just) (JJ um))
-  (COMA ,)
+  (, ,)
   (VP (ADVP (RB just)) (VBG passing) (ADVP (IN through)))
-  (PERIOD .))
+  (. .))
 (SBARQ
   (WHNP (WP What))
   (SQ (VBP do) (NP (PRP you)) (VP (VB want)))
-  (PERIOD ?))
-(FRAG (S (VP (TO To) (VP (VB fight)))) (COMA ,) (CC and) (COLON --))
-(S (VP (NNP Shut) (PRT (RP up))) (PERIOD !))
+  (. ?))
+(FRAG (S (VP (TO To) (VP (VB fight)))) (, ,) (CC and) (: --))
+(S (VP (NNP Shut) (PRT (RP up))) (. !))
 (FRAG
   (INTJ (NNP Um))
-  (COMA ,)
-  (INTJ (INTJ (NN oo)) (COMA ,) (INTJ (JJ n)))
-  (COLON -)
+  (, ,)
+  (INTJ (INTJ (NN oo)) (, ,) (INTJ (JJ n)))
+  (: -)
   (NP
-    (NP (NP (NN nothing)) (COMA ,) (NP (NN nothing)))
+    (NP (NP (NN nothing)) (, ,) (NP (NN nothing)))
     (ADVP (RB really)))
-  (COLON --)
+  (: --)
   (NP (PRP I))
-  (COMA ,)
+  (, ,)
   (INTJ (UH uh))
-  (COMA ,)
+  (, ,)
   (NP (JJ j))
-  (COLON -)
+  (: -)
   (INTJ
     (NP (NN j))
-    (COLON -)
+    (: -)
     (INTJ (NN ust) (PP (TO to) (INTJ (VB um)))))
-  (COMA ,)
+  (, ,)
   (S
     (S
       (S (ADVP (RB just)) (VP (TO to) (VP (VB p))))
-      (COLON -)
+      (: -)
       (NN pass)
       (ADVP (IN through)))
-    (COMA ,)
+    (, ,)
     (NP (JJ good) (NNP Sir) (NN knight)))
-  (PERIOD .))
-(S (NP (NNP I'm)) (ADJP (VBD afraid) (RB not)) (PERIOD !))
-(INTJ (NNP Ah) (PERIOD .))
+  (. .))
+(S (NP (NNP I'm)) (ADJP (VBD afraid) (RB not)) (. !))
+(INTJ (NNP Ah) (. .))
 (S
   (NP (NNP W))
-  (COLON -)
+  (: -)
   (INTJ (RB well))
-  (COMA ,)
+  (, ,)
   (ADVP (RB actually))
   (NP (PRP I))
   (VP
@@ -11951,38 +11951,38 @@
     (NP
       (NP (DT a) (NNP Knight))
       (PP (IN of) (NP (DT the) (NNP Round) (NNP Table)))))
-  (PERIOD .))
+  (. .))
 (NP
   (NP (VB You're))
   (NP
     (NP (DT a) (NNP Knight))
     (PP (IN of) (NP (DT the) (NNP Round) (NNP Table))))
-  (PERIOD ?))
-(S (NP (PRP I)) (VP (VBP am)) (PERIOD .))
+  (. ?))
+(S (NP (PRP I)) (VP (VBP am)) (. .))
 (S
   (PP (IN In) (NP (DT that) (NN case)))
   (NP (PRP I))
   (VP
     (MD shall)
     (VP (VB have) (S (VP (TO to) (VP (VB kill) (NP (PRP you)))))))
-  (PERIOD .))
-(SQ (NN Shall) (NP (PRP I)) (PERIOD ?))
+  (. .))
+(SQ (NN Shall) (NP (PRP I)) (. ?))
 (S
   (INTJ (UH Oh))
-  (COMA ,)
+  (, ,)
   (NP (PRP I))
   (VP (VBP do) (RB n't) (VP (VB think) (ADVP (RB so))))
-  (PERIOD .))
+  (. .))
 (SBARQ
   (INTJ (RB Well))
-  (COMA ,)
+  (, ,)
   (WHNP (WP what))
   (SQ (VBP do) (NP (PRP I)) (VP (VB think)))
-  (PERIOD ?))
+  (. ?))
 (S
   (NP (PRP I))
   (VP (VBP think) (S (VP (VB kill) (NP (PRP him)))))
-  (PERIOD .))
+  (. .))
 (S
   (INTJ (NNP Well))
   (VP
@@ -11990,10 +11990,10 @@
     (S
       (NP (POS 's))
       (VP (VB be) (ADJP (JJ nice) (PP (TO to) (NP (PRP him)))))))
-  (PERIOD .))
-(S (UH Oh) (VP (VBD shut) (PRT (RP up))) (PERIOD .))
-(ADVP (RB Perhaps) (COLON -))
-(FRAG (CC And) (PRP you) (PERIOD .))
+  (. .))
+(S (UH Oh) (VP (VBD shut) (PRT (RP up))) (. .))
+(ADVP (RB Perhaps) (: -))
+(FRAG (CC And) (PRP you) (. .))
 (S
   (ADVP
     (ADVP (UH Oh) (JJ quick))
@@ -12005,40 +12005,40 @@
       (VP
         (TO to)
         (VP (VB cut) (NP (PRP$ his) (NN head)) (PRT (IN off))))))
-  (PERIOD !))
+  (. !))
 (S
   (INTJ (UH Oh))
-  (COMA ,)
+  (, ,)
   (VP (VB cut) (NP (PRP$ your) (JJ own) (NN head)) (PRT (IN off)))
-  (PERIOD !))
+  (. !))
 (S
   (INTJ (UH Yes))
-  (COMA ,)
+  (, ,)
   (VP (VBP do) (NP (NP (PRP us)) (PDT all)) (NP (DT a) (NN favor)))
-  (PERIOD !))
-(FRAG (WP What) (PERIOD ?))
+  (. !))
+(FRAG (WP What) (. ?))
 (S
   (VP (VBG Yapping) (PRT (IN on)) (NP (PDT all) (DT the) (NN time)))
-  (PERIOD .))
-(NP (NP (PRP$ You're)) (ADJP (JJ lucky)) (PERIOD .))
+  (. .))
+(NP (NP (PRP$ You're)) (ADJP (JJ lucky)) (. .))
 (NP
   (NP (MD You're))
   (ADJP (RB not) (VB next) (PP (TO to) (NP (PRP him))))
-  (PERIOD .))
+  (. .))
 (SBARQ
   (WHNP (WP What))
   (SQ (VBP do) (NP (PRP you)) (VP (VB mean)))
-  (PERIOD ?))
-(S (NP (PRP You)) (VP (VBP snore)) (PERIOD .))
+  (. ?))
+(S (NP (PRP You)) (VP (VBP snore)) (. .))
 (S
   (S (UH Oh) (NP (PRP I)) (VP (VBP do) (RB n't)))
-  (COLON --)
+  (: --)
   (S
     (ADVP (RB anyway))
-    (COMA ,)
+    (, ,)
     (NP (PRP you))
     (VP (VBP 've) (VP (VBN got) (NP (JJ bad) (NN breath)))))
-  (PERIOD .))
+  (. .))
 (FRAG
   (ADVP (RB Well))
   (NP (PRP$ its))
@@ -12051,7 +12051,7 @@
         (VBP do)
         (RB n't)
         (VP (VB brush) (NP (PRP$ my) (NNS teeth))))))
-  (PERIOD .))
+  (. .))
 (S
   (INTJ (UH Oh))
   (VP
@@ -12060,14 +12060,14 @@
     (VP
       (VB let)
       (S (NP (PRP 's)) (VP (VB go) (VP (JJ have) (NP (NN tea)))))))
-  (PERIOD .))
+  (. .))
 (FRAG
   (NP (DT All) (NN right))
-  (COMA ,)
+  (, ,)
   (INTJ (DT all) (NN right))
-  (COMA ,)
+  (, ,)
   (ADJP (DT all) (NN right))
-  (PERIOD .))
+  (. .))
 (S
   (NP (PRP We))
   (VP
@@ -12077,435 +12077,15 @@
       (CC and)
       (RB then)
       (VP (VB have) (NP (NN tea) (CC and) (NNS biscuits)))))
-  (PERIOD .))
-(INTJ (UH Yes) (PERIOD .))
+  (. .))
+(INTJ (UH Yes) (. .))
 (FRAG
   (INTJ (UH Oh))
-  (COMA ,)
+  (, ,)
   (CC but)
   (RB not)
   (NP (NNS biscuits))
-  (PERIOD .))
-(ROOT
-  (S (NP (NNP Arthur)) (VP (VBZ is) (NP (DT the) (NN king))) (. .)))
-(ROOT
-  (S
-    (NP (NNP Arthur))
-    (VP
-      (VBZ rides)
-      (NP
-        (NP (DT the) (NN horse))
-        (PP (IN near) (NP (DT the) (NN castle)))))
-    (. .)))
-(ROOT
-  (S
-    (S (VP (VBG riding) (PP (TO to) (NP (NNP Camelot)))))
-    (VP (VBZ is) (ADJP (JJ hard)))
-    (. .)))
-(ROOT (SQ (VBP do) (NP (NNS coconuts)) (VP (VB speak)) (. ?)))
-(ROOT
-  (SBARQ
-    (WHNP (WP what))
-    (SQ (VBZ does) (NP (NNP Arthur)) (VP (VB ride)))
-    (. ?)))
-(ROOT
-  (SBARQ
-    (WHNP (WP who))
-    (SQ
-      (VBZ does)
-      (NP (NNP Arthur))
-      (VP (VB suggest) (S (NP (PRP she)) (VP (VB carry)))))
-    (. ?)))
-(ROOT
-  (SBARQ
-    (WHADVP (WRB why))
-    (SQ
-      (VBZ does)
-      (NP (NNP England))
-      (VP (VB have) (NP (DT a) (NN king))))
-    (. ?)))
-(ROOT
-  (SQ
-    (VBP are)
-    (NP (PRP they))
-    (VP
-      (VBG suggesting)
-      (NP (NNP Arthur) (NN ride))
-      (PP (TO to) (NP (NNP Camelot))))
-    (. ?)))
-(ROOT
-  (S
-    (NP (CD five) (NNS strangers))
-    (VP (VBP are) (PP (IN at) (NP (DT the) (NNP Round) (NNP Table))))
-    (. .)))
-(ROOT
-  (S
-    (NP (NNP Guinevere))
-    (VP (MD might) (VP (VB have) (VP (VBN known))))
-    (. .)))
-(ROOT
-  (S
-    (NP (NNP Guinevere))
-    (VP
-      (MD should)
-      (VP (VB be) (VP (VBG riding) (PP (IN with) (NP (NNP Patsy))))))
-    (. .)))
-(ROOT
-  (S
-    (NP (PRP it))
-    (VP
-      (VBZ is)
-      (NP
-        (NP (NNP Sir) (NNP Lancelot))
-        (SBAR (WHNP (WP who)) (S (VP (VBZ knows) (NP (NNP Zoot)))))))
-    (. !)))
-(ROOT
-  (S
-    (NP (DT either) (NNP Arthur))
-    (VP (VP (VBZ knows)) (CC or) (ADVP (RB Patsy)) (VP (VBZ does)))
-    (. .)))
-(ROOT
-  (S
-    (NP
-      (CC neither)
-      (NNP Sir)
-      (NNP Lancelot)
-      (CC nor)
-      (NNP Guinevere))
-    (VP (MD will) (VP (VB speak) (PP (IN of) (NP (PRP it)))))
-    (. .)))
-(ROOT
-  (S
-    (NP (DT the) (NNP Holy) (NNP Grail))
-    (VP
-      (VBD was)
-      (VP
-        (VBN covered)
-        (PP (IN by) (NP (DT a) (JJ yellow) (NN fruit)))))
-    (. .)))
-(ROOT
-  (S
-    (NP (NNP Zoot))
-    (VP
-      (MD might)
-      (VP
-        (VB have)
-        (VP
-          (VBN been)
-          (VP (VBN carried) (PP (IN by) (NP (DT a) (NN swallow)))))))
-    (. .)))
-(ROOT
-  (S
-    (NP (NNP Arthur))
-    (VP
-      (VP (VBD rode) (PP (TO to) (NP (NNP Camelot))))
-      (CC and)
-      (VP (VBD drank) (PP (IN from) (NP (PRP$ his) (NN chalice)))))
-    (. .)))
-(ROOT
-  (S
-    (NP (PRP they))
-    (VP
-      (VB migrate)
-      (ADVP (RB precisely))
-      (SBAR
-        (IN because)
-        (S
-          (NP (PRP they))
-          (VP
-            (VBP know)
-            (SBAR (S (NP (PRP they)) (VP (MD will) (VP (VB grow)))))))))
-    (. .)))
-(ROOT (S (VP (VB do) (RB not) (VP (VB speak))) (. !)))
-(ROOT
-  (S
-    (NP (NNP Arthur))
-    (VP
-      (MD will)
-      (VP
-        (VB have)
-        (VP
-          (VBN been)
-          (VP
-            (VBG riding)
-            (PP (IN for) (NP (CD eight) (NNS nights)))))))
-    (. .)))
-(ROOT
-  (S
-    (NP (NP (NNP Arthur)) (, ,) (NP (JJ sixty) (NNS inches)) (, ,))
-    (VP (VBZ is) (NP (DT a) (JJ tiny) (NN king)))
-    (. .)))
-(ROOT
-  (S
-    (NP (NNP Arthur))
-    (VP
-      (VBZ knows)
-      (NP
-        (NP (NNP Patsy))
-        (, ,)
-        (NP (DT the) (JJ trusty) (NN servant))))
-    (. .)))
-(ROOT
-  (S
-    (NP (NNP Arthur) (CC and) (NNP Guinevere))
-    (VP (VB migrate) (ADVP (RB frequently)))
-    (. .)))
-(ROOT
-  (S
-    (NP (PRP he))
-    (VP
-      (VBZ knows)
-      (SBAR
-        (WHNP (WP what))
-        (S
-          (NP (PRP they))
-          (VP
-            (VBP are)
-            (VP
-              (VBG covering)
-              (PP (IN with) (NP (DT that) (NN story))))))))
-    (. .)))
-(ROOT
-  (S
-    (NP (NNP Arthur))
-    (VP
-      (VBD suggested)
-      (SBAR
-        (IN that)
-        (S (NP (DT the) (NN castle)) (VP (VB be) (VP (VBN carried))))))
-    (. .)))
-(ROOT
-  (S
-    (NP (DT the) (NN king))
-    (VP
-      (VBD drank)
-      (PP
-        (TO to)
-        (NP
-          (NP (DT the) (NN castle))
-          (SBAR
-            (WHNP (WDT that))
-            (S (VP (VBD was) (NP (PRP$ his) (NN home))))))))
-    (. .)))
-(ROOT
-  (S
-    (SBAR
-      (WHADVP (WRB when))
-      (S (NP (DT the) (NN king)) (VP (VBZ drinks))))
-    (, ,)
-    (NP (NNP Patsy))
-    (VP (VBZ drinks))
-    (. .)))
-(ROOT
-  (S (NP (NNP Arthur)) (VP (VBZ is) (NP (DT the) (NN king))) (. .)))
-(ROOT
-  (S
-    (NP (NNP Arthur))
-    (VP
-      (VBZ rides)
-      (NP
-        (NP (DT the) (NN horse))
-        (PP (IN near) (NP (DT the) (NN castle)))))
-    (. .)))
-(ROOT
-  (S
-    (S (VP (VBG riding) (PP (TO to) (NP (NNP Camelot)))))
-    (VP (VBZ is) (ADJP (JJ hard)))
-    (. .)))
-(ROOT (SQ (VBP do) (NP (NNS coconuts)) (VP (VB speak)) (. ?)))
-(ROOT
-  (SBARQ
-    (WHNP (WP what))
-    (SQ (VBZ does) (NP (NNP Arthur)) (VP (VB ride)))
-    (. ?)))
-(ROOT
-  (SBARQ
-    (WHNP (WP who))
-    (SQ
-      (VBZ does)
-      (NP (NNP Arthur))
-      (VP (VB suggest) (S (NP (PRP she)) (VP (VB carry)))))
-    (. ?)))
-(ROOT
-  (SBARQ
-    (WHADVP (WRB why))
-    (SQ
-      (VBZ does)
-      (NP (NNP England))
-      (VP (VB have) (NP (DT a) (NN king))))
-    (. ?)))
-(ROOT
-  (SQ
-    (VBP are)
-    (NP (PRP they))
-    (VP
-      (VBG suggesting)
-      (NP (NNP Arthur) (NN ride))
-      (PP (TO to) (NP (NNP Camelot))))
-    (. ?)))
-(ROOT
-  (S
-    (NP (CD five) (NNS strangers))
-    (VP (VBP are) (PP (IN at) (NP (DT the) (NNP Round) (NNP Table))))
-    (. .)))
-(ROOT
-  (S
-    (NP (NNP Guinevere))
-    (VP (MD might) (VP (VB have) (VP (VBN known))))
-    (. .)))
-(ROOT
-  (S
-    (NP (NNP Guinevere))
-    (VP
-      (MD should)
-      (VP (VB be) (VP (VBG riding) (PP (IN with) (NP (NNP Patsy))))))
-    (. .)))
-(ROOT
-  (S
-    (NP (PRP it))
-    (VP
-      (VBZ is)
-      (NP
-        (NP (NNP Sir) (NNP Lancelot))
-        (SBAR (WHNP (WP who)) (S (VP (VBZ knows) (NP (NNP Zoot)))))))
-    (. !)))
-(ROOT
-  (S
-    (NP (DT either) (NNP Arthur))
-    (VP (VP (VBZ knows)) (CC or) (ADVP (RB Patsy)) (VP (VBZ does)))
-    (. .)))
-(ROOT
-  (S
-    (NP
-      (CC neither)
-      (NNP Sir)
-      (NNP Lancelot)
-      (CC nor)
-      (NNP Guinevere))
-    (VP (MD will) (VP (VB speak) (PP (IN of) (NP (PRP it)))))
-    (. .)))
-(ROOT
-  (S
-    (NP (DT the) (NNP Holy) (NNP Grail))
-    (VP
-      (VBD was)
-      (VP
-        (VBN covered)
-        (PP (IN by) (NP (DT a) (JJ yellow) (NN fruit)))))
-    (. .)))
-(ROOT
-  (S
-    (NP (NNP Zoot))
-    (VP
-      (MD might)
-      (VP
-        (VB have)
-        (VP
-          (VBN been)
-          (VP (VBN carried) (PP (IN by) (NP (DT a) (NN swallow)))))))
-    (. .)))
-(ROOT
-  (S
-    (NP (NNP Arthur))
-    (VP
-      (VP (VBD rode) (PP (TO to) (NP (NNP Camelot))))
-      (CC and)
-      (VP (VBD drank) (PP (IN from) (NP (PRP$ his) (NN chalice)))))
-    (. .)))
-(ROOT
-  (S
-    (NP (PRP they))
-    (VP
-      (VB migrate)
-      (ADVP (RB precisely))
-      (SBAR
-        (IN because)
-        (S
-          (NP (PRP they))
-          (VP
-            (VBP know)
-            (SBAR (S (NP (PRP they)) (VP (MD will) (VP (VB grow)))))))))
-    (. .)))
-(ROOT (S (VP (VB do) (RB not) (VP (VB speak))) (. !)))
-(ROOT
-  (S
-    (NP (NNP Arthur))
-    (VP
-      (MD will)
-      (VP
-        (VB have)
-        (VP
-          (VBN been)
-          (VP
-            (VBG riding)
-            (PP (IN for) (NP (CD eight) (NNS nights)))))))
-    (. .)))
-(ROOT
-  (S
-    (NP (NP (NNP Arthur)) (, ,) (NP (JJ sixty) (NNS inches)) (, ,))
-    (VP (VBZ is) (NP (DT a) (JJ tiny) (NN king)))
-    (. .)))
-(ROOT
-  (S
-    (NP (NNP Arthur))
-    (VP
-      (VBZ knows)
-      (NP
-        (NP (NNP Patsy))
-        (, ,)
-        (NP (DT the) (JJ trusty) (NN servant))))
-    (. .)))
-(ROOT
-  (S
-    (NP (NNP Arthur) (CC and) (NNP Guinevere))
-    (VP (VB migrate) (ADVP (RB frequently)))
-    (. .)))
-(ROOT
-  (S
-    (NP (PRP he))
-    (VP
-      (VBZ knows)
-      (SBAR
-        (WHNP (WP what))
-        (S
-          (NP (PRP they))
-          (VP
-            (VBP are)
-            (VP
-              (VBG covering)
-              (PP (IN with) (NP (DT that) (NN story))))))))
-    (. .)))
-(ROOT
-  (S
-    (NP (NNP Arthur))
-    (VP
-      (VBD suggested)
-      (SBAR
-        (IN that)
-        (S (NP (DT the) (NN castle)) (VP (VB be) (VP (VBN carried))))))
-    (. .)))
-(ROOT
-  (S
-    (NP (DT the) (NN king))
-    (VP
-      (VBD drank)
-      (PP
-        (TO to)
-        (NP
-          (NP (DT the) (NN castle))
-          (SBAR
-            (WHNP (WDT that))
-            (S (VP (VBD was) (NP (PRP$ his) (NN home))))))))
-    (. .)))
-(ROOT
-  (S
-    (SBAR
-      (WHADVP (WRB when))
-      (S (NP (DT the) (NN king)) (VP (VBZ drinks))))
-    (, ,)
-    (NP (NNP Patsy))
-    (VP (VBZ drinks))
-    (. .)))
+  (. .))
 (ROOT
   (S (NP (NNP Arthur)) (VP (VBZ is) (NP (DT the) (NN king))) (. .)))
 (ROOT
