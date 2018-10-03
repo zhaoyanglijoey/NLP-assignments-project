@@ -1,4 +1,5 @@
-100      TOP      S1
+99       TOP      S1
+1        TOP      S2
 500      S1       ROOT
 1        RB       B
 17       NP       RB
