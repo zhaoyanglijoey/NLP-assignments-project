@@ -105,8 +105,8 @@ class TreesParser():
             return appended_grammar
 
         s1_out = ''
-        s1_out += '{:<8} {:<8} S1\n'.format('100', 'TOP')
-        # s1_out += '{:<8} {:<8} S2\n'.format('1', 'TOP')
+        s1_out += '{:<8} {:<8} S1\n'.format('99', 'TOP')
+        s1_out += '{:<8} {:<8} S2\n'.format('1', 'TOP')
         for start, freq in self.starts.items():
             s1_out += '{:<8} {:<8} {}\n'.format(freq, 'S1', start)
         vocab_out = ''

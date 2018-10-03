@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-TREE=text/devset_stanford.trees
+TREE=text/devset.trees
 S1_GR=grammars/devset_s1.gr
 S2_GR=grammars/devset_s2.gr
 VOCAB_GR=grammars/devset_vocab.gr
