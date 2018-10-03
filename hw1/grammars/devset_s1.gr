@@ -1,10 +1,10 @@
 99       TOP      S1
 1        TOP      S2
-500      S1       ROOT
+581      S1       ROOT
 1        NNP      B
 1        NNP      W
 2        ADVP     EX
-93       ADVP     RB
+102      ADVP     RB
 2        ADVP     RB PERIOD
 1        ADVP     RB ADVP|<IN-DT>
 1        ADVP     RB RB
@@ -57,49 +57,49 @@
 1        INTJ     DT NN
 26       ROOT     INTJ
 74       ROOT     NP
-37       ROOT     SBARQ
-275      ROOT     S
+46       ROOT     SBARQ
+341      ROOT     S
 55       ROOT     FRAG
 3        ROOT     ADVP
 2        ROOT     PP
-20       ROOT     SQ
+26       ROOT     SQ
 2        ROOT     SINV
 1        ROOT     SBAR
 4        ROOT     ADJP
 1        ROOT     X
 1        NN       HELP
 19       NP       NN PERIOD
-324      NP       PRP
-80       NP       NNP
+351      NP       PRP
+140      NP       NNP
 54       NP       NN
-14       NP       NNP NNP
-61       NP       NP PP
+17       NP       NNP NNP
+64       NP       NP PP
 1        NP       NP NP|<,-NP-,-NP-,>
-102      NP       DT NN
-25       NP       DT NNP
+132      NP       DT NN
+28       NP       DT NNP
 1        NP       NP NP|<,-NP-,-ADJP-.>
 2        NP       DT NP|<JJ-CD>
 30       NP       DT
 1        NP       PRP$ NP|<NN-NN-NNP>
 1        NP       DT NP|<NN-CC-NN>
-30       NP       NNS
-34       NP       PRP$ NN
-9        NP       NP SBAR
+33       NP       NNS
+40       NP       PRP$ NN
+15       NP       NP SBAR
 1        NP       PRP$ NP|<NN-CC-NN>
 1        NP       CD NP|<JJ-NNS>
 1        NP       TWOSINGLEQUOTES
 10       NP       DT NNS
-23       NP       DT NP|<JJ-NN>
+32       NP       DT NP|<JJ-NN>
 2        NP       DT NP|<NN-NN>
 3        NP       NP NP|<CC-NP>
 2        NP       NN NNS
 8        NP       NP VP
 8        NP       DT JJ
-8        NP       JJ NNS
+11       NP       JJ NNS
 3        NP       DT NP|<ADJP-NN>
 3        NP       NN NN
 14       NP       PRP$ NNS
-2        NP       CD NNS
+8        NP       CD NNS
 5        NP       NP NP
 6        NP       NP NP|<ADJP-.>
 2        NP       WDT
@@ -128,7 +128,7 @@
 1        NP       DT NP|<JJ-DT-POS-JJ-NNS>
 1        NP       DT NP|<RB-VBP>
 1        NP       VB NN
-11       NP       NP NP|<,-NP>
+14       NP       NP NP|<,-NP>
 1        NP       DT WP
 2        NP       NP NP|<PP-.>
 1        NP       DT NP|<NNP-.>
@@ -145,7 +145,7 @@
 1        NP       NP NP|<,-INTJ-:-SBARQ-.>
 1        NP       NP NP|<PP-,>
 1        NP       DT NP|<NN-VBG-NN>
-1        NP       NP NP|<,-NP-,>
+4        NP       NP NP|<,-NP-,>
 1        NP       NP NP|<,-VP>
 1        NP       NNP NP|<NN-NN>
 1        NP       NP NP|<ADVP-,-VBD-NP>
@@ -162,7 +162,7 @@
 1        NP       RB
 1        NP       RB NP|<DT-JJ-NN-.>
 1        NP       WP
-13       NP       DT NP|<NNP-NNP>
+19       NP       DT NP|<NNP-NNP>
 5        NP       PRP$
 1        NP       RBR NP|<NNS-.>
 1        NP       NNP NP|<:-:>
@@ -223,60 +223,63 @@
 1        NP       NP PDT
 1        NP       MD
 1        NP       NN NP|<CC-NNS>
-44       WHNP     WP
+3        NP       NNP NN
+3        NP       CC NP|<NNP-NNP-CC-NNP>
+3        NP       NNP NP|<CC-NNP>
+56       WHNP     WP
 1        WHNP     WP VBD
-2        WHNP     WDT
+5        WHNP     WDT
 1        WHNP     WP$ WHNP|<NNS-CC-NNS>
 4        VP       VBZ ADVP
 2        VP       VBZ VP|<NP-PP>
-34       VP       VB NP
+37       VP       VB NP
 14       VP       VBP
 17       VP       VB VP|<NP-PP>
-36       VP       MD VP
+54       VP       MD VP
 3        VP       VBN VP|<NP-PP>
-14       VP       VBP VP
-16       VP       VB PP
-11       VP       VBP PP
+17       VP       VBP VP
+19       VP       VB PP
+14       VP       VBP PP
 8        VP       VBG NP
-18       VP       VBD NP
+21       VP       VBD NP
 1        VP       VBP VP|<JJ-NP-ADVP>
 1        VP       VBN VP|<SBAR-,-PP-,-PP>
 3        VP       IN NP
 1        VP       POS ADJP
-23       VP       VB
-30       VP       VBZ NP
+38       VP       VB
+48       VP       VBZ NP
 1        VP       VB VP|<ADVP-PP>
 1        VP       VBP VP|<RB-NP>
 9        VP       NN
 3        VP       VBG SBAR
-6        VP       VBN
-13       VP       VB VP
+12       VP       VBN
+28       VP       VB VP
 1        VP       VBZ VP|<RB-NP-PP>
 4        VP       MD VP|<RB-VP>
 2        VP       VBZ VP|<RB-VP>
 3        VP       VB VP|<NP-SBAR>
-6        VP       VP VP|<CC-VP>
+9        VP       VP VP|<CC-VP>
 35       VP       TO VP
 1        VP       S VP|<:-NP>
 1        VP       VB VP|<NP-NP-,-INTJ>
 1        VP       NNS S
-11       VP       VBN PP
+17       VP       VBN PP
 2        VP       POS NP
 3        VP       VBZ S
 1        VP       VBP VP|<RB-ADJP>
 1        VP       VB VP|<NP-ADVP-ADVP>
 1        VP       VBD VP|<NP-ADVP>
 1        VP       WRB VP|<NP-:-S>
-13       VP       VB S
+16       VP       VB S
 1        VP       MD VP|<ADVP-VP>
-1        VP       VBD PP
+10       VP       VBD PP
 2        VP       VBG VP|<PRT-NP>
-5        VP       VBZ
+17       VP       VBZ
 1        VP       VBZ VP|<RB-ADJP>
-8        VP       VBZ SBAR
+11       VP       VBZ SBAR
 2        VP       VBZ RB
-6        VP       VB ADVP
-2        VP       VBZ ADJP
+9        VP       VB ADVP
+5        VP       VBZ ADJP
 1        VP       VBG ADJP
 3        VP       VBP RB
 1        VP       VB VP|<ADJP-PP>
@@ -288,7 +291,7 @@
 1        VP       VB VP|<PRT-PP>
 4        VP       VBD S
 1        VP       VBN VP|<NP-NP>
-2        VP       VBP SBAR
+5        VP       VBP SBAR
 1        VP       RB VP|<VBG-NP>
 1        VP       VP VP|<NN-VP>
 1        VP       RB VP
@@ -296,7 +299,7 @@
 2        VP       VBP VP|<ADVP-VP>
 1        VP       VB VP|<``-NP-POS>
 4        VP       VBN S
-6        VP       VBD VP
+9        VP       VBD VP
 9        VP       VB SBAR
 4        VP       VBD VP|<RB-VP>
 2        VP       VB PRT
@@ -307,7 +310,7 @@
 2        VP       VBG S
 2        VP       VBZ VP|<ADVP-VP>
 2        VP       VBZ VP|<NP-ADVP>
-3        VP       VBD SBAR
+6        VP       VBD SBAR
 4        VP       NN PP
 1        VP       VBG VP|<NP-PP-ADVP>
 1        VP       VP VP|<,-S>
@@ -351,7 +354,7 @@
 1        VP       VBG VP|<ADVP-ADVP>
 1        VP       VBP NNS
 1        VP       NNP VP|<ADVP-ADVP>
-2        VP       VBG PP
+14       VP       VBG PP
 5        VP       VBZ VP
 4        VP       VB VP|<NP-PRT>
 5        VP       NNP NP
@@ -389,7 +392,7 @@
 1        VP       NNP VP|<ADVP-,-NP-,>
 1        VP       VBZ VP|<NP-S>
 1        VP       VBN VP|<PP-PP>
-1        VP       VBN VP
+7        VP       VBN VP
 1        VP       VBD VP|<NP-SBAR>
 1        VP       VP VP|<CC-VB-NP>
 1        VP       S VP|<,-NP>
@@ -426,6 +429,10 @@
 1        VP       ADVP VP|<VBG-ADVP>
 1        VP       JJ NP
 1        VP       VP VP|<CC-RB-VP>
+3        VP       VBG VP|<NP-PP>
+3        VP       VP VP|<CC-ADVP-VP>
+3        VP       VB VP|<ADVP-SBAR>
+3        VP       VB VP|<RB-VP>
 8        SQ       VP
 4        SQ       MD SQ|<NP-VP>
 10       SQ       VBP SQ|<NP-VP>
@@ -443,7 +450,7 @@
 3        SQ       VB SQ|<NP-VP>
 1        SQ       S SQ
 3        SQ       VBP NP
-1        SQ       VBZ SQ|<NP-VP>
+10       SQ       VBZ SQ|<NP-VP>
 1        SQ       VBD SQ|<NP-VP>
 1        SQ       INTJ SQ|<,-''-WHADVP-SQ-.>
 1        SQ       NNP SQ|<NP-ADVP-NP-.>
@@ -461,10 +468,11 @@
 1        SQ       SQ SQ|<,-S>
 1        SQ       VBZ SQ|<NP-NP-.>
 1        SQ       NN SQ|<NP-.>
-31       SBARQ|<SQ-.> SQ PERIOD
-19       SBARQ    WHNP SBARQ|<SQ-.>
+6        SQ       VBP SQ|<NP-VP-.>
+40       SBARQ|<SQ-.> SQ PERIOD
+25       SBARQ    WHNP SBARQ|<SQ-.>
 1        SBARQ    WHNP SBARQ|<,-S-.>
-4        SBARQ    WHADVP SBARQ|<SQ-.>
+7        SBARQ    WHADVP SBARQ|<SQ-.>
 1        SBARQ    WHNP SBARQ|<,-VP-.>
 1        SBARQ    INTJ SBARQ|<,-WHADVP-SQ-.>
 1        SBARQ    WHNP SBARQ|<S-.>
@@ -477,10 +485,10 @@
 1        SBARQ    WHNP SBARQ|<ADVP-VP-.>
 1        SBARQ    WHNP SBARQ|<SQ-.-.>
 78       PRP      I
-173      PP       IN NP
+200      PP       IN NP
 1        PP       IN
 1        PP       IN PP|<NP-.>
-14       PP       TO NP
+26       PP       TO NP
 1        PP       IN SBAR
 1        PP       PRT NP
 1        PP       ADVP PP|<IN-NP>
@@ -504,17 +512,17 @@
 1        PP       IN ADVP
 1        PP       PP PP|<,-NNS>
 1        PP       TO INTJ
-2        NP|<NP-,> NP COMMA
-2        NP|<,-NP-,> COMMA NP|<NP-,>
+5        NP|<NP-,> NP COMMA
+5        NP|<,-NP-,> COMMA NP|<NP-,>
 1        NP|<NP-,-NP-,> NP NP|<,-NP-,>
 1        NP|<,-NP-,-NP-,> COMMA NP|<NP-,-NP-,>
 11       DT       A
-27       VP|<NP-PP> NP PP
-165      S|<VP-.> VP PERIOD
-89       S        NP S|<VP-.>
-47       S        VP PERIOD
-69       S        VP
-121      S        NP VP
+30       VP|<NP-PP> NP PP
+228      S|<VP-.> VP PERIOD
+146      S        NP S|<VP-.>
+50       S        VP PERIOD
+78       S        VP
+139      S        NP VP
 4        S        S S|<CC-S-.>
 1        S        NP S|<VBN-NP>
 6        S        NP S|<VP-:>
@@ -575,7 +583,7 @@
 1        S        INTJ VP
 1        S        NP S|<RB-VP>
 1        S        INTJ S|<,-PP-,-VP>
-2        S        SBAR S|<,-NP-VP-.>
+5        S        SBAR S|<,-NP-VP-.>
 1        S        CC S|<VP-.>
 1        S        NP S|<NP-VP-.>
 1        S        NP S|<:-S-.>
@@ -617,8 +625,9 @@
 1        S        UH S|<VP-.>
 1        S        UH S|<NP-VP>
 1        S        ADVP S|<,-NP-VP>
+3        S        S S|<VP-.>
 4        ADJP     NN PP
-18       ADJP     JJ
+21       ADJP     JJ
 2        ADJP     CD NN
 3        ADJP     RB
 16       ADJP     RB JJ
@@ -703,10 +712,10 @@
 1        FRAG     INTJ FRAG|<,-CC-RB-NP-.>
 4        NP|<CC-NN> CC NN
 2        NP|<NN-CC-NN> NN NP|<CC-NN>
-12       SBAR     WHNP S
-17       SBAR     IN S
-25       SBAR     S
-5        SBAR     WHADVP S
+21       SBAR     WHNP S
+23       SBAR     IN S
+28       SBAR     S
+8        SBAR     WHADVP S
 1        SBAR     IN SBAR|<NN-S>
 1        SBAR     IN SBAR|<S-:>
 1        SBAR     WHADVP SQ
@@ -732,28 +741,28 @@
 1        VP|<,-PP-,-PP> COMMA VP|<PP-,-PP>
 1        VP|<SBAR-,-PP-,-PP> SBAR VP|<,-PP-,-PP>
 12       S|<VP-:> VP COLON
-15       WHADVP   WRB
+21       WHADVP   WRB
 1        WHADVP   DT WHADVP|<POS-WHADVP>
 1        WHADVP   NN
-20       SQ|<NP-VP> NP VP
+29       SQ|<NP-VP> NP VP
 2        PP|<NP-.> NP PERIOD
-35       NP|<JJ-NN> JJ NN
-50       S|<NP-VP-.> NP S|<VP-.>
-29       S|<,-NP-VP-.> COMMA S|<NP-VP-.>
+44       NP|<JJ-NN> JJ NN
+53       S|<NP-VP-.> NP S|<VP-.>
+32       S|<,-NP-VP-.> COMMA S|<NP-VP-.>
 6        NP|<NN-NN> NN NN
 4        NP|<CC-NP> CC NP
 4        VP|<ADVP-PP> ADVP PP
 3        VP|<RB-NP> RB NP
 1        S|<RB-S-.> RB S|<S-.>
-9        SQ|<VP-.> VP PERIOD
-8        SQ|<NP-VP-.> NP SQ|<VP-.>
+15       SQ|<VP-.> VP PERIOD
+14       SQ|<NP-VP-.> NP SQ|<VP-.>
 1        ADVP|<IN-DT> IN DT
 2        FRAG|<:-NP-.> COLON FRAG|<NP-.>
 1        VP|<RB-NP-PP> RB VP|<NP-PP>
 3        NP|<ADJP-NN> ADJP NN
-25       VP|<RB-VP> RB VP
+28       VP|<RB-VP> RB VP
 4        VP|<NP-SBAR> NP SBAR
-9        VP|<CC-VP> CC VP
+12       VP|<CC-VP> CC VP
 2        VP|<:-NP> COLON NP
 1        SBAR|<NN-S> NN S
 2        VP|<,-INTJ> COMMA INTJ
@@ -789,7 +798,7 @@
 1        VP|<NP-:-S> NP VP|<:-S>
 3        FRAG|<ADJP-.> ADJP PERIOD
 3        FRAG|<,-ADJP-.> COMMA FRAG|<ADJP-.>
-7        VP|<ADVP-VP> ADVP VP
+10       VP|<ADVP-VP> ADVP VP
 1        NP|<VBG-NNS> VBG NNS
 1        NP|<NN-VBG-NNS> NN NP|<VBG-NNS>
 2        SBARQ|<VP-.> VP PERIOD
@@ -887,7 +896,7 @@
 1        FRAG|<:-WHADVP-SQ-.> COLON FRAG|<WHADVP-SQ-.>
 1        SBARQ|<NP-.> NP PERIOD
 1        SBARQ|<,-NP-.> COMMA SBARQ|<NP-.>
-11       NP|<,-NP> COMMA NP
+14       NP|<,-NP> COMMA NP
 2        NP|<PP-.> PP PERIOD
 1        NP|<NNP-.> NNP PERIOD
 1        WHPP     IN WHNP
@@ -979,7 +988,7 @@
 1        NP|<DT-JJ-NN-.> DT NP|<JJ-NN-.>
 1        VP|<POS-INTJ> POS INTJ
 1        VP|<,-VP> COMMA VP
-19       NP|<NNP-NNP> NNP NNP
+25       NP|<NNP-NNP> NNP NNP
 1        S|<ADVP-VP-.> ADVP S|<VP-.>
 1        PRN|<S-,> S COMMA
 1        FRAG|<PRN-VP-.> PRN FRAG|<VP-.>
@@ -1067,7 +1076,7 @@
 2        S|<NP-,-VP-.> NP S|<,-VP-.>
 2        S|<,-NP-,-VP-.> COMMA S|<NP-,-VP-.>
 1        S|<NP-,-NP-,-VP-.> NP S|<,-NP-,-VP-.>
-1        VP|<ADVP-SBAR> ADVP SBAR
+4        VP|<ADVP-SBAR> ADVP SBAR
 1        FRAG|<ADVP-,-INTJ-.> ADVP FRAG|<,-INTJ-.>
 1        FRAG|<,-ADVP-,-INTJ-.> COMMA FRAG|<ADVP-,-INTJ-.>
 1        VP|<ADVP-NP> ADVP NP
@@ -1274,3 +1283,7 @@
 1        NP|<CC-NNS> CC NNS
 1        FRAG|<CC-RB-NP-.> CC FRAG|<RB-NP-.>
 1        FRAG|<,-CC-RB-NP-.> COMMA FRAG|<CC-RB-NP-.>
+3        VP|<CC-ADVP-VP> CC VP|<ADVP-VP>
+6        NP|<CC-NNP> CC NNP
+3        NP|<NNP-CC-NNP> NNP NP|<CC-NNP>
+3        NP|<NNP-NNP-CC-NNP> NNP NP|<NNP-CC-NNP>
