@@ -2,6 +2,9 @@ import re
 import argparse
 import collections
 
+initialWeight = 1
+stepSize = 1
+
 def startWithTag(tag):
   return "%-15s %s"%("S2", "_" + tag)
 
@@ -46,11 +49,11 @@ def main(vocab_file, tree_file, s2_file):
 
     weights = collections.OrderedDict()
     for tag in tags:
-      weights[startWithTag(tag)] = 1
+      weights[startWithTag(tag)] = initialWeight
     for tagA in tags:
-      weights[endWithTag(tagA)] = 1
+      weights[endWithTag(tagA)] = initialWeight
       for tagB in tags:
-        weights[tagAFollowedByTagB(tagA, tagB)] = 1
+        weights[tagAFollowedByTagB(tagA, tagB)] = initialWeight
 
     # Count the weight from the tree file
 
@@ -71,9 +74,9 @@ def main(vocab_file, tree_file, s2_file):
             # Terminals (( () or () ))
             curTag = sanitize(line[i])
             if lastTermTag:
-              weights[tagAFollowedByTagB(lastTermTag, curTag)] += 1
+              weights[tagAFollowedByTagB(lastTermTag, curTag)] += stepSize
             else:
-              weights[startWithTag(curTag)] += 1
+              weights[startWithTag(curTag)] += stepSize
             # print(str(lastTermTag) + " " + curTag, end=',')
             lastTermTag = curTag
             i += 3
@@ -88,9 +91,9 @@ def main(vocab_file, tree_file, s2_file):
                 # Terminals
                 curTag = sanitize(curTag)
                 if lastTermTag:
-                  weights[tagAFollowedByTagB(lastTermTag, curTag)] += 1
+                  weights[tagAFollowedByTagB(lastTermTag, curTag)] += stepSize
                 else:
-                  weights[startWithTag(curTag)] += 1
+                  weights[startWithTag(curTag)] += stepSize
                 # print(str(lastTermTag) + " " + curTag, end=',')
                 lastTermTag = curTag
                 while i < l and line[i] != ')':
@@ -102,7 +105,7 @@ def main(vocab_file, tree_file, s2_file):
         elif line[i] == ')':
           count -= 1
         if count == 0 and lastTermTag:
-          weights[endWithTag(lastTermTag)] += 1
+          weights[endWithTag(lastTermTag)] += stepSize
           lastTermTag = None
           # print()
         i += 1
