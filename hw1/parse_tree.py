@@ -45,7 +45,7 @@ class TreesParser():
         treestr = treestr.strip()
         tree = Tree.fromstring(treestr)
         if tree.label() != ROOT_NODE_NAME:
-            new_root = Tree.fromstring(f"({ROOT_NODE_NAME})")
+            new_root = Tree.fromstring("({})".format(ROOT_NODE_NAME))
             new_root.insert(0, tree)
             tree = new_root
         tree.chomsky_normal_form()

@@ -84,7 +84,7 @@ class Pcfg:
         self.unary = '<Unary>'
 
         for filename in filelist:
-            print("#reading grammar file: {}".format(filename), file=sys.stderr)
+            # print("#reading grammar file: {}".format(filename), file=sys.stderr)
             linenum = 0
             for _line in open(filename, 'r'):
                 linenum += 1
@@ -113,7 +113,7 @@ class Pcfg:
                 else:
                     right = f[3]
                 if lhs == left and right == self.unary:
-                    print("#Ignored cycle {} -> {}".format(lhs, left), file=sys.stderr)
+                    # print("#Ignored cycle {} -> {}".format(lhs, left), file=sys.stderr)
                     continue
                 self.last_rule += 1
                 self.rules[self.last_rule] = (lhs, (left, right), count, None)
@@ -517,7 +517,7 @@ class CkyParse:
                     print("#skipping comment line in input_sent: {}".format(sent), file=sys.stderr)
                 continue
             corpus_len += length
-            print("#parsing: {}".format(input_sent), file=sys.stderr)
+            # print("#parsing: {}".format(input_sent), file=sys.stderr)
             try:
                 sent_log_prob = self.parse(input_sent)
                 best_tree = self.best_tree(input_sent)
@@ -527,7 +527,7 @@ class CkyParse:
                 best_tree = self.default_tree(input_sent)
             total_log_prob = sent_log_prob if total_log_prob is None else total_log_prob + sent_log_prob
             parses.append(best_tree)
-            print(best_tree)
+            # print(best_tree)
         if corpus_len:
             corpus_cross_entropy = total_log_prob / corpus_len
             print("#-cross entropy (bits/word): %g" % corpus_cross_entropy, file=sys.stderr)
