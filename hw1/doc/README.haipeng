@@ -1,0 +1,4 @@
+#### What I have done for this homework
+
+1. Did experiments on different training data, different parser
+2. Handle unseen words from allowed_words.txt
