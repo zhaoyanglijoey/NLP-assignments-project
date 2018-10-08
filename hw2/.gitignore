@@ -1,3 +1,4 @@
 language-model
 venv
 data/mlstm_ns.pt
+data/6-gram-wiki-char.lm
