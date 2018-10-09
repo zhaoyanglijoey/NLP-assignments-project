@@ -60,7 +60,7 @@ def beam_search(cipher, lm, ext_order, ext_limits, beamsize):
         Hs = prune(Ht, beamsize)
         cardinality += 1
         Ht = []
-        # pp.pprint(Hs)
+        # print(Hs)
     Hs.sort(key=lambda b: b[1], reverse=True)
     # pp.pprint(Hs)
     return Hs[0]

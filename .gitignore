@@ -1,2 +1,5 @@
-.idea/
+.idea
 playground.ipynb
+.DS_Store
+.ipynb_checkpoints
+__pycache__

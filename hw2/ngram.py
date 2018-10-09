@@ -1,9 +1,9 @@
-import sys, bz2, re
+import sys, bz2, re, string
 from collections import namedtuple
 
 # # A language model scores sequences, and must account
 # # for both beginning and end of each sequence. Example API usage:
-# lm = models.LM(filename)
+# lm = LM(filename, n=6, verbose=False)
 # sentence = "This is a test ."
 # lm_state = lm.begin() # initial state is always <s>
 # logprob = 0.0
@@ -86,15 +86,13 @@ class LM:
                 lm_state = ()
                 continue
             self.maybe_write("state: {}".format(lm_state + (token,)))
-            (lm_state, logprob) = lm.score(lm_state, token)
+            (lm_state, logprob) = self.score(lm_state, token)
             lm_logprob += logprob
             self.maybe_write("logprob={}".format(logprob))
-        lm_logprob += lm.end(lm_state)
+        lm_logprob += self.end(lm_state)
         return lm_logprob
 
 if __name__ == '__main__':
-    import sys, string
-
     sequence = 'In a few cases, a multilingual artifact has been necessary to facilitate decipherment, the Rosetta Stone being the classic example. Statistical techniques provide another pathway to decipherment, as does the analysis of modern languages derived from ancient languages in which undeciphered texts are written. Archaeological and historical information is helpful in verifying hypothesized decipherments.'
 
     lm = LM("data/6-gram-wiki-char.lm.bz2", n=6, verbose=False)
