@@ -1,10 +1,15 @@
 import argparse
+import string
 import random
 
 
 def to_cipher(key, plaintext):
     ciphertext = []
     for c in plaintext:
+        if c not in string.ascii_letters:
+            continue
+        if c not in string.ascii_lowercase:
+            c = c.lower()
         ciphertext.append(random.choice(key[c]))
 
     return ''.join(ciphertext)
@@ -15,6 +20,8 @@ def read_key_file(keyfile):
     with open(keyfile, 'r') as f:
         for line in f:
             plain_cipher = line.strip().split()
+            if len(plain_cipher) < 2:
+                continue
             plain = plain_cipher[0]
             cipher = plain_cipher[1:]
             key[plain] = cipher

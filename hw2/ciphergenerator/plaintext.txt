@@ -1,1 +1,1 @@
-burger
+The model file can be loaded and used for scoring arbitrary subsequences using the code
