@@ -65,19 +65,77 @@ def beam_search(cipher, lm, ext_order, ext_limits, beamsize):
     # pp.pprint(Hs)
     return Hs[0]
 
+def contiguous_score(cipher, order):
+    order = set(order)
+    count = 0
+    ngrams = defaultdict(int)
+    for c in cipher:
+        if c in order:
+            if count == 6:
+                ngrams[count] += 1
+            else:
+                count += 1
+        else:
+            ngrams[count] += 1
+            count = 0
+    if count != 0:
+        ngrams[count] += 1
+    weights = [0, 0.1, 0.4, 0.6, 1, 1.5, 2]
+    score = 0
+    for k, v in ngrams.items():
+        score += weights[k] * v
+    return score
+
+def prune_orders(orders, beamsize):
+    sorted_order = sorted(orders, reverse=True)
+
+    return sorted_order[: beamsize]
+
+def search_ext_order(cipher, beamsize):
+    symbols = set(cipher)
+    freq = Counter(cipher)
+    start = ''
+    maxf = 0
+    for symbol, f in freq.items():
+        if f > maxf:
+            maxf = f
+            start = symbol
+    orders = [([0], [start])]
+    orders_tmp = []
+    symbols.remove(start)
+    for i in range(len(symbols)):
+        for scores, order in orders:
+            for symbol in symbols:
+                if symbol not in order:
+                    new_order = deepcopy(order)
+                    new_order.append(symbol)
+                    new_scores = deepcopy(scores)
+                    new_scores.insert(0, contiguous_score(cipher, new_order))
+                    orders_tmp.append((new_scores, new_order))
+        orders = prune_orders(orders_tmp, beamsize)
+        orders_tmp = []
+        # pp.pprint(orders)
+    orders.sort(reverse=True)
+    # pp.pprint(orders)
+    return orders[0][1]
 
 if __name__ == '__main__':
     arg_parser = argparse.ArgumentParser()
     arg_parser.add_argument('-f', '--file', default='data/cipher.txt', help='cipher file')
-    arg_parser.add_argument('-b', '--beamsize', type=int, default=20)
+    arg_parser.add_argument('-b', '--beamsize', type=int, default=100)
     args = arg_parser.parse_args()
 
     cipher = read_file(args.file)
     cipher = [x for x in cipher if not x.isspace()]
     cipher = ''.join(cipher)
+    ext_order = search_ext_order(cipher, 100)
+    ext_limits = 8
+
     freq = Counter(cipher)
-    ext_order = [ kv[0] for kv in sorted(freq.items(), key=lambda kv: kv[1], reverse=True)]
-    ext_limits = 10
+    sort_freq = [ kv[0] for kv in sorted(freq.items(), key=lambda kv: kv[1], reverse=True)]
+
+    print(ext_order)
+    print(sort_freq)
 
     print('Loading language model')
     lm = LM("data/6-gram-wiki-char.lm.bz2", n=6, verbose=False)
