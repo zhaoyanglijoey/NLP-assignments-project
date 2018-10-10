@@ -1,0 +1,5 @@
+b   B X
+u   U
+r   R
+g   G
+e   E

@@ -3,6 +3,7 @@ import collections
 import pprint
 import math
 import bz2
+import string
 import argparse
 from ngram import LM
 from copy import deepcopy
@@ -21,42 +22,50 @@ def read_file(filename):
             f.close()
     return content
 
-def check_limits(mappings, ext_limits):
-    targets = mappings.values()
-    counts = Counter(targets).values()
-    if any([count > ext_limits for count in counts]):
-        return False
+def check_limits(mappings, ext_limits, letter_to_check=0):
+    if letter_to_check is None:
+        targets = mappings.values()
+        counts = Counter(targets).values()
+        if any([count > ext_limits for count in counts]):
+            return False
+        else:
+            return True
     else:
-        return True
+        plaintext_letters = list(mappings.values())
+        return plaintext_letters.count(letter_to_check) <= ext_limits
 
-def score(mappings, cipher, lm):
-    deciphered = [ mappings[c] if c in mappings else '_' for c in cipher ]
+def score(mappings, cipher_text, lm):
+    deciphered = [mappings[cipher_letter] if cipher_letter in mappings else '_' for cipher_letter in cipher_text]
     deciphered = ''.join(deciphered)
-    bit_string = [ 'o' if c in mappings else '.' for c in cipher ]
+    bit_string = [ 'o' if c in mappings else '.' for c in cipher_text]
     bit_string = ''.join(bit_string)
 
     return lm.score_bitstring(deciphered, bit_string)
+
 
 def prune(beams, beamsize):
     sorted_beams = sorted(beams, key=lambda b: b[1], reverse=True)
 
     return sorted_beams[:beamsize]
 
-def beam_search(cipher, lm, ext_order, ext_limits, beamsize):
+
+def beam_search(cipher_text, lm, ext_order, ext_limits, beamsize):
     Hs = []
     Ht = []
     cardinality = 0
-    Hs.append(({},0) )
-    Ve = 'abcdefghijklmnopqrstuvwxyz'
+    Hs.append(({}, 0))
+    Ve = string.ascii_lowercase
 
     while cardinality < len(ext_order):
-        f = ext_order[cardinality]
+        print("Searching for {}/{} letter".format(cardinality, len(ext_order)))
+        print("Current size of searching tree: {}".format(len(Hs)))
+        cipher_letter = ext_order[cardinality]
         for mappings, sc in Hs:
-            for e in Ve:
+            for plain_letter in Ve:
                 ext_mappings = deepcopy(mappings)
-                ext_mappings[f] = e
-                if check_limits(ext_mappings, ext_limits):
-                    Ht.append((ext_mappings, score(ext_mappings, cipher, lm)))
+                ext_mappings[cipher_letter] = plain_letter
+                if check_limits(ext_mappings, ext_limits, plain_letter):  # only check new added one
+                    Ht.append((ext_mappings, score(ext_mappings, cipher_text, lm)))
         Hs = prune(Ht, beamsize)
         cardinality += 1
         Ht = []
@@ -118,6 +127,7 @@ def search_ext_order(cipher, beamsize):
     orders.sort(reverse=True)
     # pp.pprint(orders)
     return orders[0][1]
+
 
 if __name__ == '__main__':
     arg_parser = argparse.ArgumentParser()
