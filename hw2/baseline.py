@@ -138,7 +138,7 @@ if __name__ == '__main__':
     arg_parser = argparse.ArgumentParser()
     arg_parser.add_argument('-f', '--file', default='data/cipher.txt', help='cipher file')
     arg_parser.add_argument('-b', '--beamsize', type=int, default=100)
-    arg_parser.add_argument('--cuda', type=bool, default=False)
+    arg_parser.add_argument('--cuda', action='store_true', default=False)
     args = arg_parser.parse_args()
 
     cipher = read_file(args.file)
