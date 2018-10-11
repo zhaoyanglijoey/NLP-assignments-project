@@ -6,6 +6,8 @@ import bz2
 import string
 import argparse
 from ngram import LM
+from nlm_scorer import NlmScorer
+import nlm
 from copy import deepcopy
 from datetime import datetime
 
@@ -49,14 +51,17 @@ def prune(beams, beamsize):
     return sorted_beams[:beamsize]
 
 
-def beam_search(cipher_text, lm, ext_order, ext_limits, beamsize):
+def beam_search(cipher_text, lm, nlm, ext_order, ext_limits, beamsize):
     Hs = []
     Ht = []
     cardinality = 0
     Hs.append(({}, 0))
     Ve = string.ascii_lowercase
+    scorer = lm
 
     while cardinality < len(ext_order):
+        if cardinality > 10:
+            scorer = nlm
         print("Searching for {}/{} letter".format(cardinality, len(ext_order)))
         print("Current size of searching tree: {}".format(len(Hs)))
         cipher_letter = ext_order[cardinality]
@@ -65,7 +70,7 @@ def beam_search(cipher_text, lm, ext_order, ext_limits, beamsize):
                 ext_mappings = deepcopy(mappings)
                 ext_mappings[cipher_letter] = plain_letter
                 if check_limits(ext_mappings, ext_limits, plain_letter):  # only check new added one
-                    Ht.append((ext_mappings, score(ext_mappings, cipher_text, lm)))
+                    Ht.append((ext_mappings, score(ext_mappings, cipher_text, scorer)))
         Hs = prune(Ht, beamsize)
         cardinality += 1
         Ht = []
@@ -149,11 +154,14 @@ if __name__ == '__main__':
 
     print('Loading language model')
     lm = LM("data/6-gram-wiki-char.lm.bz2", n=6, verbose=False)
+    cuda = False
+    model = nlm.load_model("data/mlstm_ns.pt", cuda=cuda)
+    nlm = NlmScorer(model, cuda=cuda)
     print('Language model loaded')
 
     print('Start deciphering...')
     search_start = datetime.now()
-    mappings, sc = beam_search(cipher, lm, ext_order, ext_limits, args.beamsize)
+    mappings, sc = beam_search(cipher, lm, nlm, ext_order, ext_limits, args.beamsize)
     search_end = datetime.now()
     print('Deciphering completed after {}'.format(search_end - search_start))
 
