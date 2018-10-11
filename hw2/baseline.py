@@ -138,6 +138,7 @@ if __name__ == '__main__':
     arg_parser = argparse.ArgumentParser()
     arg_parser.add_argument('-f', '--file', default='data/cipher.txt', help='cipher file')
     arg_parser.add_argument('-b', '--beamsize', type=int, default=100)
+    arg_parser.add_argument('--cuda', type=bool, default=False)
     args = arg_parser.parse_args()
 
     cipher = read_file(args.file)
@@ -154,9 +155,8 @@ if __name__ == '__main__':
 
     print('Loading language model')
     lm = LM("data/6-gram-wiki-char.lm.bz2", n=6, verbose=False)
-    cuda = False
-    model = nlm.load_model("data/mlstm_ns.pt", cuda=cuda)
-    nlm = NlmScorer(model, cuda=cuda)
+    model = nlm.load_model("data/mlstm_ns.pt", cuda=args.cuda)
+    nlm = NlmScorer(model, cuda=args.cuda)
     print('Language model loaded')
 
     print('Start deciphering...')
