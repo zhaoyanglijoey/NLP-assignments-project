@@ -61,6 +61,17 @@ class LM:
         lm_logprob += self.end(lm_state)
         return lm_logprob
 
+    def score_patial_seq(self, sequence):
+        lm_state = ()
+        lm_logprob = 0.0
+        for token in list(self.clean_seq(sequence)):
+            self.maybe_write("state: {}".format(lm_state + (token,)))
+            (lm_state, logprob) = self.score(lm_state, token)
+            lm_logprob += logprob
+            self.maybe_write("logprob={}".format(logprob))
+        lm_logprob += self.end(lm_state)
+        return lm_logprob
+
     def get_bitstring_spans(self, bitstring):
         """get a list of spans that are contiguous and have 'o' in
         the string position. ignore '.' positions"""

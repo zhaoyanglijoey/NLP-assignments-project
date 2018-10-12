@@ -10,7 +10,14 @@ from nlm_scorer import NlmScorer
 import nlm
 from copy import deepcopy
 from datetime import datetime
-from multiprocessing import Pool
+# from multiprocessing import Pool
+import torch
+from torch.multiprocessing import Pool, set_start_method
+
+try:
+    torch.multiprocessing.set_start_method('spawn')
+except RuntimeError:
+    print('Start method already set to spawn!')
 
 pp = pprint.PrettyPrinter(width=45, compact=True)
 
@@ -18,6 +25,7 @@ arg_parser = argparse.ArgumentParser()
 arg_parser.add_argument('-f', '--file', default='data/cipher.txt', help='cipher file')
 arg_parser.add_argument('-b', '--beamsize', type=int, default=1000)
 arg_parser.add_argument('--cuda', action='store_true', default=False)
+arg_parser.add_argument('-nw', '--num-workers', type=int, default=12)
 args = arg_parser.parse_args()
 
 print('Loading language model')
@@ -50,12 +58,14 @@ def check_limits(mappings, ext_limits, letter_to_check=0):
         plaintext_letters = list(mappings.values())
         return plaintext_letters.count(letter_to_check) <= ext_limits
 
-def score_single_seq(seq):
-    if len(seq) >= 20:
-        print('Scoring:', seq)
-    return lm.score_seq(seq) if len(seq) < 20 else nlm.score_seq(seq)
+def score_single_seq(t):
+    i, seq = t
+    # if len(seq) >= 20:
+    #     print('Scoring:', seq)
+    # return lm.score_seq(seq) if len(seq) < 20 else nlm.score_seq(seq)
+    return lm.score_patial_seq(seq) if i != 0 else lm.score_seq(seq)
 
-pool = Pool(12)
+pool = Pool(args.num_workers)
 
 def score(mappings, cipher_text, lm, nlm):
     deciphered = [mappings[cipher_letter] if cipher_letter in mappings else ' ' for cipher_letter in cipher_text]
@@ -63,7 +73,8 @@ def score(mappings, cipher_text, lm, nlm):
     # bit_string = [ 'o' if c in mappings else '.' for c in cipher_text]
     # bit_string = ''.join(bit_string)
     seqs = deciphered.split()
-    res = sum(pool.map(score_single_seq, seqs))
+
+    res = sum(pool.map(score_single_seq, zip(range(len(seqs)),seqs)))
 
     # return lm.score_bitstring(deciphered, bit_string)
     return res
@@ -83,7 +94,8 @@ def beam_search(cipher_text, lm, nlm, ext_order, ext_limits, init_beamsize):
     scorer = lm
 
     while cardinality < len(ext_order):
-        beamsize = int(init_beamsize*(0.9**cardinality))
+        beamsize = int(init_beamsize*(0.94**cardinality))
+        # beamsize = init_beamsize
         if cardinality > 10:
             scorer = nlm
         print("Searching for {}/{} letter".format(cardinality, len(ext_order)))
