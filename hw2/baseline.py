@@ -96,8 +96,8 @@ def beam_search(cipher_text, lm, nlm, ext_order, ext_limits, init_beamsize):
     while cardinality < len(ext_order):
         beamsize = int(init_beamsize*(0.94**cardinality))
         # beamsize = init_beamsize
-        if cardinality > 10:
-            scorer = nlm
+        # if cardinality > 10:
+        #     scorer = nlm
         print("Searching for {}/{} letter".format(cardinality, len(ext_order)))
         print("Current size of searching tree: {}".format(len(Hs)))
         cipher_letter = ext_order[cardinality]
@@ -182,7 +182,7 @@ if __name__ == '__main__':
     cipher = [x for x in cipher if not x.isspace()]
     cipher = ''.join(cipher)
     ext_order = search_ext_order(cipher, 100)
-    ext_limits = 8
+    ext_limits = 3
 
     # freq = Counter(cipher)
     # sort_freq = [ kv[0] for kv in sorted(freq.items(), key=lambda kv: kv[1], reverse=True)]
@@ -201,7 +201,7 @@ if __name__ == '__main__':
     mappings, sc = beam_search(cipher, lm, nlm, ext_order, ext_limits, args.beamsize)
     search_end = datetime.now()
     print('Deciphering completed after {}'.format(search_end - search_start))
-
+    print(mappings)
     deciphered = [mappings[c] if c in mappings else '_' for c in cipher]
     deciphered = ''.join(deciphered)
     print(deciphered, sc)
