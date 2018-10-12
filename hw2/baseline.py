@@ -10,8 +10,22 @@ from nlm_scorer import NlmScorer
 import nlm
 from copy import deepcopy
 from datetime import datetime
+from multiprocessing import Pool
 
 pp = pprint.PrettyPrinter(width=45, compact=True)
+
+arg_parser = argparse.ArgumentParser()
+arg_parser.add_argument('-f', '--file', default='data/cipher.txt', help='cipher file')
+arg_parser.add_argument('-b', '--beamsize', type=int, default=1000)
+arg_parser.add_argument('--cuda', action='store_true', default=False)
+args = arg_parser.parse_args()
+
+print('Loading language model')
+lm = LM("data/6-gram-wiki-char.lm.bz2", n=6, verbose=False)
+model = nlm.load_model("data/mlstm_ns.pt", cuda=args.cuda)
+nlm = NlmScorer(model, cuda=args.cuda)
+print('Language model loaded')
+
 
 def read_file(filename):
     if filename[-4:] == ".bz2":
@@ -36,14 +50,23 @@ def check_limits(mappings, ext_limits, letter_to_check=0):
         plaintext_letters = list(mappings.values())
         return plaintext_letters.count(letter_to_check) <= ext_limits
 
-def score(mappings, cipher_text, lm):
-    deciphered = [mappings[cipher_letter] if cipher_letter in mappings else '_' for cipher_letter in cipher_text]
+def score_single_seq(seq):
+    if len(seq) >= 20:
+        print('Scoring:', seq)
+    return lm.score_seq(seq) if len(seq) < 20 else nlm.score_seq(seq)
+
+pool = Pool(12)
+
+def score(mappings, cipher_text, lm, nlm):
+    deciphered = [mappings[cipher_letter] if cipher_letter in mappings else ' ' for cipher_letter in cipher_text]
     deciphered = ''.join(deciphered)
-    bit_string = [ 'o' if c in mappings else '.' for c in cipher_text]
-    bit_string = ''.join(bit_string)
+    # bit_string = [ 'o' if c in mappings else '.' for c in cipher_text]
+    # bit_string = ''.join(bit_string)
+    seqs = deciphered.split()
+    res = sum(pool.map(score_single_seq, seqs))
 
-    return lm.score_bitstring(deciphered, bit_string)
-
+    # return lm.score_bitstring(deciphered, bit_string)
+    return res
 
 def prune(beams, beamsize):
     sorted_beams = sorted(beams, key=lambda b: b[1], reverse=True)
@@ -51,7 +74,7 @@ def prune(beams, beamsize):
     return sorted_beams[:beamsize]
 
 
-def beam_search(cipher_text, lm, nlm, ext_order, ext_limits, beamsize):
+def beam_search(cipher_text, lm, nlm, ext_order, ext_limits, init_beamsize):
     Hs = []
     Ht = []
     cardinality = 0
@@ -60,6 +83,7 @@ def beam_search(cipher_text, lm, nlm, ext_order, ext_limits, beamsize):
     scorer = lm
 
     while cardinality < len(ext_order):
+        beamsize = int(init_beamsize*(0.9**cardinality))
         if cardinality > 10:
             scorer = nlm
         print("Searching for {}/{} letter".format(cardinality, len(ext_order)))
@@ -70,7 +94,7 @@ def beam_search(cipher_text, lm, nlm, ext_order, ext_limits, beamsize):
                 ext_mappings = deepcopy(mappings)
                 ext_mappings[cipher_letter] = plain_letter
                 if check_limits(ext_mappings, ext_limits, plain_letter):  # only check new added one
-                    Ht.append((ext_mappings, score(ext_mappings, cipher_text, scorer)))
+                    Ht.append((ext_mappings, score(ext_mappings, cipher_text, lm, nlm)))
         Hs = prune(Ht, beamsize)
         cardinality += 1
         Ht = []
@@ -85,16 +109,17 @@ def contiguous_score(cipher, order):
     ngrams = defaultdict(int)
     for c in cipher:
         if c in order:
-            if count == 6:
+            if count == 8:
                 ngrams[count] += 1
             else:
                 count += 1
         else:
-            ngrams[count] += 1
+            if count != 0:
+                ngrams[count] += 1
             count = 0
     if count != 0:
         ngrams[count] += 1
-    weights = [0, 0.1, 0.4, 0.6, 1, 1.5, 2]
+    weights = [0, 0, 1, 1, 1, 1, 1, 2, 3]
     score = 0
     for k, v in ngrams.items():
         score += weights[k] * v
@@ -135,11 +160,11 @@ def search_ext_order(cipher, beamsize):
 
 
 if __name__ == '__main__':
-    arg_parser = argparse.ArgumentParser()
-    arg_parser.add_argument('-f', '--file', default='data/cipher.txt', help='cipher file')
-    arg_parser.add_argument('-b', '--beamsize', type=int, default=100)
-    arg_parser.add_argument('--cuda', action='store_true', default=False)
-    args = arg_parser.parse_args()
+    # arg_parser = argparse.ArgumentParser()
+    # arg_parser.add_argument('-f', '--file', default='data/cipher.txt', help='cipher file')
+    # arg_parser.add_argument('-b', '--beamsize', type=int, default=100)
+    # arg_parser.add_argument('--cuda', action='store_true', default=False)
+    # args = arg_parser.parse_args()
 
     cipher = read_file(args.file)
     cipher = [x for x in cipher if not x.isspace()]
@@ -147,17 +172,17 @@ if __name__ == '__main__':
     ext_order = search_ext_order(cipher, 100)
     ext_limits = 8
 
-    freq = Counter(cipher)
-    sort_freq = [ kv[0] for kv in sorted(freq.items(), key=lambda kv: kv[1], reverse=True)]
+    # freq = Counter(cipher)
+    # sort_freq = [ kv[0] for kv in sorted(freq.items(), key=lambda kv: kv[1], reverse=True)]
 
     print(ext_order)
-    print(sort_freq)
+    # print(sort_freq)
 
-    print('Loading language model')
-    lm = LM("data/6-gram-wiki-char.lm.bz2", n=6, verbose=False)
-    model = nlm.load_model("data/mlstm_ns.pt", cuda=args.cuda)
-    nlm = NlmScorer(model, cuda=args.cuda)
-    print('Language model loaded')
+    # print('Loading language model')
+    # lm = LM("data/6-gram-wiki-char.lm.bz2", n=6, verbose=False)
+    # model = nlm.load_model("data/mlstm_ns.pt", cuda=args.cuda)
+    # nlm = NlmScorer(model, cuda=args.cuda)
+    # print('Language model loaded')
 
     print('Start deciphering...')
     search_start = datetime.now()

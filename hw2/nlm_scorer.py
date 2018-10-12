@@ -27,6 +27,8 @@ class NlmScorer:
         lm_logprob = sum(list(map(lambda seq: nlm.score_sequence(seq, self.model, self.cuda), seqs)))
         return lm_logprob
 
+    def score_seq(self, seq):
+        return nlm.score_sequence(seq, self.model, self.cuda)
 
 if __name__ == '__main__':
     cuda = False
