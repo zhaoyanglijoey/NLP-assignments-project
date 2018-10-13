@@ -135,13 +135,14 @@ def contiguous_score(cipher, order):
     ngrams = defaultdict(int)
     for c in cipher:
         if c in order:
-            count += 1
             if count >= lm_order:
                 ngrams[lm_order] += 1
             else:
                 ngrams[count] += 1
+                count += 1
         else:
             count = 0
+
     score = 0
     for k, v in ngrams.items():
         score += contiguous_score_weights[k] * v
