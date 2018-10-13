@@ -113,7 +113,8 @@ def beam_search(cipher_text, lm, nlm, ext_order, ext_limits, init_beamsize):
         # if cardinality > 10:
         #     scorer = nlm
         print("Searching for {}/{} letter".format(cardinality, len(ext_order)))
-        print("Current size of searching tree: {}".format(len(Hs)))
+        print("\tCurrent size of searching tree: {:,}".format(len(Hs)))
+        print("\tGoing to be expended to: {:,}".format(len(Hs) * len(Ve)))
         cipher_letter = ext_order[cardinality]
         for mappings, sc in Hs:
             for plain_letter in Ve:
