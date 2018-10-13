@@ -155,13 +155,9 @@ def prune_orders(orders, beamsize):
 
 def search_ext_order(cipher, beamsize):
     symbols = set(cipher)
+    # Start with the most common character
     freq = Counter(cipher)
-    start = ''
-    maxf = 0
-    for symbol, f in freq.items():
-        if f > maxf:
-            maxf = f
-            start = symbol
+    start = freq.most_common(1)[0][0]
     orders = [([0], [start])]
     orders_tmp = []
     symbols.remove(start)
