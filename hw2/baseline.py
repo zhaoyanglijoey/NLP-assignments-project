@@ -63,7 +63,7 @@ def score_single_seq(t):
     # if len(seq) >= 20:
     #     print('Scoring:', seq)
     # return lm.score_seq(seq) if len(seq) < 20 else nlm.score_seq(seq)
-    return lm.score_patial_seq(seq) if i != 0 else lm.score_seq(seq)
+
 
 pool = Pool(args.num_workers)
 
