@@ -61,7 +61,7 @@ class LM:
         lm_logprob += self.end(lm_state)
         return lm_logprob
 
-    def score_patial_seq(self, sequence):
+    def score_partial_seq(self, sequence):
         lm_state = ()
         lm_logprob = 0.0
         for token in list(self.clean_seq(sequence)):

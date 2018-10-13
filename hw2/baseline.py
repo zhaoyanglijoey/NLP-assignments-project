@@ -33,7 +33,8 @@ lm = LM("data/6-gram-wiki-char.lm.bz2", n=6, verbose=False)
 model = nlm.load_model("data/mlstm_ns.pt", cuda=args.cuda)
 nlm = NlmScorer(model, cuda=args.cuda)
 print('Language model loaded')
-
+mem = {}
+mem_start = {}
 
 def read_file(filename):
     if filename[-4:] == ".bz2":
@@ -62,8 +63,18 @@ def score_single_seq(t):
     i, seq = t
     # if len(seq) >= 20:
     #     print('Scoring:', seq)
-    # return lm.score_seq(seq) if len(seq) < 20 else nlm.score_seq(seq)
-    return lm.score_patial_seq(seq) if i != 0 else lm.score_seq(seq)
+    #     return nlm.score_seq(seq)
+    #
+    # else:
+    #     return lm.score_partial_seq(seq) if i != 0 else lm.score_seq(seq)
+    if i == 0:
+        if seq not in mem_start:
+            mem_start[seq] = lm.score_seq(seq)
+        return mem_start[seq]
+    else:
+        if seq not in mem:
+            mem[seq] = lm.score_partial_seq(seq)
+        return mem[seq]
 
 pool = Pool(args.num_workers)
 

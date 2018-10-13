@@ -30,6 +30,9 @@ class NlmScorer:
     def score_seq(self, seq):
         return nlm.score_sequence(seq, self.model, self.cuda)
 
+    def score_partial_seq(self, seq):
+        return nlm.score_partial_seq(seq, self.model, self.cuda)
+
 if __name__ == '__main__':
     cuda = False
     model = nlm.load_model("data/mlstm_ns.pt", cuda=cuda)

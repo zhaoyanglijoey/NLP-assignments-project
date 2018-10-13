@@ -132,6 +132,16 @@ def score_sequence(chars, model, cuda=False):
         seq += c
     return -1*score
 
+def score_partial_seq(chars, model, cuda=False):
+    if not chars:
+        raise ValueError("Error: empty sequence")
+    score = 0
+    seq = ''
+    for c in chars:
+        score += score_next(c, seq, model, cuda)
+        seq += c
+    return -1*score
+
 def score_sequence_progress(chars, model, cuda=False):
     if not chars:
         raise ValueError("Error: empty sequence")
