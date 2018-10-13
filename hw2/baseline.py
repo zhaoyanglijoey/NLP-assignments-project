@@ -28,8 +28,11 @@ arg_parser.add_argument('--cuda', action='store_true', default=False)
 arg_parser.add_argument('-nw', '--num-workers', type=int, default=12)
 args = arg_parser.parse_args()
 
+lm_order = 6
+contiguous_score_weights = [0,0,1,1,1,2,3]
+
 print('Loading language model')
-lm = LM("data/6-gram-wiki-char.lm.bz2", n=6, verbose=False)
+lm = LM("data/6-gram-wiki-char.lm.bz2", n=lm_order, verbose=False)
 model = nlm.load_model("data/mlstm_ns.pt", cuda=args.cuda)
 nlm = NlmScorer(model, cuda=args.cuda)
 print('Language model loaded')
@@ -132,20 +135,16 @@ def contiguous_score(cipher, order):
     ngrams = defaultdict(int)
     for c in cipher:
         if c in order:
-            if count == 8:
-                ngrams[count] += 1
+            count += 1
+            if count >= lm_order:
+                ngrams[lm_order] += 1
             else:
-                count += 1
-        else:
-            if count != 0:
                 ngrams[count] += 1
+        else:
             count = 0
-    if count != 0:
-        ngrams[count] += 1
-    weights = [0, 0, 1, 1, 1, 1, 1, 2, 3]
     score = 0
     for k, v in ngrams.items():
-        score += weights[k] * v
+        score += contiguous_score_weights[k] * v
     return score
 
 def prune_orders(orders, beamsize):
