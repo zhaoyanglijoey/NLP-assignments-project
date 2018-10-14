@@ -36,8 +36,9 @@ ext_limits = 7
 
 print('Loading language model')
 lm = LM("data/6-gram-wiki-char.lm.bz2", n=lm_order, verbose=False)
-model = nlm.load_model("data/mlstm_ns.pt", cuda=args.cuda)
-nlm = NlmScorer(model, cuda=args.cuda)
+# model = nlm.load_model("data/mlstm_ns.pt", cuda=args.cuda)
+# nlm = NlmScorer(model, cuda=args.cuda)
+nlm = None
 print('Language model loaded')
 mem = {}
 mem_start = {}
