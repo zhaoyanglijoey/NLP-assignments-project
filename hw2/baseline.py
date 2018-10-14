@@ -31,6 +31,8 @@ args = arg_parser.parse_args()
 lm_order = 6
 contiguous_score_weights = [0,0,1,1,1,2,3]
 
+ext_limits = 7
+
 print('Loading language model')
 lm = LM("data/6-gram-wiki-char.lm.bz2", n=lm_order, verbose=False)
 model = nlm.load_model("data/mlstm_ns.pt", cuda=args.cuda)
@@ -189,7 +191,6 @@ if __name__ == '__main__':
     cipher = [x for x in cipher if not x.isspace()]
     cipher = ''.join(cipher)
     ext_order = search_ext_order(cipher, 100)
-    ext_limits = 3
 
     # freq = Counter(cipher)
     # sort_freq = [ kv[0] for kv in sorted(freq.items(), key=lambda kv: kv[1], reverse=True)]
