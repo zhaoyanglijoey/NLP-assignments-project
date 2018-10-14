@@ -8,6 +8,7 @@ import argparse
 from ngram import LM
 from nlm_scorer import NlmScorer
 import nlm
+import evaluator
 from copy import deepcopy
 from datetime import datetime
 # from multiprocessing import Pool
@@ -207,9 +208,11 @@ if __name__ == '__main__':
     print('Start deciphering...')
     search_start = datetime.now()
     mappings, sc = beam_search(cipher, lm, nlm, ext_order, ext_limits, args.beamsize)
+
     search_end = datetime.now()
     print('Deciphering completed after {}'.format(search_end - search_start))
     print(mappings)
     deciphered = [mappings[c] if c in mappings else '_' for c in cipher]
     deciphered = ''.join(deciphered)
     print(deciphered, sc)
+    print(evaluator.evaluate(deciphered))
