@@ -8,6 +8,7 @@ import argparse
 from ngram import LM
 from nlm_scorer import NlmScorer
 import nlm
+import evaluator
 from copy import deepcopy
 from datetime import datetime
 # from multiprocessing import Pool
@@ -35,8 +36,9 @@ ext_limits = 7
 
 print('Loading language model')
 lm = LM("data/6-gram-wiki-char.lm.bz2", n=lm_order, verbose=False)
-model = nlm.load_model("data/mlstm_ns.pt", cuda=args.cuda)
-nlm = NlmScorer(model, cuda=args.cuda)
+# model = nlm.load_model("data/mlstm_ns.pt", cuda=args.cuda)
+# nlm = NlmScorer(model, cuda=args.cuda)
+nlm = None
 print('Language model loaded')
 mem = {}
 mem_start = {}
@@ -207,9 +209,11 @@ if __name__ == '__main__':
     print('Start deciphering...')
     search_start = datetime.now()
     mappings, sc = beam_search(cipher, lm, nlm, ext_order, ext_limits, args.beamsize)
+
     search_end = datetime.now()
     print('Deciphering completed after {}'.format(search_end - search_start))
     print(mappings)
     deciphered = [mappings[c] if c in mappings else '_' for c in cipher]
     deciphered = ''.join(deciphered)
     print(deciphered, sc)
+    print(evaluator.evaluate(deciphered))
