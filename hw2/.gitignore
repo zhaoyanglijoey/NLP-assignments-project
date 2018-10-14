@@ -3,3 +3,4 @@ venv
 data/mlstm_ns.pt
 data/6-gram-wiki-char.lm
 __pycache__
+foo.py
