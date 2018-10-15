@@ -44,10 +44,11 @@ def score(Ve, mappings, cipher_text, cipher_letter, old_score, lm_order, lm, mod
     deciphered = [mappings[cipher_letter] if cipher_letter in mappings else '_' for cipher_letter in cipher_text]
     score = 0
 
-    print(mappings, score, end=', ')
+    print(mappings, end='： ')
     if len(mappings) > 1:
         seq = ''
         score = old_score
+        print(score, end=', ')
         length = cipher_text.rfind(cipher_letter) + 1
         for i in range(0, length):
             c = deciphered[i]
@@ -58,6 +59,7 @@ def score(Ve, mappings, cipher_text, cipher_letter, old_score, lm_order, lm, mod
                     score += nlm.score_first(c, model, cuda)
                 else:
                     score += nlm.score_next(c, seq, model, cuda)
+                print(seq, score, end=', ')
             elif c == '_':
                 # Predict unknown letters
                 if i == 0:
@@ -89,10 +91,8 @@ def score(Ve, mappings, cipher_text, cipher_letter, old_score, lm_order, lm, mod
         score = -lm.score_bitstring(deciphered, bitstring)
 
     print(score, end=', ')
-
     # frequency matching heuristic
-    score -= math.fabs(math.log(cipher_freq[cipher_letter] / plaintxt_freq[mappings[cipher_letter]]))
-
+    score += math.fabs(math.log(cipher_freq[cipher_letter] / plaintxt_freq[mappings[cipher_letter]]))
     print(score)
 
     return score
@@ -202,12 +202,11 @@ if __name__ == '__main__':
     arg_parser.add_argument('-f', '--file', default='data/cipher.txt', help='cipher file')
     arg_parser.add_argument('-b', '--beamsize', type=int, default=1000)
     arg_parser.add_argument('--cuda', action='store_true', default=False)
+    arg_parser.add_argument('-el', '--ext_limits', type=int, default=7)
     args = arg_parser.parse_args()
 
     lm_order = 6
     contiguous_score_weights = [0,0,1,1,1,2,3]
-
-    ext_limits = 7
 
     Ve = string.ascii_lowercase
 
@@ -229,7 +228,7 @@ if __name__ == '__main__':
 
     print('Start deciphering...')
     search_start = datetime.now()
-    mappings, sc = beam_search(cipher, ext_order, Ve, ext_limits, args.beamsize, 
+    mappings, sc = beam_search(cipher, ext_order, Ve, args.ext_limits, args.beamsize,
                                lm_order, lm, model, args.cuda,
                                cipher_freq, plaintxt_freq)
     search_end = datetime.now()
