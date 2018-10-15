@@ -64,10 +64,7 @@ def score(Ve, mappings, cipher_text, cipher_letter, old_score, cuda):
     percentage_unknown = Counter(deciphered)['_'] / len(deciphered)
     score = 0
 
-    print()
-    print("Scoring mapping {0}...".format(mappings))
-
-    if percentage_unknown < 0.75:
+    if percentage_unknown < 0.9:
         seq = ''
         score = old_score
         length = cipher_text.rfind(cipher_letter) + 1
@@ -90,11 +87,11 @@ def score(Ve, mappings, cipher_text, cipher_letter, old_score, cuda):
                         # Last element has the highest prob
                         c = llh_predictions[-1][0]
                     else:
-                        # Use ngram instead
+                        # nlm gives no prediction. Use ngram instead.
                         highest_score = 0
                         optimal_e = None
                         for e in Ve:
-                            cur_score = lm.score_seq(seq + e)
+                            cur_score = lm.score_seq(seq[1-lm_order:] + e)
                             if -cur_score > highest_score:
                                 highest_score = -cur_score
                                 optimal_e = e
