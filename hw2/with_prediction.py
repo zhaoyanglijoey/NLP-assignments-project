@@ -54,9 +54,9 @@ def score(Ve, mappings, cipher_text, cipher_letter, old_score, lm_order, lm, mod
                 # Calculate score for the newly ciphered letters using nlm
                 # Note that nlm scores are positive (-log(Prob)).
                 if i == 0:
-                    score -= nlm.score_first(c, model, cuda)
+                    score += nlm.score_first(c, model, cuda)
                 else:
-                    score -= nlm.score_next(c, seq, model, cuda)
+                    score += nlm.score_next(c, seq, model, cuda)
             elif c == '_':
                 # Predict unknown letters
                 if i == 0:
@@ -69,6 +69,7 @@ def score(Ve, mappings, cipher_text, cipher_letter, old_score, lm_order, lm, mod
                         c = llh_predictions[-1][0]
                     else:
                         # nlm gives no prediction. Use ngram instead.
+                        # Note that ngram scores are negative (log(Prob)).
                         highest_score = 0
                         optimal_e = None
                         for e in Ve:
@@ -80,24 +81,27 @@ def score(Ve, mappings, cipher_text, cipher_letter, old_score, lm_order, lm, mod
             seq = seq + c
         # pdb.set_trace()
     else:
+        # With just one letter deciphered, we score using ngram to speed it up.
         bitstring = ['.' if c == '_' else 'o' for c in deciphered]
         deciphered = ''.join(deciphered)
         bitstring = ''.join(bitstring)
-        score = lm.score_bitstring(deciphered, bitstring)
+        # Note that ngram scores are negative (log(Prob)).
+        score = -lm.score_bitstring(deciphered, bitstring)
 
     # frequency matching heuristic
-    # TODO
+    score -= math.fabs(math.log(cipher_freq[cipher_letter] / plaintxt_freq[mappings[cipher_letter]]))
     
     return score
 
 
 def prune(beams, beamsize):
-    sorted_beams = sorted(beams, key=lambda b: b[1], reverse=True)
+    sorted_beams = sorted(beams, key=lambda b: b[1])
 
     return sorted_beams[:beamsize]
 
 
-def beam_search(cipher_text, ext_order, Ve, ext_limits, init_beamsize, lm_order, lm, model, cuda):
+def beam_search(cipher_text, ext_order, Ve, ext_limits, init_beamsize, lm_order, lm, model, cuda,
+                cipher_freq, plaintxt_freq):
     Hs = []
     Ht = []
     cardinality = 0
@@ -115,7 +119,7 @@ def beam_search(cipher_text, ext_order, Ve, ext_limits, init_beamsize, lm_order,
                 ext_mappings[cipher_letter] = plain_letter
                 if check_limits(ext_mappings, ext_limits, plain_letter):  # only check new added one
                     Ht.append((ext_mappings, score(Ve, ext_mappings, cipher_text, cipher_letter, sc, 
-                                                   lm_order, lm, model, cuda)))
+                                                   lm_order, lm, model, cuda, cipher_freq, plaintxt_freq)))
         Hs = prune(Ht, beamsize)
         cardinality += 1
         Ht = []
@@ -170,6 +174,23 @@ def search_ext_order(cipher, beamsize, lm_order, contiguous_score_weights):
     orders.sort(reverse=True)
     return orders[0][1]
 
+def get_statistics(content, cipher=True):
+    stats = {}
+    content = list(content)
+    split_content = [x for x in content if x != '\n' and x!=' ']
+    length = len(split_content)
+    symbols = set(split_content)
+    uniq_sym = len(list(symbols))
+    freq = collections.Counter(split_content)
+    rel_freq = {}
+    for sym, frequency in freq.items():
+        rel_freq[sym] = (frequency/length)*100
+
+    if cipher:
+        stats = {'content':split_content, 'length':length, 'vocab':list(symbols), 'vocab_length':uniq_sym, 'frequencies':freq, 'relative_freq':rel_freq}
+    else:
+        stats = {'length':length, 'vocab':list(symbols), 'vocab_length':uniq_sym, 'frequencies':freq, 'relative_freq':rel_freq}
+    return stats
 
 if __name__ == '__main__':
 
@@ -198,10 +219,15 @@ if __name__ == '__main__':
     ext_order = search_ext_order(cipher, 100, lm_order, contiguous_score_weights)
     print(ext_order)
 
+    cipher_freq = get_statistics(cipher, cipher=True).relative_freq
+    plaintxt = read_file("data/default.wiki.txt.bz2")
+    plaintxt_freq = get_statistics(plaintxt, cipher=False).relative_freq
+
     print('Start deciphering...')
     search_start = datetime.now()
     mappings, sc = beam_search(cipher, ext_order, Ve, ext_limits, args.beamsize, 
-                               lm_order, lm, model, args.cuda)
+                               lm_order, lm, model, args.cuda,
+                               cipher_freq, plaintxt_freq)
     search_end = datetime.now()
     print('Deciphering completed after {}'.format(search_end - search_start))
 
