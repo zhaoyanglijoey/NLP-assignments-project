@@ -231,7 +231,9 @@ if __name__ == '__main__':
     cipher = read_file(args.file)
     cipher = [x for x in cipher if not x.isspace()]
     cipher = ''.join(cipher)
-    ext_order = search_ext_order(cipher, 100)
+    freq = Counter(cipher)
+    ext_order = [ kv[0] for kv in sorted(freq.items(), key=lambda kv: kv[1], reverse=True)]
+    # ext_order = search_ext_order(cipher, 100)
 
     print(ext_order)
 
