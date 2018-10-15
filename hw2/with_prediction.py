@@ -39,11 +39,12 @@ def check_limits(mappings, ext_limits, letter_to_check=None):
         return plaintext_letters.count(letter_to_check) <= ext_limits
 
 
-def score(Ve, mappings, cipher_text, cipher_letter, old_score, lm_order, lm, model, cuda):
+def score(Ve, mappings, cipher_text, cipher_letter, old_score, lm_order, lm, model, cuda, cipher_freq, plaintxt_freq):
     # Replace with existing mappings
     deciphered = [mappings[cipher_letter] if cipher_letter in mappings else '_' for cipher_letter in cipher_text]
     score = 0
 
+    print(mappings, score, end=', ')
     if len(mappings) > 1:
         seq = ''
         score = old_score
@@ -79,7 +80,6 @@ def score(Ve, mappings, cipher_text, cipher_letter, old_score, lm_order, lm, mod
                                 optimal_e = e
                         c = optimal_e
             seq = seq + c
-        # pdb.set_trace()
     else:
         # With just one letter deciphered, we score using ngram to speed it up.
         bitstring = ['.' if c == '_' else 'o' for c in deciphered]
@@ -88,9 +88,13 @@ def score(Ve, mappings, cipher_text, cipher_letter, old_score, lm_order, lm, mod
         # Note that ngram scores are negative (log(Prob)).
         score = -lm.score_bitstring(deciphered, bitstring)
 
+    print(score, end=', ')
+
     # frequency matching heuristic
     score -= math.fabs(math.log(cipher_freq[cipher_letter] / plaintxt_freq[mappings[cipher_letter]]))
-    
+
+    print(score)
+
     return score
 
 
@@ -219,9 +223,9 @@ if __name__ == '__main__':
     ext_order = search_ext_order(cipher, 100, lm_order, contiguous_score_weights)
     print(ext_order)
 
-    cipher_freq = get_statistics(cipher, cipher=True).relative_freq
+    cipher_freq = get_statistics(cipher, cipher=True)['relative_freq']
     plaintxt = read_file("data/default.wiki.txt.bz2")
-    plaintxt_freq = get_statistics(plaintxt, cipher=False).relative_freq
+    plaintxt_freq = get_statistics(plaintxt, cipher=False)['relative_freq']
 
     print('Start deciphering...')
     search_start = datetime.now()
