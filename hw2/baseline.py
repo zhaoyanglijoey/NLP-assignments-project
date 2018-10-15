@@ -27,6 +27,8 @@ arg_parser.add_argument('-f', '--file', default='data/cipher.txt', help='cipher 
 arg_parser.add_argument('-b', '--beamsize', type=int, default=1000)
 arg_parser.add_argument('--cuda', action='store_true', default=False)
 arg_parser.add_argument('-nw', '--num-workers', type=int, default=12)
+arg_parser.add_argument('--no-decay', action='store_true', default=False)
+
 args = arg_parser.parse_args()
 
 lm_order = 6
@@ -112,10 +114,11 @@ def beam_search(cipher_text, lm, nlm, ext_order, ext_limits, init_beamsize):
     scorer = lm
 
     while cardinality < len(ext_order):
-        beamsize = int(init_beamsize*(0.94**cardinality))
-        # beamsize = init_beamsize
-        # if cardinality > 10:
-        #     scorer = nlm
+        if args.no_decay:
+            beamsize = init_beamsize
+        else:
+            beamsize = int(init_beamsize*(0.94**cardinality))
+
         print("Searching for {}/{} letter".format(cardinality, len(ext_order)))
         print("\tCurrent size of searching tree: {:,}".format(len(Hs)))
         print("\tGoing to be expended to: {:,}".format(len(Hs) * len(Ve)))
@@ -127,6 +130,9 @@ def beam_search(cipher_text, lm, nlm, ext_order, ext_limits, init_beamsize):
                 if check_limits(ext_mappings, ext_limits, plain_letter):  # only check new added one
                     Ht.append((ext_mappings, score(ext_mappings, cipher_text, lm, nlm)))
         Hs = prune(Ht, beamsize)
+        check_gold(Hs, cipher_text)
+        print("\tCheck gold: the best accuracy is: {}".format(check_gold(Hs, cipher_text)))
+        print("\tMost likely plaintext: {}".format(decipher(Hs[0][0], cipher_text)))
         cardinality += 1
         Ht = []
         # print(Hs)
@@ -141,10 +147,7 @@ def contiguous_score(cipher, order):
     for c in cipher:
         if c in order:
             count += 1
-            if count >= lm_order:
-                ngrams[lm_order] += 1
-            else:
-                ngrams[count] += 1
+            ngrams[min(lm_order, count)] += 1
         else:
             count = 0
     score = 0
@@ -182,6 +185,27 @@ def search_ext_order(cipher, beamsize):
     return orders[0][1]
 
 
+def decipher(mappings, cipher_text):
+    deciphered = [mappings[c] if c in mappings else '_' for c in cipher_text]
+    deciphered = ''.join(deciphered)
+    return deciphered
+
+
+def check_gold(Hs, cipher_text):
+    """
+    Each iteration, check whether current best solutions. (In order to check in which step the the solution is pruned)
+    :param Hs:
+    :param cipher_text:
+    :return: max acc
+    """
+    max_acc = 0
+    for mappings, sc in Hs:
+        deciphered = decipher(mappings, cipher_text)
+        max_acc = max(max_acc, evaluator.evaluate(deciphered))
+    return max_acc
+
+
+
 if __name__ == '__main__':
     # arg_parser = argparse.ArgumentParser()
     # arg_parser.add_argument('-f', '--file', default='data/cipher.txt', help='cipher file')
@@ -213,7 +237,6 @@ if __name__ == '__main__':
     search_end = datetime.now()
     print('Deciphering completed after {}'.format(search_end - search_start))
     print(mappings)
-    deciphered = [mappings[c] if c in mappings else '_' for c in cipher]
-    deciphered = ''.join(deciphered)
+    deciphered = decipher(mappings, cipher)
     print(deciphered, sc)
-    print(evaluator.evaluate(deciphered))
+    print(evaluator.evaluate(deciphered, log=True))
