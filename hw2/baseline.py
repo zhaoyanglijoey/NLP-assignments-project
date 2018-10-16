@@ -132,7 +132,7 @@ def decipher(cipher, mappings):
     deciphered = ''.join(deciphered)
     return deciphered
 
-def beam_search(cipher_text, lm, nlm, ext_order, ext_limits, init_beamsize):
+def beam_search(cipher_text, lm, nlm, ext_order, ext_limits, beamsizes):
     Hs = []
     Ht = []
     cardinality = 0
@@ -142,11 +142,11 @@ def beam_search(cipher_text, lm, nlm, ext_order, ext_limits, init_beamsize):
     true_mappings = get_true_mappings(cipher)
 
     while cardinality < len(ext_order):
-        if args.no_decay:
-            beamsize = init_beamsize
-        else:
-            beamsize = max(100, int(init_beamsize*(0.95**cardinality)))
-
+        # if args.no_decay:
+        #     beamsize = init_beamsize
+        # else:
+        #     beamsize = max(100, int(init_beamsize*(0.95**cardinality)))
+        beamsize = beamsizes[cardinality]
 
         print("Searching for {}/{} letter".format(cardinality, len(ext_order)))
         print("\tCurrent size of searching tree: {:,}".format(len(Hs)))
@@ -258,7 +258,13 @@ def check_gold(Hs, cipher_text):
         max_acc = max(max_acc, evaluator.evaluate(deciphered))
     return max_acc
 
-
+def dynamic_beamsize():
+    beamsizes = [5000] * 54
+    beamsizes[10] = 50000
+    beamsizes[20] = 50000
+    for i in range(30, 55):
+        beamsizes[i] = 2000
+    return beamsizes
 
 if __name__ == '__main__':
 
@@ -269,12 +275,12 @@ if __name__ == '__main__':
     # ext_order = [ kv[0] for kv in sorted(freq.items(), key=lambda kv: kv[1], reverse=True)]
 
     ext_order = search_ext_order(cipher, 60)
-
+    beamsizes = dynamic_beamsize()
     print(ext_order)
 
     print('Start deciphering...')
     search_start = datetime.now()
-    mappings, sc = beam_search(cipher, lm, nlm, ext_order, ext_limits, args.beamsize)
+    mappings, sc = beam_search(cipher, lm, nlm, ext_order, ext_limits, beamsizes)
 
     search_end = datetime.now()
     print('Deciphering completed after {}'.format(search_end - search_start))
