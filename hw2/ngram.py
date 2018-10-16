@@ -69,7 +69,6 @@ class LM:
             (lm_state, logprob) = self.score(lm_state, token)
             lm_logprob += logprob
             self.maybe_write("logprob={}".format(logprob))
-        lm_logprob += self.end(lm_state)
         return lm_logprob
 
     def get_bitstring_spans(self, bitstring):
