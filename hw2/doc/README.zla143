@@ -1,0 +1,8 @@
+Contribution of Zhaoyang Li(zla143)
+
+1. Implemented baseline algorithm
+2. Implemented improved ext_order
+3. Implemented multiprocessing
+4. Tried to explore the reason why we are getting bad results using various debug method and tried to come up with an improvement
+5. Experimented various (maybe) improvements,
+    for example beamsize decay, dynamic ext_limits, ignoring unigrams and bigrams.

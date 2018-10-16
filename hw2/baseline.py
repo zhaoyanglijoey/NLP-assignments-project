@@ -159,9 +159,9 @@ def beam_search(cipher_text, lm, nlm, ext_order, ext_limits, beamsizes):
                 if check_limits(ext_mappings, ext_limits, plain_letter):  # only check new added one
                     Ht.append((ext_mappings, score(ext_mappings, cipher_text, lm, nlm)))
         Hs = prune(Ht, beamsize)
-        # check_gold(Hs, cipher_text)
-        # print("\tCheck gold: the best accuracy is: {}".format(check_gold(Hs, cipher_text)))
-        # print("\tMost likely plaintext: {}".format(decipher(Hs[0][0], cipher_text)))
+        max_acc, acc_deciphered = check_gold(Hs, cipher_text)
+        print("Check gold: the best accuracy is: {}\nDeciphered text: \n{}".format(max_acc, acc_deciphered))
+        # print("\tMost likely plaintext: \n{}".format(decipher(cipher_text, Hs[0][0])))
         cardinality += 1
         Ht = []
         best_mappings = Hs[0][0]
@@ -253,10 +253,13 @@ def check_gold(Hs, cipher_text):
     :return: max acc
     """
     max_acc = 0
+    deciphered_text = None
     for mappings, sc in Hs:
-        deciphered = decipher(mappings, cipher_text)
-        max_acc = max(max_acc, evaluator.evaluate(deciphered))
-    return max_acc
+        deciphered = decipher(cipher_text, mappings)
+        if max_acc < evaluator.evaluate(deciphered):
+            max_acc = evaluator.evaluate(deciphered)
+            deciphered_text = deciphered
+    return max_acc, deciphered_text
 
 def dynamic_beamsize(cipher, beamsize):
     num_symbols = len(set(cipher))
