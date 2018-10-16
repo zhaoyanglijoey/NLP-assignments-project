@@ -31,11 +31,11 @@ arg_parser.add_argument('--no-decay', action='store_true', default=False)
 
 args = arg_parser.parse_args()
 
-# lm_order = 6
-# contiguous_score_weights = [0,0,1,1,1,2,3]
+lm_order = 6
+contiguous_score_weights = [0,0,1,1,1,2,3]
 
-lm_order = 20
-contiguous_score_weights = [0,0,1,1,1,2,3,4,5,6,7,  8,9,10,11,12, 13,14,15,16,17 ]
+# lm_order = 20
+# contiguous_score_weights = [0,0,1,1,1,2,3,4,5,6,7,  8,9,10,11,12, 13,14,15,16,17 ]
 
 ext_limits = {letter: 4 if letter is not 'e' else 7 for letter in string.ascii_lowercase}
 
@@ -80,13 +80,21 @@ def score_single_seq(t):
     # else:
     #     return lm.score_partial_seq(seq) if i != 0 else lm.score_seq(seq)
     if i == 0:
-        if seq not in mem_start:
-            mem_start[seq] = lm.score_seq(seq)
-        return mem_start[seq]
+        if len(seq) < 4:
+            if seq not in mem_start:
+                mem_start[seq] = lm.score_seq(seq)
+            return mem_start[seq]
+        else:
+            return lm.score_seq(seq)
+
     else:
-        if seq not in mem:
-            mem[seq] = lm.score_partial_seq(seq)
-        return mem[seq]
+        if len(seq) < 4:
+            if seq not in mem:
+                mem[seq] = lm.score_partial_seq(seq)
+            return mem[seq]
+        else:
+            return lm.score_partial_seq(seq)
+    # return lm.score_partial_seq(seq) if i != 0 else lm.score_seq(seq)
 
 pool = Pool(args.num_workers)
 
@@ -96,6 +104,7 @@ def score(mappings, cipher_text, lm, nlm):
     # bit_string = [ 'o' if c in mappings else '.' for c in cipher_text]
     # bit_string = ''.join(bit_string)
     seqs = deciphered.split()
+    seqs = list(filter(lambda seq: len(seq) > 1, seqs))
 
     res = sum(pool.map(score_single_seq, zip(range(len(seqs)),seqs)))
 
@@ -166,6 +175,7 @@ def beam_search(cipher_text, lm, nlm, ext_order, ext_limits, init_beamsize):
         true_deciphered = [true_mappings[cipher_letter] if cipher_letter in best_mappings else '.' for cipher_letter in cipher]
         true_deciphered = ''.join(true_deciphered)
         seqs = true_deciphered.replace('.', ' ') .split()
+        seqs = list(filter(lambda seq: len(seq) > 1, seqs))
         true_score = sum(pool.map(score_single_seq, zip(range(len(seqs)), seqs)))
 
         print('Best deciphered text: \n{} score: {} \nTrue text: \n{} score: {}\nWorst deciphered text: \n{} score: {}\n'
@@ -257,7 +267,8 @@ if __name__ == '__main__':
     cipher = ''.join(cipher)
     # freq = Counter(cipher)
     # ext_order = [ kv[0] for kv in sorted(freq.items(), key=lambda kv: kv[1], reverse=True)]
-    ext_order = search_ext_order(cipher, 1000)
+
+    ext_order = search_ext_order(cipher, 40)
 
     print(ext_order)
 
