@@ -31,13 +31,13 @@ arg_parser.add_argument('--no-decay', action='store_true', default=False)
 
 args = arg_parser.parse_args()
 
-lm_order = 6
-contiguous_score_weights = [0,0,1,1,1,2,3]
+# lm_order = 6
+# contiguous_score_weights = [0,0,1,1,1,2,3]
 
-# lm_order = 20
-# contiguous_score_weights = [0,0,1,1,1,2,3,4,5,6,7,  8,9,10,11,12, 13,14,15,16,17 ]
+lm_order = 20
+contiguous_score_weights = [0,0,1,1,1,2,3,4,5,6,7,  8,9,10,11,12, 13,14,15,16,17 ]
 
-ext_limits = 7
+ext_limits = {letter: 4 if letter is not 'e' else 7 for letter in string.ascii_lowercase}
 
 print('Loading language model')
 lm = LM("data/6-gram-wiki-char.lm.bz2", n=lm_order, verbose=False)
@@ -69,7 +69,7 @@ def check_limits(mappings, ext_limits, letter_to_check=0):
             return True
     else:
         plaintext_letters = list(mappings.values())
-        return plaintext_letters.count(letter_to_check) <= ext_limits
+        return plaintext_letters.count(letter_to_check) <= ext_limits[letter_to_check]
 
 def score_single_seq(t):
     i, seq = t
@@ -257,7 +257,7 @@ if __name__ == '__main__':
     cipher = ''.join(cipher)
     # freq = Counter(cipher)
     # ext_order = [ kv[0] for kv in sorted(freq.items(), key=lambda kv: kv[1], reverse=True)]
-    ext_order = search_ext_order(cipher, 100)
+    ext_order = search_ext_order(cipher, 1000)
 
     print(ext_order)
 
