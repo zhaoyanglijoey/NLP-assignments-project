@@ -34,6 +34,9 @@ args = arg_parser.parse_args()
 lm_order = 6
 contiguous_score_weights = [0,0,1,1,1,2,3]
 
+# lm_order = 20
+# contiguous_score_weights = [0,0,1,1,1,2,3,4,5,6,7,  8,9,10,11,12, 13,14,15,16,17 ]
+
 ext_limits = 7
 
 print('Loading language model')
@@ -104,6 +107,21 @@ def prune(beams, beamsize):
 
     return sorted_beams[:beamsize]
 
+def get_true_mappings(cipher):
+    with open('data/ref.txt') as f:
+        ref = f.read()
+    true_mappings = {}
+    num_symbols = len(set(cipher))
+    for i in range(len(cipher)):
+        if cipher[i] not in true_mappings:
+            true_mappings[cipher[i]] = ref[i]
+            if len(true_mappings) == num_symbols:
+                return true_mappings
+
+def decipher(cipher, mappings):
+    deciphered = [mappings[cipher_letter] if cipher_letter in mappings else '.' for cipher_letter in cipher]
+    deciphered = ''.join(deciphered)
+    return deciphered
 
 def beam_search(cipher_text, lm, nlm, ext_order, ext_limits, init_beamsize):
     Hs = []
@@ -111,7 +129,8 @@ def beam_search(cipher_text, lm, nlm, ext_order, ext_limits, init_beamsize):
     cardinality = 0
     Hs.append(({}, 0))
     Ve = string.ascii_lowercase
-    scorer = lm
+
+    true_mappings = get_true_mappings(cipher)
 
     while cardinality < len(ext_order):
         if args.no_decay:
@@ -119,9 +138,10 @@ def beam_search(cipher_text, lm, nlm, ext_order, ext_limits, init_beamsize):
         else:
             beamsize = max(100, int(init_beamsize*(0.9**cardinality)))
 
+
         print("Searching for {}/{} letter".format(cardinality, len(ext_order)))
         print("\tCurrent size of searching tree: {:,}".format(len(Hs)))
-        print("\tGoing to be expended to: {:,}".format(len(Hs) * len(Ve)))
+        # print("\tGoing to be expended to: {:,}".format(len(Hs) * len(Ve)))
         cipher_letter = ext_order[cardinality]
         for mappings, sc in Hs:
             for plain_letter in Ve:
@@ -130,12 +150,26 @@ def beam_search(cipher_text, lm, nlm, ext_order, ext_limits, init_beamsize):
                 if check_limits(ext_mappings, ext_limits, plain_letter):  # only check new added one
                     Ht.append((ext_mappings, score(ext_mappings, cipher_text, lm, nlm)))
         Hs = prune(Ht, beamsize)
-        check_gold(Hs, cipher_text)
-        print("\tCheck gold: the best accuracy is: {}".format(check_gold(Hs, cipher_text)))
-        print("\tMost likely plaintext: {}".format(decipher(Hs[0][0], cipher_text)))
+        # check_gold(Hs, cipher_text)
+        # print("\tCheck gold: the best accuracy is: {}".format(check_gold(Hs, cipher_text)))
+        # print("\tMost likely plaintext: {}".format(decipher(Hs[0][0], cipher_text)))
         cardinality += 1
         Ht = []
-        # print(Hs)
+        best_mappings = Hs[0][0]
+        best_sc = Hs[0][1]
+        best_deciphered = decipher(cipher, best_mappings)
+
+        worst_mappings = Hs[-1][0]
+        worst_sc = Hs[-1][1]
+        worst_deciphered = decipher(cipher, worst_mappings)
+
+        true_deciphered = [true_mappings[cipher_letter] if cipher_letter in best_mappings else '.' for cipher_letter in cipher]
+        true_deciphered = ''.join(true_deciphered)
+        seqs = true_deciphered.replace('.', ' ') .split()
+        true_score = sum(pool.map(score_single_seq, zip(range(len(seqs)), seqs)))
+
+        print('Best deciphered text: \n{} score: {} \nTrue text: \n{} score: {}\nWorst deciphered text: \n{} score: {}\n'
+              .format(best_deciphered, best_sc, true_deciphered, true_score, worst_deciphered, worst_sc))
     Hs.sort(key=lambda b: b[1], reverse=True)
     # pp.pprint(Hs)
     return Hs[0]
@@ -161,11 +195,21 @@ def prune_orders(orders, beamsize):
 
     return sorted_order[: beamsize]
 
+# def search_ext_order(cipher, beamsize):
+#     symbols = set(cipher)
+#     order = []
+#     for c in cipher:
+#         if c not in order:
+#             order.append(c)
+#             if len(order) == len(symbols):
+#                 return order
+
 def search_ext_order(cipher, beamsize):
     symbols = set(cipher)
     # Start with the most common character
     freq = Counter(cipher)
     start = freq.most_common(1)[0][0]
+    # start = cipher[0]
     orders = [([0], [start])]
     orders_tmp = []
     symbols.remove(start)
@@ -182,14 +226,13 @@ def search_ext_order(cipher, beamsize):
         orders_tmp = []
         # pp.pprint(orders)
     orders.sort(reverse=True)
-    # pp.pprint(orders)
     return orders[0][1]
 
-
-def decipher(mappings, cipher_text):
-    deciphered = [mappings[c] if c in mappings else '_' for c in cipher_text]
-    deciphered = ''.join(deciphered)
-    return deciphered
+#
+# def decipher(mappings, cipher_text):
+#     deciphered = [mappings[c] if c in mappings else '_' for c in cipher_text]
+#     deciphered = ''.join(deciphered)
+#     return deciphered
 
 
 def check_gold(Hs, cipher_text):
@@ -208,28 +251,15 @@ def check_gold(Hs, cipher_text):
 
 
 if __name__ == '__main__':
-    # arg_parser = argparse.ArgumentParser()
-    # arg_parser.add_argument('-f', '--file', default='data/cipher.txt', help='cipher file')
-    # arg_parser.add_argument('-b', '--beamsize', type=int, default=100)
-    # arg_parser.add_argument('--cuda', action='store_true', default=False)
-    # args = arg_parser.parse_args()
 
     cipher = read_file(args.file)
     cipher = [x for x in cipher if not x.isspace()]
     cipher = ''.join(cipher)
+    # freq = Counter(cipher)
+    # ext_order = [ kv[0] for kv in sorted(freq.items(), key=lambda kv: kv[1], reverse=True)]
     ext_order = search_ext_order(cipher, 100)
 
-    # freq = Counter(cipher)
-    # sort_freq = [ kv[0] for kv in sorted(freq.items(), key=lambda kv: kv[1], reverse=True)]
-
     print(ext_order)
-    # print(sort_freq)
-
-    # print('Loading language model')
-    # lm = LM("data/6-gram-wiki-char.lm.bz2", n=6, verbose=False)
-    # model = nlm.load_model("data/mlstm_ns.pt", cuda=args.cuda)
-    # nlm = NlmScorer(model, cuda=args.cuda)
-    # print('Language model loaded')
 
     print('Start deciphering...')
     search_start = datetime.now()
@@ -238,6 +268,6 @@ if __name__ == '__main__':
     search_end = datetime.now()
     print('Deciphering completed after {}'.format(search_end - search_start))
     print(mappings)
-    deciphered = decipher(mappings, cipher)
+    deciphered = decipher(cipher, mappings)
     print(deciphered, sc)
     print(evaluator.evaluate(deciphered, log=True))
