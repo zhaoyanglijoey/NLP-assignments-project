@@ -258,13 +258,11 @@ def check_gold(Hs, cipher_text):
         max_acc = max(max_acc, evaluator.evaluate(deciphered))
     return max_acc
 
-def dynamic_beamsize(cipher):
+def dynamic_beamsize(cipher, beamsize):
     num_symbols = len(set(cipher))
-    beamsizes = [5000] * (num_symbols)
-    beamsizes[10] = 50000
-    beamsizes[20] = 50000
-    for i in range(30, num_symbols):
-        beamsizes[i] = 2000
+    beamsizes = [100000] * (num_symbols)
+    for i in range(num_symbols // 2, num_symbols):
+        beamsizes[i] = int(beamsize * (0.85 ** (i - num_symbols//2)))
     return beamsizes
 
 if __name__ == '__main__':
@@ -275,7 +273,7 @@ if __name__ == '__main__':
     # freq = Counter(cipher)
     # ext_order = [ kv[0] for kv in sorted(freq.items(), key=lambda kv: kv[1], reverse=True)]
 
-    ext_order = search_ext_order(cipher, 60)
+    ext_order = search_ext_order(cipher, 50)
     beamsizes = dynamic_beamsize(cipher)
     print(ext_order)
 
