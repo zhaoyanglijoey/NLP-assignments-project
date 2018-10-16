@@ -80,13 +80,21 @@ def score_single_seq(t):
     # else:
     #     return lm.score_partial_seq(seq) if i != 0 else lm.score_seq(seq)
     if i == 0:
-        if seq not in mem_start:
-            mem_start[seq] = lm.score_seq(seq)
-        return mem_start[seq]
+        if len(seq) < 4:
+            if seq not in mem_start:
+                mem_start[seq] = lm.score_seq(seq)
+            return mem_start[seq]
+        else:
+            return lm.score_seq(seq)
+
     else:
-        if seq not in mem:
-            mem[seq] = lm.score_partial_seq(seq)
-        return mem[seq]
+        if len(seq) < 4:
+            if seq not in mem:
+                mem[seq] = lm.score_partial_seq(seq)
+            return mem[seq]
+        else:
+            return lm.score_partial_seq(seq)
+    # return lm.score_partial_seq(seq) if i != 0 else lm.score_seq(seq)
 
 pool = Pool(args.num_workers)
 
@@ -259,7 +267,7 @@ if __name__ == '__main__':
     cipher = ''.join(cipher)
     # freq = Counter(cipher)
     # ext_order = [ kv[0] for kv in sorted(freq.items(), key=lambda kv: kv[1], reverse=True)]
-    ext_order = search_ext_order(cipher, 50)
+    ext_order = search_ext_order(cipher, 40)
 
     print(ext_order)
 
