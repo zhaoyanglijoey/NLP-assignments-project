@@ -274,7 +274,7 @@ if __name__ == '__main__':
     # ext_order = [ kv[0] for kv in sorted(freq.items(), key=lambda kv: kv[1], reverse=True)]
 
     ext_order = search_ext_order(cipher, 50)
-    beamsizes = dynamic_beamsize(cipher)
+    beamsizes = dynamic_beamsize(cipher, args.beamsize)
     print(ext_order)
 
     print('Start deciphering...')
