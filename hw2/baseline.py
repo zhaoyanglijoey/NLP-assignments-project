@@ -96,6 +96,7 @@ def score(mappings, cipher_text, lm, nlm):
     # bit_string = [ 'o' if c in mappings else '.' for c in cipher_text]
     # bit_string = ''.join(bit_string)
     seqs = deciphered.split()
+    seqs = list(filter(lambda seq: len(seq) > 1, seqs))
 
     res = sum(pool.map(score_single_seq, zip(range(len(seqs)),seqs)))
 
@@ -166,6 +167,7 @@ def beam_search(cipher_text, lm, nlm, ext_order, ext_limits, init_beamsize):
         true_deciphered = [true_mappings[cipher_letter] if cipher_letter in best_mappings else '.' for cipher_letter in cipher]
         true_deciphered = ''.join(true_deciphered)
         seqs = true_deciphered.replace('.', ' ') .split()
+        seqs = list(filter(lambda seq: len(seq) > 1, seqs))
         true_score = sum(pool.map(score_single_seq, zip(range(len(seqs)), seqs)))
 
         print('Best deciphered text: \n{} score: {} \nTrue text: \n{} score: {}\nWorst deciphered text: \n{} score: {}\n'
@@ -257,7 +259,7 @@ if __name__ == '__main__':
     cipher = ''.join(cipher)
     # freq = Counter(cipher)
     # ext_order = [ kv[0] for kv in sorted(freq.items(), key=lambda kv: kv[1], reverse=True)]
-    ext_order = search_ext_order(cipher, 100)
+    ext_order = search_ext_order(cipher, 50)
 
     print(ext_order)
 
