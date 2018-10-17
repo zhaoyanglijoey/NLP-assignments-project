@@ -37,7 +37,7 @@ contiguous_score_weights = [0,0,1,1,1,2,3]
 # lm_order = 20
 # contiguous_score_weights = [0,0,1,1,1,2,3,4,5,6,7,  8,9,10,11,12, 13,14,15,16,17 ]
 
-ext_limits = 7
+ext_limits = {letter: 4 if letter is not 'e' else 7 for letter in string.ascii_lowercase}
 
 print('Loading language model')
 lm = LM("data/6-gram-wiki-char.lm.bz2", n=lm_order, verbose=False)
@@ -69,7 +69,7 @@ def check_limits(mappings, ext_limits, letter_to_check=0):
             return True
     else:
         plaintext_letters = list(mappings.values())
-        return plaintext_letters.count(letter_to_check) <= ext_limits
+        return plaintext_letters.count(letter_to_check) <= ext_limits[letter_to_check]
 
 def score_single_seq(t):
     i, seq = t
@@ -79,14 +79,22 @@ def score_single_seq(t):
     #
     # else:
     #     return lm.score_partial_seq(seq) if i != 0 else lm.score_seq(seq)
-    if i == 0:
-        if seq not in mem_start:
-            mem_start[seq] = lm.score_seq(seq)
-        return mem_start[seq]
-    else:
-        if seq not in mem:
-            mem[seq] = lm.score_partial_seq(seq)
-        return mem[seq]
+    # if i == 0:
+    #     if len(seq) < 4:
+    #         if seq not in mem_start:
+    #             mem_start[seq] = lm.score_seq(seq)
+    #         return mem_start[seq]
+    #     else:
+    #         return lm.score_seq(seq)
+    #
+    # else:
+    #     if len(seq) < 4:
+    #         if seq not in mem:
+    #             mem[seq] = lm.score_partial_seq(seq)
+    #         return mem[seq]
+    #     else:
+    #         return lm.score_partial_seq(seq)
+    return lm.score_partial_seq(seq) if i != 0 else lm.score_seq(seq)
 
 pool = Pool(args.num_workers)
 
@@ -96,6 +104,7 @@ def score(mappings, cipher_text, lm, nlm):
     # bit_string = [ 'o' if c in mappings else '.' for c in cipher_text]
     # bit_string = ''.join(bit_string)
     seqs = deciphered.split()
+    seqs = list(filter(lambda seq: len(seq) > 2, seqs))
 
     res = sum(pool.map(score_single_seq, zip(range(len(seqs)),seqs)))
 
@@ -123,7 +132,7 @@ def decipher(cipher, mappings):
     deciphered = ''.join(deciphered)
     return deciphered
 
-def beam_search(cipher_text, lm, nlm, ext_order, ext_limits, init_beamsize):
+def beam_search(cipher_text, lm, nlm, ext_order, ext_limits, beamsizes):
     Hs = []
     Ht = []
     cardinality = 0
@@ -133,11 +142,11 @@ def beam_search(cipher_text, lm, nlm, ext_order, ext_limits, init_beamsize):
     true_mappings = get_true_mappings(cipher)
 
     while cardinality < len(ext_order):
-        if args.no_decay:
-            beamsize = init_beamsize
-        else:
-            beamsize = max(100, int(init_beamsize*(0.9**cardinality)))
-
+        # if args.no_decay:
+        #     beamsize = init_beamsize
+        # else:
+        #     beamsize = max(100, int(init_beamsize*(0.95**cardinality)))
+        beamsize = beamsizes[cardinality]
 
         print("Searching for {}/{} letter".format(cardinality, len(ext_order)))
         print("\tCurrent size of searching tree: {:,}".format(len(Hs)))
@@ -150,9 +159,9 @@ def beam_search(cipher_text, lm, nlm, ext_order, ext_limits, init_beamsize):
                 if check_limits(ext_mappings, ext_limits, plain_letter):  # only check new added one
                     Ht.append((ext_mappings, score(ext_mappings, cipher_text, lm, nlm)))
         Hs = prune(Ht, beamsize)
-        # check_gold(Hs, cipher_text)
-        # print("\tCheck gold: the best accuracy is: {}".format(check_gold(Hs, cipher_text)))
-        # print("\tMost likely plaintext: {}".format(decipher(Hs[0][0], cipher_text)))
+        max_acc, acc_deciphered = check_gold(Hs, cipher_text)
+        print("Check gold: the best accuracy is: {}\nDeciphered text: \n{}".format(max_acc, acc_deciphered))
+        # print("\tMost likely plaintext: \n{}".format(decipher(cipher_text, Hs[0][0])))
         cardinality += 1
         Ht = []
         best_mappings = Hs[0][0]
@@ -166,6 +175,7 @@ def beam_search(cipher_text, lm, nlm, ext_order, ext_limits, init_beamsize):
         true_deciphered = [true_mappings[cipher_letter] if cipher_letter in best_mappings else '.' for cipher_letter in cipher]
         true_deciphered = ''.join(true_deciphered)
         seqs = true_deciphered.replace('.', ' ') .split()
+        seqs = list(filter(lambda seq: len(seq) > 2, seqs))
         true_score = sum(pool.map(score_single_seq, zip(range(len(seqs)), seqs)))
 
         print('Best deciphered text: \n{} score: {} \nTrue text: \n{} score: {}\nWorst deciphered text: \n{} score: {}\n'
@@ -243,12 +253,22 @@ def check_gold(Hs, cipher_text):
     :return: max acc
     """
     max_acc = 0
+    deciphered_text = None
     for mappings, sc in Hs:
-        deciphered = decipher(mappings, cipher_text)
-        max_acc = max(max_acc, evaluator.evaluate(deciphered))
-    return max_acc
+        deciphered = decipher(cipher_text, mappings)
+        if max_acc < evaluator.evaluate(deciphered):
+            max_acc = evaluator.evaluate(deciphered)
+            deciphered_text = deciphered
+    return max_acc, deciphered_text
 
-
+def dynamic_beamsize(cipher, beamsize):
+    num_symbols = len(set(cipher))
+    beamsizes = [beamsize] * (num_symbols)
+    for i in range(4):
+        beamsizes[i] = 1000000
+    for i in range(num_symbols // 2, num_symbols):
+        beamsizes[i] = int(beamsize * (0.85 ** (i - num_symbols//2)))
+    return beamsizes
 
 if __name__ == '__main__':
 
@@ -257,13 +277,14 @@ if __name__ == '__main__':
     cipher = ''.join(cipher)
     # freq = Counter(cipher)
     # ext_order = [ kv[0] for kv in sorted(freq.items(), key=lambda kv: kv[1], reverse=True)]
-    ext_order = search_ext_order(cipher, 100)
 
+    ext_order = search_ext_order(cipher, 50)
+    beamsizes = dynamic_beamsize(cipher, args.beamsize)
     print(ext_order)
 
     print('Start deciphering...')
     search_start = datetime.now()
-    mappings, sc = beam_search(cipher, lm, nlm, ext_order, ext_limits, args.beamsize)
+    mappings, sc = beam_search(cipher, lm, nlm, ext_order, ext_limits, beamsizes)
 
     search_end = datetime.now()
     print('Deciphering completed after {}'.format(search_end - search_start))
