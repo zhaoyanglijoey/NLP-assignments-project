@@ -244,12 +244,12 @@ def check_gold(Hs, cipher_text):
 def dynamic_beamsize(cipher, beamsize):
     num_symbols = len(set(cipher))
     beamsizes = [beamsize] * (num_symbols)
-    for i in range(4):
-        beamsizes[i] = 1000000
-    beamsizes[10] = 2000000
-    beamsizes[20] = 2000000
-    for i in range(num_symbols // 2, num_symbols):
-        beamsizes[i] = int(beamsize * (0.85 ** (i - num_symbols//2)))
+    # for i in range(4):
+    #     beamsizes[i] = 1000000
+    # beamsizes[10] = 300000
+    # beamsizes[20] = 300000
+    # for i in range(num_symbols // 2, num_symbols):
+    #     beamsizes[i] = int(beamsize * (0.85 ** (i - num_symbols//2)))
     return beamsizes
 
 if __name__ == '__main__':
