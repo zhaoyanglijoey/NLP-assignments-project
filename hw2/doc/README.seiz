@@ -1,0 +1,2 @@
+* Improved the ext order searching function so that it matches the language model order.
+* Implemented Decipherment of Substitution Ciphers with Neural Language Models where extended mappings are scored after unknown letters are predicted and where frequency matching is taken into account.
