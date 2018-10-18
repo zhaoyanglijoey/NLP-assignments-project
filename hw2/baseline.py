@@ -73,28 +73,8 @@ def check_limits(mappings, ext_limits, letter_to_check=0):
 
 def score_single_seq(t):
     i, seq = t
-    # if len(seq) >= 20:
-    #     print('Scoring:', seq)
-    #     return nlm.score_seq(seq)
-    #
-    # else:
-    #     return lm.score_partial_seq(seq) if i != 0 else lm.score_seq(seq)
-    # if i == 0:
-    #     if len(seq) < 4:
-    #         if seq not in mem_start:
-    #             mem_start[seq] = lm.score_seq(seq)
-    #         return mem_start[seq]
-    #     else:
-    #         return lm.score_seq(seq)
-    #
-    # else:
-    #     if len(seq) < 4:
-    #         if seq not in mem:
-    #             mem[seq] = lm.score_partial_seq(seq)
-    #         return mem[seq]
-    #     else:
-    #         return lm.score_partial_seq(seq)
-    return lm.score_partial_seq(seq) if i != 0 else lm.score_seq(seq)
+
+    return len(seq) * ( lm.score_partial_seq(seq) if i != 0 else lm.score_seq(seq) )
 
 pool = Pool(args.num_workers)
 
@@ -264,10 +244,12 @@ def check_gold(Hs, cipher_text):
 def dynamic_beamsize(cipher, beamsize):
     num_symbols = len(set(cipher))
     beamsizes = [beamsize] * (num_symbols)
-    for i in range(4):
-        beamsizes[i] = 1000000
-    for i in range(num_symbols // 2, num_symbols):
-        beamsizes[i] = int(beamsize * (0.85 ** (i - num_symbols//2)))
+    # for i in range(4):
+    #     beamsizes[i] = 1000000
+    # beamsizes[10] = 300000
+    # beamsizes[20] = 300000
+    # for i in range(num_symbols // 2, num_symbols):
+    #     beamsizes[i] = int(beamsize * (0.85 ** (i - num_symbols//2)))
     return beamsizes
 
 if __name__ == '__main__':
