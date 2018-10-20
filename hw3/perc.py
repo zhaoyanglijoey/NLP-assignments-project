@@ -207,6 +207,7 @@ if __name__ == '__main__':
     print("reading data ...", file=sys.stderr)
     test_data = read_labeled_data(opts.inputfile, opts.featfile, verbose=False)
     print("done.", file=sys.stderr)
+
     feat_vec = perc_read_from_file(opts.modelfile)
     perc_testall(feat_vec, test_data, tagset)
 

@@ -30,6 +30,7 @@ Inside the perceptron training loop:
 
 import perc
 import sys, optparse, os
+import neural_model
 from collections import defaultdict
 
 def perc_train(train_data, tagset, numepochs):
@@ -57,6 +58,5 @@ if __name__ == '__main__':
     print("reading data ...", file=sys.stderr)
     train_data = perc.read_labeled_data(opts.trainfile, opts.featfile, verbose=False)
     print("done.", file=sys.stderr)
-    feat_vec = perc_train(train_data, tagset, int(opts.numepochs))
-    perc.perc_write_to_file(feat_vec, opts.modelfile)
-
+    trained_model = neural_model.neural_train(train_data, tagset, int(opts.numepochs))
+    neural_model.dump_model(trained_model, opts.modelfile)
