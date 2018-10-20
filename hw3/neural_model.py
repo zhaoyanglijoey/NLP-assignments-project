@@ -8,7 +8,8 @@ import perc
 
 from tqdm import tqdm
 
-embedding_dimension = 8
+word_embedding_dimension = 8
+speech_embedding_dimension = 4
 hidden_unit_dimension = 8
 LSTM_layer = 2
 learning_rate = 0.1
@@ -23,18 +24,21 @@ reversed_tag_index = {}
 
 def preprocess_sentence(sentence):
     # temporarily ignore features
+    features = sentence[1]
     sentence = sentence[0]
-    # features = sentence[1]
+
 
     this_sentence = []
+    this_speech_tags = []
 
     for word in sentence:
         word_info = word.split()
         word = word_info[0].lower()
-        # speech_tag = word_info[1]
+        speech_tag = word_info[1]
 
         this_sentence.append(word)
-    return prepare_sequence(this_sentence, word_idx)
+        this_speech_tags.append(speech_tag)
+    return prepare_sequence(this_sentence, word_idx), prepare_sequence(this_speech_tags, speech_tag_idx)
 
 def preprocess_target(sentence):
     sentence = sentence[0]
@@ -57,9 +61,10 @@ def build_vocab(train_data):
 def prepare_training_data(train_data):
     training_pairs = []
     for sentence in train_data:
-        preprocessed_sentence = preprocess_sentence(sentence)
+        preprocessed_sentence, preprocessed_speech_tag = preprocess_sentence(sentence)
+
         preprocessed_tag = preprocess_target(sentence)
-        training_pairs.append((preprocessed_sentence, preprocessed_tag))
+        training_pairs.append((preprocessed_sentence, preprocessed_speech_tag, preprocessed_tag))
 
     return training_pairs
 
@@ -90,7 +95,7 @@ def prepare_sequence(seq, index_set):
 
 def predict_seq(model, input_seq):
     with torch.no_grad():
-        output = model(input_seq)
+        output = model(input_seq[0], input_seq[1])
         return output.max(1)[1]
 
 def decode_seq(predicted_seq):
@@ -100,19 +105,24 @@ def decode_seq(predicted_seq):
 
 
 class BiLSTM(nn.Module):
-    def __init__(self, embedding_dim, hidden_dim, vocab_size, tagset_size):
+    def __init__(self, vocab_size, speech_tag_size, tagset_size):
         super(BiLSTM, self).__init__()
-        self.hidden_dim = hidden_dim
+        self.hidden_dim = hidden_unit_dimension
 
-        self.word_embeddings = nn.Embedding(vocab_size, embedding_dim)
-        self.lstm = nn.LSTM(embedding_dim, hidden_dim, num_layers=LSTM_layer, bidirectional=True)
+        self.word_embeddings = nn.Embedding(vocab_size, word_embedding_dimension)
+        self.speech_embeddings = nn.Embedding(speech_tag_size, speech_embedding_dimension)
+        self.lstm = nn.LSTM(word_embedding_dimension + speech_embedding_dimension,
+                            hidden_unit_dimension,
+                            num_layers=LSTM_layer,
+                            bidirectional=True)
+        self.speech_lstm = nn.LSTM
         # self.lstm = nn.LSTM(embedding_dim, hidden_dim, bidirectional=True)
 
         if use_gpu:
             self.lstm = self.lstm.cuda()
 
         # The linear layer that maps from hidden state space to tag space
-        self.hidden2tag = nn.Linear(hidden_dim * 2, tagset_size)
+        self.hidden2tag = nn.Linear(hidden_unit_dimension * 2, tagset_size)
         self.hidden = self.init_hidden()
 
     def init_hidden(self):
@@ -124,8 +134,10 @@ class BiLSTM(nn.Module):
             return (torch.zeros(hidden_first_size, 1, self.hidden_dim),
                     torch.zeros(hidden_first_size, 1, self.hidden_dim))
 
-    def forward(self, sentence):
-        embeds = self.word_embeddings(sentence)
+    def forward(self, sentence, speech_tags):
+        word_embeds = self.word_embeddings(sentence)
+        speech_embeds = self.speech_embeddings(speech_tags)
+        embeds = torch.cat((word_embeds, speech_embeds), 1)
         lstm_out, self.hidden = self.lstm(
             embeds.view(len(sentence), 1, -1), self.hidden
         )
@@ -137,16 +149,15 @@ def validate_model(model, validation_pairs):
     loss_function = nn.NLLLoss()
     error = 0.0
     with torch.no_grad():
-        for input_seq, target_seq in validation_pairs:
-            output = model(input_seq)
+        for input_seq, speech_tag, target_seq in validation_pairs:
+            output = model(input_seq, speech_tag)
             loss = loss_function(output, target_seq)
             error += loss.item()
     return error
 
-def train(data, tag_set, num_epochs):
+def train(tuples, tag_set, num_epochs):
 
-    model = BiLSTM(embedding_dimension, hidden_unit_dimension,
-                 len(word_idx), len(tag_set))
+    model = BiLSTM(len(word_idx), len(speech_tag_idx), len(tag_set))
     loss_function = nn.NLLLoss()
     optimizer = optim.SGD(model.parameters(), lr=learning_rate)
     if use_gpu:
@@ -154,20 +165,20 @@ def train(data, tag_set, num_epochs):
 
     for epoch in range(num_epochs):
         running_loss = 0.0
-        for input_seq, target_tag in tqdm(data[1:90]):
+        for input_seq, input_tag, target_tag in tqdm(tuples[1:90]):
 
             # initialize hidden state and grads before each step.
             model.zero_grad()
             model.hidden = model.init_hidden()
 
-            training_output = model(input_seq)
+            training_output = model(input_seq, input_tag)
 
             loss = loss_function(training_output, target_tag)
             running_loss += loss.item()
             loss.backward()
             optimizer.step()
 
-        valid_loss = validate_model(model, data[81:100])
+        valid_loss = validate_model(model, tuples[81:100])
         print(f"epoch {epoch} done. Training loss = {loss}, Validation loss = {valid_loss}")
 
     return model
@@ -178,10 +189,10 @@ def neural_train(train_data, tag_set, num_epochs):
     build_vocab(train_data)
     build_tag_index(tag_set)
 
-    training_pairs = prepare_training_data(train_data)
+    training_tuples = prepare_training_data(train_data)
 
     print(tag_set)
-    trained_model = train(training_pairs, tag_set, num_epochs)
+    trained_model = train(training_tuples, tag_set, num_epochs)
 
     return trained_model
 
@@ -196,8 +207,7 @@ def extract_model_data(model_data):
     target_tag_idx = model_data['tag_index']
     reversed_tag_index = model_data['reverse_tag_index']
 
-    model = BiLSTM(embedding_dimension, hidden_unit_dimension,
-                 len(word_idx), len(target_tag_idx))
+    model = BiLSTM(len(word_idx), len(speech_tag_idx), len(target_tag_idx))
     model.load_state_dict(model_data['model'])
 
     return model
