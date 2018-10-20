@@ -2,6 +2,7 @@ import torch
 import torch.nn as nn
 import torch.nn.functional as F
 import torch.optim as optim
+from collections import OrderedDict
 
 import perc
 
@@ -9,24 +10,16 @@ from tqdm import tqdm
 
 embedding_dimension = 8
 hidden_unit_dimension = 8
+LSTM_layer = 2
+learning_rate = 0.1
+
 
 use_gpu = torch.cuda.is_available()
 
-word_idx = {}
-speech_tag_idx = {}
+word_idx = {'<UNKNOWN>': 0}
+speech_tag_idx = {'<UNKNOWN>': 0}
 target_tag_idx = {}
 reversed_tag_index = {}
-
-# training_sentences = []
-
-
-# def prepare_training_input():
-#     training_data_pairs = []
-#     for sentence, target_tag in training_sentences:
-#         training_data_pairs.append(
-#             (prepare_sequence(sentence, word_idx), prepare_sequence(target_tag, target_tag_idx))
-#         )
-#     return training_data_pairs
 
 def preprocess_sentence(sentence):
     # temporarily ignore features
@@ -88,7 +81,7 @@ def prepare_sequence(seq, index_set):
         if symbol in index_set:
             indices.append(index_set[symbol])
         else:
-            indices.append(0)
+            indices.append(index_set['<UNKNOWN>'])
 
     if use_gpu:
         return torch.tensor(indices, dtype=torch.long).cuda()
@@ -112,7 +105,9 @@ class BiLSTM(nn.Module):
         self.hidden_dim = hidden_dim
 
         self.word_embeddings = nn.Embedding(vocab_size, embedding_dim)
-        self.lstm = nn.LSTM(embedding_dim, hidden_dim, bidirectional=True)
+        self.lstm = nn.LSTM(embedding_dim, hidden_dim, num_layers=LSTM_layer, bidirectional=True)
+        # self.lstm = nn.LSTM(embedding_dim, hidden_dim, bidirectional=True)
+
         if use_gpu:
             self.lstm = self.lstm.cuda()
 
@@ -121,12 +116,13 @@ class BiLSTM(nn.Module):
         self.hidden = self.init_hidden()
 
     def init_hidden(self):
+        hidden_first_size = 2 * LSTM_layer
         if use_gpu:
-            return (torch.zeros(2, 1, self.hidden_dim).cuda(),
-                    torch.zeros(2, 1, self.hidden_dim).cuda())
+            return (torch.zeros(hidden_first_size, 1, self.hidden_dim).cuda(),
+                    torch.zeros(hidden_first_size, 1, self.hidden_dim).cuda())
         else:
-            return (torch.zeros(2, 1, self.hidden_dim),
-                    torch.zeros(2, 1, self.hidden_dim))
+            return (torch.zeros(hidden_first_size, 1, self.hidden_dim),
+                    torch.zeros(hidden_first_size, 1, self.hidden_dim))
 
     def forward(self, sentence):
         embeds = self.word_embeddings(sentence)
@@ -136,8 +132,6 @@ class BiLSTM(nn.Module):
         tag_space = self.hidden2tag(lstm_out.view(len(sentence), -1))
         tag_scores = F.log_softmax(tag_space, dim=1)
         return tag_scores
-
-
 
 def validate_model(model, validation_pairs):
     loss_function = nn.NLLLoss()
@@ -154,7 +148,7 @@ def train(data, tag_set, num_epochs):
     model = BiLSTM(embedding_dimension, hidden_unit_dimension,
                  len(word_idx), len(tag_set))
     loss_function = nn.NLLLoss()
-    optimizer = optim.SGD(model.parameters(), lr=0.1)
+    optimizer = optim.SGD(model.parameters(), lr=learning_rate)
     if use_gpu:
         model = model.cuda()
 
@@ -234,7 +228,7 @@ def load_model(file):
     return torch.load(file, map_location=lambda storage, loc: storage)
 
 
-# TODO: treat OOV reasonably
+# PARTLY-DONE: treat OOV reasonably
 # TODO: add speech tag embeddings
 # TODO: change word embedding part
 # TODO: utilizing features

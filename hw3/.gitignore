@@ -2,5 +2,6 @@ default.model
 baseline.model
 output*
 chunk.py
+data/
 *.pyc
 __pycache__
