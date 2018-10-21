@@ -4,16 +4,13 @@ import torch.nn.functional as F
 import torch.optim as optim
 from collections import OrderedDict
 
-import perc
-
 from tqdm import tqdm
+import sys
 
-word_embedding_dimension = 8
-speech_embedding_dimension = 4
-hidden_unit_dimension = 8
-LSTM_layer = 2
-learning_rate = 0.1
-
+import perc
+from neural_config import *
+from allennlp.modules.elmo import Elmo, batch_to_ids
+from allennlp.commands.elmo import ElmoEmbedder
 
 use_gpu = torch.cuda.is_available()
 
@@ -38,12 +35,14 @@ def preprocess_sentence(sentence):
 
         this_sentence.append(word)
         this_speech_tags.append(speech_tag)
-    return prepare_sequence(this_sentence, word_idx), prepare_sequence(this_speech_tags, speech_tag_idx)
+    # return prepare_sequence(this_sentence, word_idx), prepare_sequence(this_speech_tags, speech_tag_idx)
+    return this_sentence, this_speech_tags
 
 def preprocess_target(sentence):
     sentence = sentence[0]
     target_tags = [word.split()[2] for word in sentence]
-    return prepare_sequence(target_tags, target_tag_idx)
+    # return prepare_sequence(target_tags, target_tag_idx)
+    return target_tags
 
 def build_vocab(train_data):
     for sentence in train_data:
@@ -59,14 +58,28 @@ def build_vocab(train_data):
 
 
 def prepare_training_data(train_data):
-    training_pairs = []
+    training_tuples = []
     for sentence in train_data:
         preprocessed_sentence, preprocessed_speech_tag = preprocess_sentence(sentence)
 
         preprocessed_tag = preprocess_target(sentence)
-        training_pairs.append((preprocessed_sentence, preprocessed_speech_tag, preprocessed_tag))
+        training_tuples.append((preprocessed_sentence, preprocessed_speech_tag, preprocessed_tag))
 
-    return training_pairs
+    sentence_list, speech_tag_list, target_list = list(zip(*training_tuples))
+
+    if use_elmo:
+        elmo = ElmoEmbedder()
+        elmo_embeddings = elmo(batch_to_ids(sentence_list))['elmo_representations']
+        sentence_list = elmo_embeddings[0]
+        # sentence_list = torch.cat((elmo_embeddings[0], elmo_embeddings[1]), 2)
+    else:
+        sentence_list = prepare_sequence_batch(sentence_list, word_idx)
+    speech_tag_list = prepare_sequence_batch(speech_tag_list, speech_tag_idx)
+    target_list = prepare_sequence_batch(target_list, target_tag_idx)
+    if use_gpu:
+        sentence_list = sentence_list.cuda()
+
+    return list(zip(sentence_list, speech_tag_list, target_list))
 
 
 def prepare_test_data(test_dataset):
@@ -79,6 +92,9 @@ def build_tag_index(tag_set):
         target_tag_idx[tag] = len(target_tag_idx)
         reversed_tag_index[target_tag_idx[tag]] = tag
 
+def prepare_sequence_batch(seq_batch, index_set):
+    return [prepare_sequence(sequence, index_set) for sequence in seq_batch]
+
 def prepare_sequence(seq, index_set):
     indices = []
     # use -1 for OOV words.
@@ -88,7 +104,7 @@ def prepare_sequence(seq, index_set):
         else:
             indices.append(index_set['<UNKNOWN>'])
 
-    if use_gpu:
+    if use_gpu and not test_mode:
         return torch.tensor(indices, dtype=torch.long).cuda()
     else:
         return torch.tensor(indices, dtype=torch.long)
@@ -109,6 +125,10 @@ class BiLSTM(nn.Module):
         super(BiLSTM, self).__init__()
         self.hidden_dim = hidden_unit_dimension
 
+        if use_elmo:
+            global word_embedding_dimension
+            word_embedding_dimension = elmo_dimension
+
         self.word_embeddings = nn.Embedding(vocab_size, word_embedding_dimension)
         self.speech_embeddings = nn.Embedding(speech_tag_size, speech_embedding_dimension)
         self.lstm = nn.LSTM(word_embedding_dimension + speech_embedding_dimension,
@@ -118,7 +138,7 @@ class BiLSTM(nn.Module):
         self.speech_lstm = nn.LSTM
         # self.lstm = nn.LSTM(embedding_dim, hidden_dim, bidirectional=True)
 
-        if use_gpu:
+        if use_gpu and not test_mode:
             self.lstm = self.lstm.cuda()
 
         # The linear layer that maps from hidden state space to tag space
@@ -127,7 +147,7 @@ class BiLSTM(nn.Module):
 
     def init_hidden(self):
         hidden_first_size = 2 * LSTM_layer
-        if use_gpu:
+        if use_gpu and not test_mode:
             return (torch.zeros(hidden_first_size, 1, self.hidden_dim).cuda(),
                     torch.zeros(hidden_first_size, 1, self.hidden_dim).cuda())
         else:
@@ -135,13 +155,15 @@ class BiLSTM(nn.Module):
                     torch.zeros(hidden_first_size, 1, self.hidden_dim))
 
     def forward(self, sentence, speech_tags):
-        word_embeds = self.word_embeddings(sentence)
+        sentence_length = len(speech_tags)
+        word_embeds = sentence[0:sentence_length] if use_elmo \
+            else self.word_embeddings(sentence)
         speech_embeds = self.speech_embeddings(speech_tags)
         embeds = torch.cat((word_embeds, speech_embeds), 1)
         lstm_out, self.hidden = self.lstm(
-            embeds.view(len(sentence), 1, -1), self.hidden
+            embeds.view(sentence_length, 1, -1), self.hidden
         )
-        tag_space = self.hidden2tag(lstm_out.view(len(sentence), -1))
+        tag_space = self.hidden2tag(lstm_out.view(sentence_length, -1))
         tag_scores = F.log_softmax(tag_space, dim=1)
         return tag_scores
 
@@ -157,6 +179,7 @@ def validate_model(model, validation_pairs):
 
 def train(tuples, tag_set, num_epochs):
 
+    print("initializing LSTM model... ", file=sys.stderr)
     model = BiLSTM(len(word_idx), len(speech_tag_idx), len(tag_set))
     loss_function = nn.NLLLoss()
     optimizer = optim.SGD(model.parameters(), lr=learning_rate)
@@ -165,7 +188,8 @@ def train(tuples, tag_set, num_epochs):
 
     for epoch in range(num_epochs):
         running_loss = 0.0
-        for input_seq, input_tag, target_tag in tqdm(tuples[1:90]):
+        print(len(tuples))
+        for input_seq, input_tag, target_tag in tqdm(tuples):
 
             # initialize hidden state and grads before each step.
             model.zero_grad()
@@ -175,10 +199,10 @@ def train(tuples, tag_set, num_epochs):
 
             loss = loss_function(training_output, target_tag)
             running_loss += loss.item()
-            loss.backward()
+            loss.backward(retain_graph=True)
             optimizer.step()
 
-        valid_loss = validate_model(model, tuples[81:100])
+        valid_loss = validate_model(model, tuples[101:200])
         print(f"epoch {epoch} done. Training loss = {loss}, Validation loss = {valid_loss}")
 
     return model
@@ -188,7 +212,10 @@ def neural_train(train_data, tag_set, num_epochs):
 
     build_vocab(train_data)
     build_tag_index(tag_set)
+    if prototyping_mode:
+        train_data = train_data[1:100]
 
+    print("preparing training tuples...", file=sys.stderr)
     training_tuples = prepare_training_data(train_data)
 
     print(tag_set)
@@ -202,12 +229,15 @@ def extract_model_data(model_data):
     global target_tag_idx
     global reversed_tag_index
 
+    # test_mode = True
     word_idx = model_data['word_index']
     speech_tag_idx = model_data['speech_tag_index']
     target_tag_idx = model_data['tag_index']
     reversed_tag_index = model_data['reverse_tag_index']
 
     model = BiLSTM(len(word_idx), len(speech_tag_idx), len(target_tag_idx))
+    if use_gpu and not test_mode:
+        model = model.cuda()
     model.load_state_dict(model_data['model'])
 
     return model
@@ -217,7 +247,7 @@ def test_all(model_data, test_dataset, tag_set):
     test_data = prepare_test_data(test_dataset)
 
     predicted_tag_sequences = []
-    for input_seq in test_data:
+    for input_seq in tqdm(test_data):
         output = predict_seq(model, input_seq)
         decoded_tags = decode_seq(output)
         predicted_tag_sequences.append(decoded_tags)
@@ -235,10 +265,11 @@ def dump_model(model, file):
     torch.save(checkpoint, file)
 
 def load_model(file):
+    # return torch.load(file)
     return torch.load(file, map_location=lambda storage, loc: storage)
 
 
 # PARTLY-DONE: treat OOV reasonably
-# TODO: add speech tag embeddings
+# MAYBE-DONE: add speech tag embeddings
 # TODO: change word embedding part
 # TODO: utilizing features
