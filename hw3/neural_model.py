@@ -19,6 +19,13 @@ target_tag_idx = {}
 reversed_tag_index = {}
 
 elmo = None
+if use_elmo:
+    print("initializing ELMo embedding... ", file=sys.stderr)
+    if use_gpu:
+        elmo = ElmoEmbedder(cuda_device=0)
+    else:
+        elmo = ElmoEmbedder()
+    print("loaded. ", file=sys.stderr)
 
 def preprocess_sentence(sentence):
     # temporarily ignore features
@@ -69,11 +76,11 @@ def build_vocab(train_data):
 
 def prepare_training_data(train_data):
     training_tuples = []
-    if use_elmo:
-        print("loading pre-trained ELMo...", file=sys.stderr)
-        global elmo
-        elmo = ElmoEmbedder()
-        print("ELMo loaded. Now preprocess training sentences", file=sys.stderr)
+    # if use_elmo:
+    #     print("loading pre-trained ELMo...", file=sys.stderr)
+    #     global elmo
+    #     elmo = ElmoEmbedder()
+    #     print("ELMo loaded. Now preprocess training sentences", file=sys.stderr)
     for sentence in tqdm(train_data):
         preprocessed_sentence, preprocessed_speech_tag = preprocess_sentence(sentence)
 
@@ -86,9 +93,9 @@ def prepare_training_data(train_data):
 
 
 def prepare_test_data(test_dataset):
-    if use_elmo:
-        global elmo
-        elmo = ElmoEmbedder()
+    # if use_elmo:
+    #     global elmo
+    #     elmo = ElmoEmbedder()
     return [preprocess_sentence(sentence) for sentence in tqdm(test_dataset)]
 
 def build_tag_index(tag_set):
@@ -206,7 +213,9 @@ def train(tuples, tag_set, num_epochs):
             optimizer.step()
 
         valid_loss = validate_model(model, tuples[101:200])
-        print(f"epoch {epoch} done. Training loss = {loss}, Validation loss = {valid_loss}")
+        print("epoch {} done. Training loss = {}, Validation loss = {}"
+              .format(epoch, running_loss, valid_loss),
+              file=sys.stderr)
 
     return model
 
