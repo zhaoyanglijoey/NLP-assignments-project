@@ -9,7 +9,6 @@ import sys
 
 import perc
 from neural_config import *
-from allennlp.modules.elmo import Elmo, batch_to_ids
 from allennlp.commands.elmo import ElmoEmbedder
 
 use_gpu = torch.cuda.is_available()
@@ -18,6 +17,8 @@ word_idx = {'<UNKNOWN>': 0}
 speech_tag_idx = {'<UNKNOWN>': 0}
 target_tag_idx = {}
 reversed_tag_index = {}
+
+elmo = None
 
 def preprocess_sentence(sentence):
     # temporarily ignore features
@@ -35,14 +36,23 @@ def preprocess_sentence(sentence):
 
         this_sentence.append(word)
         this_speech_tags.append(speech_tag)
-    # return prepare_sequence(this_sentence, word_idx), prepare_sequence(this_speech_tags, speech_tag_idx)
+
+    if use_elmo:
+        this_sentence = elmo.embed_sentence(this_sentence)[2]
+        this_sentence = torch.from_numpy(this_sentence)
+        if use_gpu:
+            this_sentence = this_sentence.cuda()
+
+    else:
+        this_sentence = prepare_sequence(this_sentence, word_idx)
+    this_speech_tags = prepare_sequence(this_speech_tags, speech_tag_idx)
     return this_sentence, this_speech_tags
 
 def preprocess_target(sentence):
     sentence = sentence[0]
     target_tags = [word.split()[2] for word in sentence]
-    # return prepare_sequence(target_tags, target_tag_idx)
-    return target_tags
+    return prepare_sequence(target_tags, target_tag_idx)
+    # return target_tags
 
 def build_vocab(train_data):
     for sentence in train_data:
@@ -59,33 +69,27 @@ def build_vocab(train_data):
 
 def prepare_training_data(train_data):
     training_tuples = []
-    for sentence in train_data:
+    if use_elmo:
+        print("loading pre-trained ELMo...", file=sys.stderr)
+        global elmo
+        elmo = ElmoEmbedder()
+        print("ELMo loaded. Now preprocess training sentences", file=sys.stderr)
+    for sentence in tqdm(train_data):
         preprocessed_sentence, preprocessed_speech_tag = preprocess_sentence(sentence)
 
         preprocessed_tag = preprocess_target(sentence)
         training_tuples.append((preprocessed_sentence, preprocessed_speech_tag, preprocessed_tag))
 
-    sentence_list, speech_tag_list, target_list = list(zip(*training_tuples))
+    print("training data prepared. ", file=sys.stderr)
+    return training_tuples
 
-    if use_elmo:
-        elmo = ElmoEmbedder()
-        elmo_embeddings = elmo(batch_to_ids(sentence_list))['elmo_representations']
-        sentence_list = elmo_embeddings[0]
-        # sentence_list = torch.cat((elmo_embeddings[0], elmo_embeddings[1]), 2)
-    else:
-        sentence_list = prepare_sequence_batch(sentence_list, word_idx)
-    speech_tag_list = prepare_sequence_batch(speech_tag_list, speech_tag_idx)
-    target_list = prepare_sequence_batch(target_list, target_tag_idx)
-    if use_gpu:
-        sentence_list = sentence_list.cuda()
-
-    return list(zip(sentence_list, speech_tag_list, target_list))
 
 
 def prepare_test_data(test_dataset):
-    # test_sentences = [preprocess_sentence(sentence) for sentence in test_dataset]
-    # return test_sentences
-    return [preprocess_sentence(sentence) for sentence in test_dataset]
+    if use_elmo:
+        global elmo
+        elmo = ElmoEmbedder()
+    return [preprocess_sentence(sentence) for sentence in tqdm(test_dataset)]
 
 def build_tag_index(tag_set):
     for tag in tag_set:
@@ -188,7 +192,6 @@ def train(tuples, tag_set, num_epochs):
 
     for epoch in range(num_epochs):
         running_loss = 0.0
-        print(len(tuples))
         for input_seq, input_tag, target_tag in tqdm(tuples):
 
             # initialize hidden state and grads before each step.
@@ -213,12 +216,11 @@ def neural_train(train_data, tag_set, num_epochs):
     build_vocab(train_data)
     build_tag_index(tag_set)
     if prototyping_mode:
-        train_data = train_data[1:100]
+        train_data = train_data[1:32]
 
     print("preparing training tuples...", file=sys.stderr)
     training_tuples = prepare_training_data(train_data)
 
-    print(tag_set)
     trained_model = train(training_tuples, tag_set, num_epochs)
 
     return trained_model

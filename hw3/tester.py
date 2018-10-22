@@ -4,6 +4,7 @@ import optparse
 import sys
 
 import neural_model
+import neural_config
 
 if __name__ == '__main__':
     optparser = optparse.OptionParser()
@@ -21,9 +22,12 @@ if __name__ == '__main__':
 
     test_data = perc.read_labeled_data(opts.inputfile, opts.featfile, verbose=False)
     print("done.", file=sys.stderr)
-
+    if neural_config.prototyping_mode:
+        test_data = test_data[0:32]
     model_with_data = neural_model.load_model(opts.modelfile)
     predicted_tags = neural_model.test_all(model_with_data, test_data, tagset)
+
+
     for idx, _ in enumerate(predicted_tags):
         print("\n".join(perc.conll_format(predicted_tags[idx], test_data[idx][0])))
         print()
