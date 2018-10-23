@@ -1,15 +1,13 @@
 
-elmo_option_file = 'elmo_options.json'
-elmo_weights_file = 'elmo_weights.hdf5'
 use_elmo = True
 elmo_dimension = 1024
 
-word_embedding_dimension = 8
-speech_embedding_dimension = 4
-hidden_unit_dimension = 8
+word_embedding_dimension = 1024
+speech_embedding_dimension = 256
+hidden_unit_dimension = 2048
 LSTM_layer = 2
 
-learning_rate = 0.1
+learning_rate = 0.05
 
 test_mode = False
 prototyping_mode = True

@@ -213,8 +213,7 @@ def train(tuples, tag_set, num_epochs):
             optimizer.step()
 
         valid_loss = validate_model(model, tuples[101:200])
-        print("epoch {} done. Training loss = {}, Validation loss = {}"
-              .format(epoch, running_loss, valid_loss),
+        print(f"epoch {epoch} done. Training loss = {running_loss}, Validation loss = {valid_loss}",
               file=sys.stderr)
 
     return model
