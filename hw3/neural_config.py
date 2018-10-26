@@ -10,4 +10,4 @@ LSTM_layer = 2
 learning_rate = 0.05
 
 test_mode = False
-prototyping_mode = True
+prototyping_mode = False
