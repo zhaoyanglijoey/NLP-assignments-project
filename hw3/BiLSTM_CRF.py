@@ -20,7 +20,6 @@ class BiLSTM(nn.Module):
         self.hidden_dim = config.hidden_unit_dimension
 
         if config.use_elmo:
-            global word_embedding_dimension
             word_embedding_dimension = config.elmo_dimension
 
         self.word_embeddings = nn.Embedding(vocab_size, word_embedding_dimension)
@@ -40,7 +39,7 @@ class BiLSTM(nn.Module):
 
     def forward(self, sentence, speech_tags):
         sentence_length = len(speech_tags)
-        word_embeds = sentence[0:sentence_length] if self.use_elmo \
+        word_embeds = sentence[0:sentence_length] if config.use_elmo \
             else self.word_embeddings(sentence)
         speech_embeds = self.speech_embeddings(speech_tags)
         embeds = torch.cat((word_embeds, speech_embeds), 1)
@@ -53,13 +52,16 @@ class BiLSTM(nn.Module):
 
 class CRF(nn.Module):
     def __init__(self, tagset_size):
+        super(CRF, self).__init__()
         self.tagset_size = tagset_size
         self.transitions = nn.Parameter(torch.randn(tagset_size, tagset_size)) # [C, C]
-        self.transitions[START_IDX, :] = -10000
-        self.transitions[:, END_IDX] = -10000
+        # self.transitions = torch.randn(tagset_size, tagset_size) # [C, C]
+
+        self.transitions.data[START_IDX, :] = -10000
+        self.transitions.data[:, END_IDX] = -10000
 
     def forward(self, h):
-        forward_var = torch.full((self.tagset_size), -10000) # [C]
+        forward_var = torch.full((1, self.tagset_size), -10000) # [C]
         forward_var[0][START_IDX] = 0
 
         for emit_score in h:
@@ -83,7 +85,7 @@ class CRF(nn.Module):
 
     def decode(self, h):
         bkptrs = []
-        forward_var = torch.full((self.tagset_size), -10000)
+        forward_var = torch.full((1, self.tagset_size), -10000)
         forward_var[0][START_IDX] = 0
 
         for emit_score in h:
@@ -110,6 +112,7 @@ class CRF(nn.Module):
 
 class BiLSTM_CRF(nn.Module):
     def __init__(self, vocab_size, speech_tag_size, tagset_size):
+        super(BiLSTM_CRF, self).__init__()
         self.vocab_size = vocab_size
         self.speech_tag_size = speech_tag_size
         self.tagset_size = tagset_size

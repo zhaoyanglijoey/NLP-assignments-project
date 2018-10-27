@@ -6,7 +6,7 @@ from collections import OrderedDict
 
 from tqdm import tqdm
 import sys
-from BiLSTM_CRF import BiLSTM_CRF
+from BiLSTM_CRF import *
 import perc
 from neural_config import *
 from allennlp.commands.elmo import ElmoEmbedder
@@ -240,7 +240,7 @@ def bilstmcrf_train(train_data, tag_set, num_epochs):
     build_vocab(train_data)
     build_tag_index(tag_set)
     if prototyping_mode:
-        train_data = train_data[1:32]
+        train_data = train_data[1:16]
 
     print("preparing training tuples...", file=sys.stderr)
     training_tuples = prepare_training_data(train_data)
