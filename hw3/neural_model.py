@@ -101,6 +101,8 @@ def prepare_test_data(test_dataset):
 def build_tag_index(tag_set):
     target_tag_idx['<start>'] = 0
     target_tag_idx['<end>'] = 1
+    reversed_tag_index[0] = '<start>'
+    reversed_tag_index[1] = '<end>'
     for tag in tag_set:
         target_tag_idx[tag] = len(target_tag_idx)
         reversed_tag_index[target_tag_idx[tag]] = tag
