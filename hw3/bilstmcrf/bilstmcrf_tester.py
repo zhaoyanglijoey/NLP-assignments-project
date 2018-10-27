@@ -1,10 +1,11 @@
+import sys
+sys.path.append('../')
 import os
 import perc
 import optparse
-import sys
-import bilstmcrf_config as config
-from util import *
-from BiLSTM_CRF import BiLSTM_CRF
+from bilstmcrf import bilstmcrf_config as config
+from bilstmcrf.util import *
+from bilstmcrf.BiLSTM_CRF import BiLSTM_CRF
 
 def test_model(model, data_tuples, idx2tag, cuda):
     predicted_tags = []
@@ -20,10 +21,10 @@ def test_model(model, data_tuples, idx2tag, cuda):
 
 if __name__ == '__main__':
     optparser = optparse.OptionParser()
-    optparser.add_option("-t", "--tagsetfile", dest="tagsetfile", default=os.path.join("data", "tagset.txt"), help="tagset that contains all the labels produced in the output, i.e. the y in \phi(x,y)")
-    optparser.add_option("-i", "--inputfile", dest="inputfile", default=os.path.join("data", "dev.txt"), help="input data, i.e. the x in \phi(x,y)")
-    optparser.add_option("-f", "--featfile", dest="featfile", default=os.path.join("data", "dev.feats"), help="precomputed features for the input data, i.e. the values of \phi(x,_) without y")
-    optparser.add_option("-m", "--modelfile", dest="modelfile", default=os.path.join("data", "default.model"), help="weights for all features stored on disk")
+    optparser.add_option("-t", "--tagsetfile", dest="tagsetfile", default=os.path.join("../data", "tagset.txt"), help="tagset that contains all the labels produced in the output, i.e. the y in \phi(x,y)")
+    optparser.add_option("-i", "--inputfile", dest="inputfile", default=os.path.join("../data", "dev.txt"), help="input data, i.e. the x in \phi(x,y)")
+    optparser.add_option("-f", "--featfile", dest="featfile", default=os.path.join("../data", "dev.feats"), help="precomputed features for the input data, i.e. the values of \phi(x,_) without y")
+    optparser.add_option("-m", "--modelfile", dest="modelfile", default=os.path.join("model", "default.model"), help="weights for all features stored on disk")
     (opts, _) = optparser.parse_args()
 
     cuda = torch.cuda.is_available()

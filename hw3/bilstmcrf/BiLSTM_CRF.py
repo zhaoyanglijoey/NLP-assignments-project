@@ -1,22 +1,36 @@
 import torch
 import torch.nn as nn
-import torch.nn.functional as F
-import torch.optim as optim
-from collections import OrderedDict
 
-from tqdm import tqdm
-import sys
-import util
-import perc
-import bilstmcrf_config as config
-from allennlp.commands.elmo import ElmoEmbedder
+from bilstmcrf import util, bilstmcrf_config as config
 
 START_IDX = 0
 END_IDX = 1
 
+class BiLSTM_CRF(nn.Module):
+    def __init__(self, vocab_size, speech_tag_size, tagset_size, device):
+        super(BiLSTM_CRF, self).__init__()
+        self.vocab_size = vocab_size
+        self.speech_tag_size = speech_tag_size
+        self.tagset_size = tagset_size
+
+        self.bilstm = BiLSTM(vocab_size, speech_tag_size, tagset_size, device)
+        self.crf = CRF(tagset_size, device)
+
+    def NLLloss(self, sentence, speech_tags, tags):
+        h = self.bilstm(sentence, speech_tags)
+        forward_score = self.crf(h)
+        gold_score = self.crf.score(h, tags)
+
+        return forward_score - gold_score
+
+    def decode(self, sentence, speech_tags):
+        h = self.bilstm(sentence, speech_tags)
+        return self.crf.decode(h)
+
 class BiLSTM(nn.Module):
-    def __init__(self, vocab_size, speech_tag_size, tagset_size):
+    def __init__(self, vocab_size, speech_tag_size, tagset_size, device):
         super(BiLSTM, self).__init__()
+        self.device = device
         self.hidden_dim = config.hidden_unit_dimension
 
         if config.use_elmo:
@@ -34,13 +48,12 @@ class BiLSTM(nn.Module):
         self.hidden = self.init_hidden()
 
     def init_hidden(self):
-        return (torch.randn(2*config.LSTM_layer, 1, self.hidden_dim),
-                torch.randn(2*config.LSTM_layer, 1, self.hidden_dim))
+        return (torch.randn(2*config.LSTM_layer, 1, self.hidden_dim).to(self.device),
+                torch.randn(2*config.LSTM_layer, 1, self.hidden_dim).to(self.device))
 
     def forward(self, sentence, speech_tags):
         sentence_length = len(speech_tags)
-        word_embeds = sentence[0:sentence_length] if config.use_elmo \
-            else self.word_embeddings(sentence)
+        word_embeds = sentence
         speech_embeds = self.speech_embeddings(speech_tags)
         embeds = torch.cat((word_embeds, speech_embeds), 1)
         lstm_out, self.hidden = self.lstm(
@@ -51,9 +64,10 @@ class BiLSTM(nn.Module):
         return tag_space
 
 class CRF(nn.Module):
-    def __init__(self, tagset_size):
+    def __init__(self, tagset_size, device):
         super(CRF, self).__init__()
         self.tagset_size = tagset_size
+        self.device = device
         self.transitions = nn.Parameter(torch.randn(tagset_size, tagset_size)) # [C, C]
         # self.transitions = torch.randn(tagset_size, tagset_size) # [C, C]
 
@@ -61,7 +75,7 @@ class CRF(nn.Module):
         self.transitions.data[:, END_IDX] = -10000
 
     def forward(self, h):
-        forward_var = torch.full((1, self.tagset_size), -10000) # [C]
+        forward_var = torch.full((1, self.tagset_size), -10000).to(self.device) # [C]
         forward_var[0][START_IDX] = 0
 
         for emit_score in h:
@@ -75,8 +89,8 @@ class CRF(nn.Module):
         return forward_score
 
     def score(self, h, tags):
-        score = torch.zeros(1)
-        tags = torch.cat([torch.tensor([START_IDX], dtype=torch.long), tags])
+        score = torch.zeros(1).to(self.device)
+        tags = torch.cat([torch.tensor([START_IDX], dtype=torch.long).to(self.device), tags])
 
         for i, emit_score in enumerate(h):
             score += self.transitions[tags[i+1], tags[i]] + emit_score[tags[i+1]]
@@ -85,7 +99,7 @@ class CRF(nn.Module):
 
     def decode(self, h):
         bkptrs = []
-        forward_var = torch.full((1, self.tagset_size), -10000)
+        forward_var = torch.full((1, self.tagset_size), -10000).to(self.device)
         forward_var[0][START_IDX] = 0
 
         for emit_score in h:
@@ -109,24 +123,3 @@ class CRF(nn.Module):
         return best_path
 
 
-
-class BiLSTM_CRF(nn.Module):
-    def __init__(self, vocab_size, speech_tag_size, tagset_size):
-        super(BiLSTM_CRF, self).__init__()
-        self.vocab_size = vocab_size
-        self.speech_tag_size = speech_tag_size
-        self.tagset_size = tagset_size
-
-        self.bilstm = BiLSTM(vocab_size, speech_tag_size, tagset_size)
-        self.crf = CRF(tagset_size)
-
-    def NLLloss(self, sentence, speech_tags, tags):
-        h = self.bilstm(sentence, speech_tags)
-        forward_score = self.crf(h)
-        gold_score = self.crf.score(h, tags)
-
-        return forward_score - gold_score
-
-    def decode(self, sentence, speech_tags):
-        h = self.bilstm(sentence, speech_tags)
-        return self.crf.decode(h)
