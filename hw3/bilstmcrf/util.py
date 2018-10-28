@@ -6,7 +6,10 @@ import sys
 from allennlp.commands.elmo import ElmoEmbedder
 
 print("initializing ELMo embedding... ", file=sys.stderr)
-elmo = ElmoEmbedder()
+if torch.cuda.is_available():
+    elmo = ElmoEmbedder(cuda_device=0)
+else:
+    elmo = ElmoEmbedder()
 print("loaded. ", file=sys.stderr)
 
 def preprocess_sentence(sentence, speech_tag_idx):
