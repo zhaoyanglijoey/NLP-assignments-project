@@ -18,8 +18,10 @@ class BiLSTM_CRF(nn.Module):
 
     def NLLloss(self, sentence, speech_tags, tags):
         h = self.bilstm(sentence, speech_tags)
+        # print('h:', h.data)
         forward_score = self.crf(h)
         gold_score = self.crf.score(h, tags)
+        # print('scores:', forward_score.data, gold_score.data)
 
         return forward_score - gold_score
 
@@ -48,12 +50,13 @@ class BiLSTM(nn.Module):
         self.hidden = self.init_hidden()
 
     def init_hidden(self):
-        return (torch.randn(2*config.LSTM_layer, 1, self.hidden_dim).to(self.device),
-                torch.randn(2*config.LSTM_layer, 1, self.hidden_dim).to(self.device))
+        return (torch.zeros(2*config.LSTM_layer, 1, self.hidden_dim).to(self.device),
+                torch.zeros(2*config.LSTM_layer, 1, self.hidden_dim).to(self.device))
 
     def forward(self, sentence, speech_tags):
+        self.hidden = self.init_hidden()
         sentence_length = len(speech_tags)
-        word_embeds = sentence
+        word_embeds = sentence[:sentence_length]
         speech_embeds = self.speech_embeddings(speech_tags)
         embeds = torch.cat((word_embeds, speech_embeds), 1)
         lstm_out, self.hidden = self.lstm(
@@ -83,6 +86,7 @@ class CRF(nn.Module):
             forward_var = forward_var.view(1, -1).expand(self.tagset_size, -1)
             forward_score_t = forward_var + self.transitions + emit_score
             forward_var = util.log_sum_exp(forward_score_t)
+            # print('forward_var:', forward_var.data)
 
         terminal_var = forward_var.view(-1) + self.transitions[END_IDX]
         forward_score = util.log_sum_exp(terminal_var)
@@ -94,6 +98,7 @@ class CRF(nn.Module):
 
         for i, emit_score in enumerate(h):
             score += self.transitions[tags[i+1], tags[i]] + emit_score[tags[i+1]]
+            # print('gold score:', score)
         score += self.transitions[END_IDX, tags[-1]]
         return score
 

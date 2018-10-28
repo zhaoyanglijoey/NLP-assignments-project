@@ -42,7 +42,7 @@ if __name__ == '__main__':
     tag2idx, idx2tag = build_tag_index(tagset)
 
     if config.prototyping_mode:
-        train_data = train_data[1:8]
+        train_data = train_data[1:32]
 
     print("preparing training data...", file=sys.stderr)
     training_tuples = prepare_training_data(train_data, speech_tag_idx, tag2idx)
@@ -69,13 +69,14 @@ if __name__ == '__main__':
             target_tag = target_tag.to(device)
             # initialize hidden state and grads before each step.
             model.zero_grad()
+
             loss = model.NLLloss(input_seq, input_tag, target_tag)
             running_loss += loss.item()
             loss.backward(retain_graph=True)
             optimizer.step()
 
-            if i+1 % 2 == 0:
-                running_loss /= 2
+            if (i+1) % 100 == 0:
+                running_loss /= 100
                 print('[Epoch {:3}, iteration {:6}] loss: {}'.format(epoch+1, i+1, running_loss))
                 running_loss = 0
 
@@ -89,4 +90,5 @@ if __name__ == '__main__':
         dump_model(model.state_dict(), word_idx, speech_tag_idx, tag2idx, idx2tag,
                    osp.join(opts.ckpt, 'ckpt_e{}.model'.format(epoch+1)))
 
-    # dump_model(best_model, word_idx, speech_tag_idx, tag2idx, idx2tag, opts.modelfile)
+    dump_model(model.state_dict(), word_idx, speech_tag_idx, tag2idx, idx2tag, opts.modelfile)
+    print('Training completed in {}'.format(datetime.now() - train_start_t))

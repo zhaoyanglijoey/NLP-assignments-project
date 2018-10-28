@@ -7,15 +7,14 @@ from bilstmcrf import bilstmcrf_config as config
 from bilstmcrf.util import *
 from bilstmcrf.BiLSTM_CRF import BiLSTM_CRF
 
-def test_model(model, data_tuples, idx2tag, cuda):
+def test_model(model, data_tuples, idx2tag, device):
     predicted_tags = []
     with torch.no_grad():
         for input_seq, input_tag in data_tuples:
-            if cuda:
-                input_seq = input_seq.cuda()
-                input_tag = input_tag.cuda()
-            tag_indices = model.decode(input_seq, input_tag).cpu()
-            predicted_tags.append([idx2tag[tag_idx] for tag_idx in tag_indices])
+            input_seq = input_seq.to(device)
+            input_tag = input_tag.to(device)
+            tag_indices = model.decode(input_seq, input_tag)
+            predicted_tags.append([idx2tag[tag_idx.cpu().item()] for tag_idx in tag_indices])
 
     return predicted_tags
 
@@ -27,7 +26,7 @@ if __name__ == '__main__':
     optparser.add_option("-m", "--modelfile", dest="modelfile", default=os.path.join("model", "default.model"), help="weights for all features stored on disk")
     (opts, _) = optparser.parse_args()
 
-    cuda = torch.cuda.is_available()
+    device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
     tagset = perc.read_tagset(opts.tagsetfile)
     print("reading data ...", file=sys.stderr)
 
@@ -36,6 +35,7 @@ if __name__ == '__main__':
     if config.prototyping_mode:
         test_data = test_data[0:32]
 
+    print('Loading model...')
     model_data = load_model(opts.modelfile)
 
     word_idx = model_data['word_index']
@@ -43,13 +43,14 @@ if __name__ == '__main__':
     tag2idx = model_data['tag_index']
     idx2tag = model_data['reverse_tag_index']
 
-    model = BiLSTM_CRF(len(word_idx), len(speech_tag_idx), len(tag2idx))
+    model = BiLSTM_CRF(len(word_idx), len(speech_tag_idx), len(tag2idx), device)
     model.load_state_dict(model_data['model'])
-    if cuda:
-        model.cuda()
+    model.to(device)
+    print('Done')
+    print('Preparing testing data...')
     test_tuples = prepare_test_data(test_data, speech_tag_idx)
-
-    predicted_tags = test_model(model, test_tuples, idx2tag, cuda)
+    print('Done')
+    predicted_tags = test_model(model, test_tuples, idx2tag, device)
 
     for idx, _ in enumerate(predicted_tags):
         print("\n".join(perc.conll_format(predicted_tags[idx], test_data[idx][0])))
