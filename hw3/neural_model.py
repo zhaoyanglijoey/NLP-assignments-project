@@ -95,10 +95,10 @@ def prepare_test_data(test_dataset):
     return [preprocess_sentence(sentence) for sentence in tqdm(test_dataset)]
 
 def build_tag_index(tag_set):
-    target_tag_idx['<start>'] = 0
-    target_tag_idx['<end>'] = 1
-    reversed_tag_index[0] = '<start>'
-    reversed_tag_index[1] = '<end>'
+    # target_tag_idx['<start>'] = 0
+    # target_tag_idx['<end>'] = 1
+    # reversed_tag_index[0] = '<start>'
+    # reversed_tag_index[1] = '<end>'
     for tag in tag_set:
         target_tag_idx[tag] = len(target_tag_idx)
         reversed_tag_index[target_tag_idx[tag]] = tag
@@ -232,39 +232,6 @@ def neural_train(train_data, tag_set, num_epochs):
     trained_model = train(training_tuples, tag_set, num_epochs)
 
     return trained_model
-
-def bilstmcrf_train(train_data, tag_set, num_epochs):
-
-    build_vocab(train_data)
-    build_tag_index(tag_set)
-    if prototyping_mode:
-        train_data = train_data[1:16]
-
-    print("preparing training tuples...", file=sys.stderr)
-    training_tuples = prepare_training_data(train_data)
-
-    print("initializing BiLSTM-CRF model... ", file=sys.stderr)
-    model = BiLSTM_CRF(len(word_idx), len(speech_tag_idx), len(target_tag_idx))
-    optimizer = optim.SGD(model.parameters(), lr=learning_rate)
-    if use_gpu:
-        model = model.cuda()
-
-    for epoch in range(num_epochs):
-        running_loss = 0.0
-        for input_seq, input_tag, target_tag in tqdm(training_tuples):
-
-            # initialize hidden state and grads before each step.
-            model.zero_grad()
-            loss = model.NLLloss(input_seq, input_tag, target_tag)
-            running_loss += loss.item()
-            loss.backward(retain_graph=True)
-            optimizer.step()
-
-        valid_loss = validate_model(model, training_tuples[101:200])
-        print(f"epoch {epoch} done. Training loss = {running_loss}, Validation loss = {valid_loss}",
-              file=sys.stderr)
-
-    return model
 
 def extract_model_data(model_data):
     global word_idx

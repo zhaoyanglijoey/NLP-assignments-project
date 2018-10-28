@@ -7,17 +7,6 @@ from bilstmcrf import bilstmcrf_config as config
 from bilstmcrf.util import *
 from bilstmcrf.BiLSTM_CRF import BiLSTM_CRF
 
-def test_model(model, data_tuples, idx2tag, device):
-    predicted_tags = []
-    with torch.no_grad():
-        for input_seq, input_tag in data_tuples:
-            input_seq = input_seq.to(device)
-            input_tag = input_tag.to(device)
-            tag_indices = model.decode(input_seq, input_tag)
-            predicted_tags.append([idx2tag[tag_idx.cpu().item()] for tag_idx in tag_indices])
-
-    return predicted_tags
-
 if __name__ == '__main__':
     optparser = optparse.OptionParser()
     optparser.add_option("-t", "--tagsetfile", dest="tagsetfile", default=os.path.join("../data", "tagset.txt"), help="tagset that contains all the labels produced in the output, i.e. the y in \phi(x,y)")
@@ -52,6 +41,4 @@ if __name__ == '__main__':
     print('Done', file=sys.stderr)
     predicted_tags = test_model(model, test_tuples, idx2tag, device)
 
-    for idx, _ in enumerate(predicted_tags):
-        print("\n".join(perc.conll_format(predicted_tags[idx], test_data[idx][0])))
-        print()
+    print(format_prediction(predicted_tags, test_data))

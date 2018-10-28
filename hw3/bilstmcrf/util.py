@@ -1,18 +1,17 @@
 import torch
 import torch.nn as nn
+import sys
+sys.path.append('../')
+import perc
+from score_chunks import readTestFile, corpus_fmeasure
 
+import os.past as osp
 from tqdm import tqdm
 import sys
 from allennlp.commands.elmo import ElmoEmbedder
 
-print("initializing ELMo embedding... ", file=sys.stderr)
-if torch.cuda.is_available():
-    elmo = ElmoEmbedder(cuda_device=0)
-else:
-    elmo = ElmoEmbedder()
-print("loaded. ", file=sys.stderr)
 
-def preprocess_sentence(sentence, speech_tag_idx):
+def preprocess_sentence(sentence, speech_tag_idx, elmo):
     # temporarily ignore features
     features = sentence[1]
     sentence = sentence[0]
@@ -59,9 +58,15 @@ def build_vocab(train_data):
     return word_idx, speech_tag_idx
 
 def prepare_training_data(train_data, speech_tag_idx, tag2idx):
+    print("initializing ELMo embedding... ", file=sys.stderr)
+    if torch.cuda.is_available():
+        elmo = ElmoEmbedder(cuda_device=0)
+    else:
+        elmo = ElmoEmbedder()
+    print("loaded. ", file=sys.stderr)
     training_tuples = []
     for sentence in tqdm(train_data):
-        preprocessed_sentence, preprocessed_speech_tag = preprocess_sentence(sentence, speech_tag_idx)
+        preprocessed_sentence, preprocessed_speech_tag = preprocess_sentence(sentence, speech_tag_idx, elmo)
 
         preprocessed_tag = preprocess_target(sentence, tag2idx)
         training_tuples.append((preprocessed_sentence, preprocessed_speech_tag, preprocessed_tag))
@@ -69,6 +74,12 @@ def prepare_training_data(train_data, speech_tag_idx, tag2idx):
     return training_tuples
 
 def prepare_test_data(test_dataset, speech_tag_idx):
+    print("initializing ELMo embedding... ", file=sys.stderr)
+    if torch.cuda.is_available():
+        elmo = ElmoEmbedder(cuda_device=0)
+    else:
+        elmo = ElmoEmbedder()
+    print("loaded. ", file=sys.stderr)
 
     return [preprocess_sentence(sentence, speech_tag_idx) for sentence in tqdm(test_dataset)]
 
@@ -96,56 +107,6 @@ def prepare_sequence(seq, index_set):
 
     return torch.tensor(indices, dtype=torch.long)
 
-def predict_seq(model, input_seq):
-    with torch.no_grad():
-        output = model(input_seq[0], input_seq[1])
-        return output.max(1)[1]
-
-def decode_seq(predicted_seq):
-    if use_gpu:
-        predicted_seq = predicted_seq.cpu()
-    return [reversed_tag_index[idx] for idx in predicted_seq.numpy()]
-
-def validate_model(model, validation_pairs):
-    loss_function = nn.NLLLoss()
-    error = 0.0
-    with torch.no_grad():
-        for input_seq, speech_tag, target_seq in validation_pairs:
-            output = model(input_seq, speech_tag)
-            loss = loss_function(output, target_seq)
-            error += loss.item()
-    return error
-
-def extract_model_data(model_data):
-    global word_idx
-    global speech_tag_idx
-    global target_tag_idx
-    global reversed_tag_index
-
-    # test_mode = True
-    word_idx = model_data['word_index']
-    speech_tag_idx = model_data['speech_tag_index']
-    target_tag_idx = model_data['tag_index']
-    reversed_tag_index = model_data['reverse_tag_index']
-
-    model = BiLSTM(len(word_idx), len(speech_tag_idx), len(target_tag_idx))
-
-    model.load_state_dict(model_data['model'])
-
-    return model
-
-def test_all(model_data, test_dataset, tag_set):
-    model = extract_model_data(model_data)
-    test_data = prepare_test_data(test_dataset)
-
-    predicted_tag_sequences = []
-    for input_seq in tqdm(test_data):
-        output = predict_seq(model, input_seq)
-        decoded_tags = decode_seq(output)
-        predicted_tag_sequences.append(decoded_tags)
-
-    return predicted_tag_sequences
-
 def dump_model(model, word_idx, speech_tag_idx, target_tag_idx, reversed_tag_index, file):
     checkpoint = {
         'model': model,
@@ -159,6 +120,32 @@ def dump_model(model, word_idx, speech_tag_idx, target_tag_idx, reversed_tag_ind
 def load_model(file):
     # return torch.load(file)
     return torch.load(file, map_location=lambda storage, loc: storage)
+
+def test_model(model, data_tuples, idx2tag, device):
+    predicted_tags = []
+    with torch.no_grad():
+        for input_seq, input_tag in data_tuples:
+            input_seq = input_seq.to(device)
+            input_tag = input_tag.to(device)
+            tag_indices = model.decode(input_seq, input_tag)
+            predicted_tags.append([idx2tag[tag_idx.cpu().item()] for tag_idx in tag_indices])
+
+    return predicted_tags
+
+def format_prediction(predicted_tags, test_data):
+    output = ''
+    for idx, _ in enumerate(predicted_tags):
+        output += ("\n".join(perc.conll_format(predicted_tags[idx], test_data[idx][0])))+'\n\n\n'
+    return output
+
+def compute_score(output):
+    boundary = '-X-'
+    outside = 'O'
+    ref_file = osp.join('..data', 'reference500.txt')
+    test, _ = readTestFile(output, boundary, outside, False, 2)
+    with open(ref_file) as f:
+        reference, _ = readTestFile(f.read(), boundary, outside, False, 2)
+    return corpus_fmeasure(reference, test, False)
 
 def log_sum_exp(score):
     maxscore = torch.max(score, -1)[0] # [C]

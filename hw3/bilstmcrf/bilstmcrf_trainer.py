@@ -47,19 +47,20 @@ if __name__ == '__main__':
     print("preparing training data...", file=sys.stderr)
     training_tuples = prepare_training_data(train_data, speech_tag_idx, tag2idx)
     print('preparing testing data...')
-    # test_tuples = prepare_test_data(test_data, speech_tag_idx)
+    test_tuples = prepare_test_data(test_data, speech_tag_idx)
     print('Done')
     print("initializing BiLSTM-CRF model... ", file=sys.stderr)
     model = BiLSTM_CRF(len(word_idx), len(speech_tag_idx), len(tag2idx), device)
     print('Done')
 
-    optimizer = optim.SGD(model.parameters(), lr=config.learning_rate)
+    optimizer = optim.SGD(model.parameters(), lr=config.learning_rate, weight_decay=1e-4)
     model.to(device)
     print('Start training')
     train_start_t = datetime.now()
 
     best_model = None
-    best_test_error = None
+    best_score = 0
+    best_epoch = None
 
     for epoch in range(opts.numepochs):
         running_loss = 0.0
@@ -80,15 +81,19 @@ if __name__ == '__main__':
                 print('[Epoch {:3}, iteration {:6}] loss: {}'.format(epoch+1, i+1, running_loss))
                 running_loss = 0
 
+        predicted_tags = test_model(model, test_tuples, idx2tag, device)
+        output = format_prediction(predicted_tags, test_data)
+        f1score = compute_score(output)
+        if f1score > best_score:
+            best_score = f1score
+            best_model = model.state_dict()
+            best_epoch = epoch+1
 
-        # test_error = test_model(model, test_tuples, idx2tag, cuda)
-        # if best_test_error is None or best_test_error > test_error:
-        #     best_test_error = test_error
-        #     best_model = model.state_dict()
-        # print(f"epoch {epoch+1} done. Validation loss = {val_loss}",
-        #       file=sys.stderr)
+        print(f"epoch {epoch+1} done. F1 score = {f1score}",
+              file=sys.stderr)
         dump_model(model.state_dict(), word_idx, speech_tag_idx, tag2idx, idx2tag,
                    osp.join(opts.ckpt, 'ckpt_e{}.model'.format(epoch+1)))
 
-    dump_model(model.state_dict(), word_idx, speech_tag_idx, tag2idx, idx2tag, opts.modelfile)
-    print('Training completed in {}'.format(datetime.now() - train_start_t))
+    dump_model(best_model, word_idx, speech_tag_idx, tag2idx, idx2tag, opts.modelfile)
+    print('Training completed in {}, best F1 score {} obtained after {} epochs'.
+          format(datetime.now() - train_start_t), best_score, best_epoch)
