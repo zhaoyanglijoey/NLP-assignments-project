@@ -81,7 +81,7 @@ def prepare_test_data(test_dataset, speech_tag_idx):
         elmo = ElmoEmbedder()
     print("loaded. ", file=sys.stderr)
 
-    return [preprocess_sentence(sentence, speech_tag_idx) for sentence in tqdm(test_dataset)]
+    return [preprocess_sentence(sentence, speech_tag_idx, elmo) for sentence in tqdm(test_dataset)]
 
 def build_tag_index(tag_set):
     target_tag_idx = {}
