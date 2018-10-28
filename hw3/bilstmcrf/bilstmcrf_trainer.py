@@ -92,9 +92,10 @@ if __name__ == '__main__':
 
         print(f"epoch {epoch+1} done. F1 score = {f1score}",
               file=sys.stderr)
-        dump_model(model.state_dict(), word_idx, speech_tag_idx, tag2idx, idx2tag,
-                   osp.join(opts.ckpt, 'ckpt_e{}.model'.format(epoch+1)))
+        save_path = osp.join(opts.ckpt, 'ckpt_e{}.model'.format(epoch+1))
+        dump_model(model.state_dict(), word_idx, speech_tag_idx, tag2idx, idx2tag, save_path)
+        print('model saved at', save_path)
 
     dump_model(best_model, word_idx, speech_tag_idx, tag2idx, idx2tag, opts.modelfile)
-    print('Training completed in {}, best F1 score {} obtained after {} epochs'.
-          format(datetime.now() - train_start_t, best_score, best_epoch))
+    print('Training completed in {}, best F1 score {} obtained after {} epochs. Model saved at {}'.
+          format(datetime.now() - train_start_t, best_score, best_epoch, opts.modelfile))
