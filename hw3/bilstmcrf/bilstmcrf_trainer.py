@@ -54,12 +54,12 @@ if __name__ == '__main__':
     model = BiLSTM_CRF(len(word_idx), len(speech_tag_idx), len(tag2idx), device)
     print('Done')
 
-    optimizer = optim.SGD(model.parameters(), lr=config.learning_rate, weight_decay=1e-4)
+    optimizer = optim.SGD(model.parameters(), lr=config.learning_rate, momentum=0.8)
+
     model.to(device)
     print('Start training')
     train_start_t = datetime.now()
 
-    best_model = None
     best_score = 0
     best_epoch = None
 
@@ -77,8 +77,8 @@ if __name__ == '__main__':
             loss.backward(retain_graph=True)
             optimizer.step()
 
-            if (i+1) % 100 == 0:
-                running_loss /= 100
+            if (i+1) % 500 == 0:
+                running_loss /= 500
                 print('[Epoch {:3}, iteration {:6}] loss: {}'.format(epoch+1, i+1, running_loss))
                 running_loss = 0
 
@@ -87,8 +87,9 @@ if __name__ == '__main__':
         f1score = compute_score(output)
         if f1score > best_score:
             best_score = f1score
-            best_model = model.state_dict()
             best_epoch = epoch+1
+            dump_model(model.state_dict(), word_idx, speech_tag_idx, tag2idx, idx2tag, opts.modelfile)
+            print('model saved at', opts.modelfile)
 
         print(f"epoch {epoch+1} done. F1 score = {f1score}",
               file=sys.stderr)
@@ -96,6 +97,5 @@ if __name__ == '__main__':
         dump_model(model.state_dict(), word_idx, speech_tag_idx, tag2idx, idx2tag, save_path)
         print('model saved at', save_path)
 
-    dump_model(best_model, word_idx, speech_tag_idx, tag2idx, idx2tag, opts.modelfile)
     print('Training completed in {}, best F1 score {} obtained after {} epochs. Model saved at {}'.
           format(datetime.now() - train_start_t, best_score, best_epoch, opts.modelfile))
