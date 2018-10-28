@@ -141,7 +141,7 @@ def format_prediction(predicted_tags, test_data):
 def compute_score(output):
     boundary = '-X-'
     outside = 'O'
-    ref_file = osp.join('..data', 'reference500.txt')
+    ref_file = osp.join('../data', 'reference500.txt')
     test, _ = readTestFile(output, boundary, outside, False, 2)
     with open(ref_file) as f:
         reference, _ = readTestFile(f.read(), boundary, outside, False, 2)

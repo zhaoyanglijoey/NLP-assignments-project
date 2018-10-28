@@ -18,7 +18,7 @@ if __name__ == '__main__':
     optparser.add_option("-t", "--tagsetfile", dest="tagsetfile", default=os.path.join("../data", "tagset.txt"), help="tagset that contains all the labels produced in the output, i.e. the y in \phi(x,y)")
     optparser.add_option("-i", "--trainfile", dest="trainfile", default=os.path.join("../data", "train.txt.gz"), help="input data, i.e. the x in \phi(x,y)")
     optparser.add_option("-f", "--featfile", dest="featfile", default=os.path.join("../data", "train.feats.gz"), help="precomputed features for the input data, i.e. the values of \phi(x,_) without y")
-    optparser.add_option("-e", "--numepochs", dest="numepochs", default=int(10), help="number of epochs of training; in each epoch we iterate over over all the training examples")
+    optparser.add_option("-e", "--numepochs", dest="numepochs", default=int(10), type=int, help="number of epochs of training; in each epoch we iterate over over all the training examples")
     optparser.add_option("-m", "--modelfile", dest="modelfile", default=os.path.join("models", "default.model"), help="weights for all features stored on disk")
     optparser.add_option('-v', '--valfile', dest='valfile', default=os.path.join("../data", "dev.txt"), help='validation data')
     optparser.add_option("--vf", dest="valfeatfile", default=os.path.join("../data", "dev.feats"), help='validation feature')
@@ -43,6 +43,7 @@ if __name__ == '__main__':
 
     if config.prototyping_mode:
         train_data = train_data[1:32]
+        test_data = test_data[1:32]
 
     print("preparing training data...", file=sys.stderr)
     training_tuples = prepare_training_data(train_data, speech_tag_idx, tag2idx)
