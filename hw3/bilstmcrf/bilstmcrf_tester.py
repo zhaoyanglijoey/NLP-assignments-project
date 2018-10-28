@@ -42,4 +42,4 @@ if __name__ == '__main__':
     predicted_tags = test_model(model, test_tuples, idx2tag, device)
 
     output = format_prediction(predicted_tags, test_data)
-    print('F1 score:{:.3}'.format(compute_score(output)))
+    print('F1 score:{:.5}'.format(compute_score(output)))
