@@ -3,6 +3,8 @@ import perc
 import optparse
 import sys
 
+import neural_model
+import neural_config
 
 if __name__ == '__main__':
     optparser = optparse.OptionParser()

@@ -1,13 +1,9 @@
-import torch
-import torch.nn as nn
 import torch.nn.functional as F
 import torch.optim as optim
-from collections import OrderedDict
 
 from tqdm import tqdm
 import sys
-from BiLSTM_CRF import *
-import perc
+from bilstmcrf.BiLSTM_CRF import *
 from neural_config import *
 from allennlp.commands.elmo import ElmoEmbedder
 

@@ -35,7 +35,7 @@ if __name__ == '__main__':
     if config.prototyping_mode:
         test_data = test_data[0:32]
 
-    print('Loading model...')
+    print('Loading model...', file=sys.stderr)
     model_data = load_model(opts.modelfile)
 
     word_idx = model_data['word_index']
@@ -46,10 +46,10 @@ if __name__ == '__main__':
     model = BiLSTM_CRF(len(word_idx), len(speech_tag_idx), len(tag2idx), device)
     model.load_state_dict(model_data['model'])
     model.to(device)
-    print('Done')
-    print('Preparing testing data...')
+    print('Done', file=sys.stderr)
+    print('Preparing testing data...', file=sys.stderr)
     test_tuples = prepare_test_data(test_data, speech_tag_idx)
-    print('Done')
+    print('Done', file=sys.stderr)
     predicted_tags = test_model(model, test_tuples, idx2tag, device)
 
     for idx, _ in enumerate(predicted_tags):
