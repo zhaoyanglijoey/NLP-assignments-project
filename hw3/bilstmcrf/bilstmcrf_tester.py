@@ -41,4 +41,5 @@ if __name__ == '__main__':
     print('Done', file=sys.stderr)
     predicted_tags = test_model(model, test_tuples, idx2tag, device)
 
-    print(format_prediction(predicted_tags, test_data))
+    output = format_prediction(predicted_tags, test_data)
+    print('F1 score:{:.3}'.format(compute_score(output)))

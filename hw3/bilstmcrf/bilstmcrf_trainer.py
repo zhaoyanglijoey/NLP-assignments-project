@@ -97,4 +97,4 @@ if __name__ == '__main__':
 
     dump_model(best_model, word_idx, speech_tag_idx, tag2idx, idx2tag, opts.modelfile)
     print('Training completed in {}, best F1 score {} obtained after {} epochs'.
-          format(datetime.now() - train_start_t), best_score, best_epoch)
+          format(datetime.now() - train_start_t, best_score, best_epoch))
