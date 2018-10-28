@@ -5,7 +5,7 @@ sys.path.append('../')
 import perc
 from score_chunks import readTestFile, corpus_fmeasure
 
-import os.past as osp
+import os.path as osp
 from tqdm import tqdm
 import sys
 from allennlp.commands.elmo import ElmoEmbedder
