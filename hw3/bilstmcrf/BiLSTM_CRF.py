@@ -6,9 +6,9 @@ from bilstmcrf import util, bilstmcrf_config as config
 START_IDX = 0
 END_IDX = 1
 
-class Encoder_decoder(nn.Module):
+class BiLSTM_Encoder_decoder(nn.Module):
     def __init__(self, vocab_size, speech_tag_size, tagset_size, device):
-        super(Encoder_decoder, self).__init__()
+        super(BiLSTM_Encoder_decoder, self).__init__()
         self.device = device
 
         word_embedding_dimension = config.elmo_dimension
@@ -26,13 +26,12 @@ class Encoder_decoder(nn.Module):
 
         self.encode2init_h = nn.Linear(self.hidden_dim * 2 * config.LSTM_layer, self.hidden_dim * 2 * config.LSTM_layer)
         self.encode2init_c = nn.Linear(self.hidden_dim * 2 * config.LSTM_layer, self.hidden_dim * 2 * config.LSTM_layer)
-        self.crf = CRF(tagset_size, device)
 
     def init_hidden(self):
         return (torch.zeros(2*config.LSTM_layer, 1, self.hidden_dim).to(self.device),
                 torch.zeros(2*config.LSTM_layer, 1, self.hidden_dim).to(self.device))
 
-    def NLLloss(self, sentence, speech_tags, tags):
+    def forward(self, sentence, speech_tags):
         enc_hidden = self.init_hidden()
         sentence_length = len(sentence)
         word_embeds = sentence
@@ -49,11 +48,24 @@ class Encoder_decoder(nn.Module):
         lstm_out, _ = self.decoder(embeds.view(sentence_length, 1, -1), (init_h, init_c))
         lstm_feats = self.hidden2tag(lstm_out.view(sentence_length, -1))
 
+        return lstm_feats
+
+class BiLSTM_Enc_Dec_CRF(nn.Module):
+    def __init__(self, vocab_size, speech_tag_size, tagset_size, device):
+        super(BiLSTM_Enc_Dec_CRF, self).__init__()
+        self.enc_dec = BiLSTM_Encoder_decoder(vocab_size, speech_tag_size, tagset_size, device)
+        self.crf = CRF(tagset_size, device)
+
+    def NLLloss(self, sentence, speech_tags, tags):
+        lstm_feats = self.enc_dec(sentence, speech_tags)
         forward_score = self.crf(lstm_feats)
         gold_score = self.crf.score(lstm_feats, tags)
 
         return forward_score - gold_score
 
+    def decode(self, sentence, speech_tags):
+        lstm_feats = self.enc_dec(sentence, speech_tags)
+        return self.crf.decode(lstm_feats)
 
 class BiLSTM_CRF(nn.Module):
     def __init__(self, vocab_size, speech_tag_size, tagset_size, device):
