@@ -5,31 +5,34 @@ from bilstmcrf import util, bilstmcrf_config as config
 
 START_IDX = 0
 END_IDX = 1
+ELMO_DIM = 1024
 
 class BiLSTM_Encoder_decoder(nn.Module):
-    def __init__(self, vocab_size, speech_tag_size, tagset_size, device):
+    def __init__(self, speech_tag_size, tagset_size, device,
+                 layer, hidden_dim, pos_dim):
         super(BiLSTM_Encoder_decoder, self).__init__()
         self.device = device
 
-        word_embedding_dimension = config.elmo_dimension
-        self.hidden_dim = config.hidden_unit_dimension
-        self.speech_embeddings = nn.Embedding(speech_tag_size, config.speech_embedding_dimension)
-        self.encoder = nn.LSTM(word_embedding_dimension + config.speech_embedding_dimension,
-                            config.hidden_unit_dimension,
-                            num_layers=config.LSTM_layer,
-                            bidirectional=True)
-        self.decoder = self.lstm = nn.LSTM(word_embedding_dimension + config.speech_embedding_dimension,
-                            config.hidden_unit_dimension,
-                            num_layers=config.LSTM_layer,
-                            bidirectional=True)
-        self.hidden2tag = nn.Linear(config.hidden_unit_dimension * 2, tagset_size)
+        word_embedding_dimension = ELMO_DIM
+        self.hidden_dim = hidden_dim
+        self.layer = layer
+        self.speech_embeddings = nn.Embedding(speech_tag_size, pos_dim)
+        self.encoder = nn.LSTM(word_embedding_dimension + pos_dim,
+                               self.hidden_dim,
+                               num_layers=self.layer,
+                               bidirectional=True)
+        self.decoder = nn.LSTM(word_embedding_dimension + pos_dim,
+                               self.hidden_dim,
+                               num_layers=self.layer,
+                               bidirectional=True)
+        self.hidden2tag = nn.Linear(hidden_dim * 2, tagset_size)
 
-        self.encode2init_h = nn.Linear(self.hidden_dim * 2 * config.LSTM_layer, self.hidden_dim * 2 * config.LSTM_layer)
-        self.encode2init_c = nn.Linear(self.hidden_dim * 2 * config.LSTM_layer, self.hidden_dim * 2 * config.LSTM_layer)
+        self.encode2init_h = nn.Linear(self.hidden_dim * 2 * layer, self.hidden_dim * 2 * layer)
+        self.encode2init_c = nn.Linear(self.hidden_dim * 2 * layer, self.hidden_dim * 2 * layer)
 
     def init_hidden(self):
-        return (torch.zeros(2*config.LSTM_layer, 1, self.hidden_dim).to(self.device),
-                torch.zeros(2*config.LSTM_layer, 1, self.hidden_dim).to(self.device))
+        return (torch.zeros(2*self.layer, 1, self.hidden_dim).to(self.device),
+                torch.zeros(2*self.layer, 1, self.hidden_dim).to(self.device))
 
     def forward(self, sentence, speech_tags):
         enc_hidden = self.init_hidden()
@@ -42,8 +45,8 @@ class BiLSTM_Encoder_decoder(nn.Module):
 
         enc_hidden = enc_hidden.view(1, -1)
         enc_cell = enc_cell.view(1, -1)
-        init_h = self.encode2init_h(enc_hidden).view(2*config.LSTM_layer, 1, self.hidden_dim)
-        init_c = self.encode2init_c(enc_cell).view(2*config.LSTM_layer, 1, self.hidden_dim)
+        init_h = self.encode2init_h(enc_hidden).view(2*self.layer, 1, self.hidden_dim)
+        init_c = self.encode2init_c(enc_cell).view(2*self.layer, 1, self.hidden_dim)
 
         lstm_out, _ = self.decoder(embeds.view(sentence_length, 1, -1), (init_h, init_c))
         lstm_feats = self.hidden2tag(lstm_out.view(sentence_length, -1))
@@ -51,9 +54,11 @@ class BiLSTM_Encoder_decoder(nn.Module):
         return lstm_feats
 
 class BiLSTM_Enc_Dec_CRF(nn.Module):
-    def __init__(self, vocab_size, speech_tag_size, tagset_size, device):
+    def __init__(self, speech_tag_size, tagset_size, device,
+                 layer, hidden_dim, pos_dim):
         super(BiLSTM_Enc_Dec_CRF, self).__init__()
-        self.enc_dec = BiLSTM_Encoder_decoder(vocab_size, speech_tag_size, tagset_size, device)
+        self.enc_dec = BiLSTM_Encoder_decoder(speech_tag_size, tagset_size, device,
+                                              layer, hidden_dim, pos_dim)
         self.crf = CRF(tagset_size, device)
 
     def NLLloss(self, sentence, speech_tags, tags):

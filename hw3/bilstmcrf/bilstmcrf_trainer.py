@@ -11,39 +11,44 @@ import os.path as osp
 
 import torch
 import torch.optim as optim
+import argparse
 
 
 if __name__ == '__main__':
-    optparser = optparse.OptionParser()
-    optparser.add_option("-t", "--tagsetfile", dest="tagsetfile", default=os.path.join("../data", "tagset.txt"), help="tagset that contains all the labels produced in the output, i.e. the y in \phi(x,y)")
-    optparser.add_option("-i", "--trainfile", dest="trainfile", default=os.path.join("../data", "train.txt.gz"), help="input data, i.e. the x in \phi(x,y)")
-    optparser.add_option("-f", "--featfile", dest="featfile", default=os.path.join("../data", "train.feats.gz"), help="precomputed features for the input data, i.e. the values of \phi(x,_) without y")
-    optparser.add_option("-e", "--numepochs", dest="numepochs", default=int(10), type=int, help="number of epochs of training; in each epoch we iterate over over all the training examples")
-    optparser.add_option("-m", "--modelfile", dest="modelfile", default=os.path.join("models", "default.model"), help="weights for all features stored on disk")
-    optparser.add_option('-v', '--valfile', dest='valfile', default=os.path.join("../data", "dev.txt"), help='validation data')
-    optparser.add_option("--vf", dest="valfeatfile", default=os.path.join("../data", "dev.feats"), help='validation feature')
-    optparser.add_option('--ckpt', dest='ckpt', default='ckpt', help='check point dir')
-    (opts, _) = optparser.parse_args()
+    argparser = argparse.ArgumentParser()
+    argparser.add_argument("-t", "--tagsetfile", dest="tagsetfile", default=os.path.join("../data", "tagset.txt"), help="tagset that contains all the labels produced in the output, i.e. the y in \phi(x,y)")
+    argparser.add_argument("-i", "--trainfile", dest="trainfile", default=os.path.join("../data", "train.txt.gz"), help="input data, i.e. the x in \phi(x,y)")
+    argparser.add_argument("-f", "--featfile", dest="featfile", default=os.path.join("../data", "train.feats.gz"), help="precomputed features for the input data, i.e. the values of \phi(x,_) without y")
+    argparser.add_argument("-e", "--numepochs", dest="numepochs", default=int(10), type=int, help="number of epochs of training; in each epoch we iterate over over all the training examples")
+    argparser.add_argument("-m", "--modelfile", dest="modelfile", default=os.path.join("models", "default.model"), help="weights for all features stored on disk")
+    argparser.add_argument('-v', '--valfile', dest='valfile', default=os.path.join("../data", "dev.txt"), help='validation data')
+    argparser.add_argument("--vf", dest="valfeatfile", default=os.path.join("../data", "dev.feats"), help='validation feature')
+    argparser.add_argument('--ckpt', dest='ckpt', default='ckpt', help='check point dir')
+    argparser.add_argument('-lr', dest='lr', type=float, default=0.01, help='learning rate')
+    argparser.add_argument('-hd', dest='hidden', type=int, default=600, help='hidden dimension')
+    argparser.add_argument('-ly', dest='layer', type=int, default=2, help='number of layers')
+    argparser.add_argument('--pos-dim', type=int, default=64, help='POS tag embedding dimension')
+
+    args= argparser.parse_args()
 
     device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
 
-    if not osp.exists(opts.ckpt):
-        os.mkdir(opts.ckpt)
+    if not osp.exists(args.ckpt):
+        os.mkdir(args.ckpt)
     if not osp.exists('models'):
         os.mkdir('models')
 
-    tagset = perc.read_tagset(opts.tagsetfile)
+    tagset = perc.read_tagset(args.tagsetfile)
     print("reading data ...", file=sys.stderr)
-    train_data = perc.read_labeled_data(opts.trainfile, opts.featfile, verbose=False)
-    test_data = perc.read_labeled_data(opts.valfile, opts.valfeatfile, verbose=False)
+    train_data = perc.read_labeled_data(args.trainfile, args.featfile, verbose=False)
+    test_data = perc.read_labeled_data(args.valfile, args.valfeatfile, verbose=False)
     print("done.", file=sys.stderr)
 
     word_idx, speech_tag_idx = build_vocab(train_data)
     tag2idx, idx2tag = build_tag_index(tagset)
-
     if config.prototyping_mode:
-        train_data = train_data[1:32]
-        test_data = test_data[1:32]
+        train_data = train_data[1:8]
+        test_data = test_data[1:8]
 
     print("preparing training data...", file=sys.stderr)
     training_tuples = prepare_training_data(train_data, speech_tag_idx, tag2idx)
@@ -51,10 +56,11 @@ if __name__ == '__main__':
     test_tuples = prepare_test_data(test_data, speech_tag_idx)
     print('Done')
     print("initializing BiLSTM-CRF model... ", file=sys.stderr)
-    model = BiLSTM_Enc_Dec_CRF(len(word_idx), len(speech_tag_idx), len(tag2idx), device)
+    model = BiLSTM_Enc_Dec_CRF(len(speech_tag_idx), len(tag2idx), device,
+                               args.layer, args.hidden, args.pos_dim)
     print('Done')
 
-    optimizer = optim.SGD(model.parameters(), lr=config.learning_rate, momentum=0.8)
+    optimizer = optim.SGD(model.parameters(), lr=args.lr)
 
     model.to(device)
     print('Start training')
@@ -62,8 +68,9 @@ if __name__ == '__main__':
 
     best_score = 0
     best_epoch = None
-
-    for epoch in range(opts.numepochs):
+    save_model_path = osp.join('models', 'h{}lay{}lr{}enc.model'.format(
+        args.hidden, args.layer, args.lr))
+    for epoch in range(args.numepochs):
         running_loss = 0.0
         for i, (input_seq, input_tag, target_tag) in enumerate(training_tuples):
             input_seq = input_seq.to(device)
@@ -77,8 +84,8 @@ if __name__ == '__main__':
             loss.backward(retain_graph=True)
             optimizer.step()
 
-            if (i+1) % 500 == 0:
-                running_loss /= 500
+            if (i+1) % 1000 == 0:
+                running_loss /= 1000
                 print('[Epoch {:3}, iteration {:6}] loss: {}'.format(epoch+1, i+1, running_loss))
                 running_loss = 0
 
@@ -88,14 +95,14 @@ if __name__ == '__main__':
         if f1score > best_score:
             best_score = f1score
             best_epoch = epoch+1
-            dump_model(model.state_dict(), word_idx, speech_tag_idx, tag2idx, idx2tag, opts.modelfile)
-            print('model saved at', opts.modelfile)
+            dump_model(model.state_dict(), word_idx, speech_tag_idx, tag2idx, idx2tag, save_model_path)
+            print('model saved at', save_model_path)
 
         print(f"epoch {epoch+1} done. F1 score = {f1score}",
               file=sys.stderr)
-        save_path = osp.join(opts.ckpt, 'ckpt_e{}.model'.format(epoch+1))
-        dump_model(model.state_dict(), word_idx, speech_tag_idx, tag2idx, idx2tag, save_path)
-        print('model saved at', save_path)
+        save_ckpt_path = osp.join(args.ckpt, 'ckpt_e{}.model'.format(epoch+1))
+        dump_model(model.state_dict(), word_idx, speech_tag_idx, tag2idx, idx2tag, save_ckpt_path)
+        print('model saved at', save_ckpt_path)
 
     print('Training completed in {}, best F1 score {} obtained after {} epochs. Model saved at {}'.
-          format(datetime.now() - train_start_t, best_score, best_epoch, opts.modelfile))
+          format(datetime.now() - train_start_t, best_score, best_epoch, args.modelfile))

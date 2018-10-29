@@ -5,7 +5,7 @@ import perc
 import optparse
 from bilstmcrf import bilstmcrf_config as config
 from bilstmcrf.util import *
-from bilstmcrf.BiLSTM_CRF import BiLSTM_CRF
+from bilstmcrf.BiLSTM_CRF import BiLSTM_CRF, BiLSTM_Enc_Dec_CRF
 
 if __name__ == '__main__':
     optparser = optparse.OptionParser()
@@ -32,7 +32,7 @@ if __name__ == '__main__':
     tag2idx = model_data['tag_index']
     idx2tag = model_data['reverse_tag_index']
 
-    model = BiLSTM_CRF(len(word_idx), len(speech_tag_idx), len(tag2idx), device)
+    model = BiLSTM_Enc_Dec_CRF(len(word_idx), len(speech_tag_idx), len(tag2idx), device)
     model.load_state_dict(model_data['model'])
     model.to(device)
     print('Done', file=sys.stderr)
