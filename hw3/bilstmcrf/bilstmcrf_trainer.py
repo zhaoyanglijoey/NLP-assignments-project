@@ -28,7 +28,7 @@ if __name__ == '__main__':
     argparser.add_argument('-hd', dest='hidden', type=int, default=600, help='hidden dimension')
     argparser.add_argument('-ly', dest='layer', type=int, default=2, help='number of layers')
     argparser.add_argument('--pos-dim', type=int, default=64, help='POS tag embedding dimension')
-
+    argparser.add_argument('-r', '--resume', help='resume training from saved model')
     args= argparser.parse_args()
 
     device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
@@ -59,6 +59,15 @@ if __name__ == '__main__':
     model = BiLSTM_Enc_Dec_CRF(len(speech_tag_idx), len(tag2idx), device,
                                args.layer, args.hidden, args.pos_dim)
     print('Done')
+    if args.resume:
+        print('Loading model...', file=sys.stderr)
+        model_data = load_model(args.resume)
+
+        word_idx = model_data['word_index']
+        speech_tag_idx = model_data['speech_tag_index']
+        tag2idx = model_data['tag_index']
+        idx2tag = model_data['reverse_tag_index']
+        model.load_state_dict(model_data['model'])
 
     optimizer = optim.SGD(model.parameters(), lr=args.lr)
 
@@ -68,8 +77,9 @@ if __name__ == '__main__':
 
     best_score = 0
     best_epoch = None
-    save_model_path = osp.join('models', 'h{}lay{}lr{}enc.model'.format(
+    save_model_path = osp.join('models', 'h{}layer{}lr{}enc.model'.format(
         args.hidden, args.layer, args.lr))
+    steps_to_print = 500
     for epoch in range(args.numepochs):
         running_loss = 0.0
         for i, (input_seq, input_tag, target_tag) in enumerate(training_tuples):
@@ -84,8 +94,8 @@ if __name__ == '__main__':
             loss.backward(retain_graph=True)
             optimizer.step()
 
-            if (i+1) % 1000 == 0:
-                running_loss /= 1000
+            if (i+1) % steps_to_print == 0:
+                running_loss /= steps_to_print
                 print('[Epoch {:3}, iteration {:6}] loss: {}'.format(epoch+1, i+1, running_loss))
                 running_loss = 0
 
@@ -105,4 +115,4 @@ if __name__ == '__main__':
         print('model saved at', save_ckpt_path)
 
     print('Training completed in {}, best F1 score {} obtained after {} epochs. Model saved at {}'.
-          format(datetime.now() - train_start_t, best_score, best_epoch, args.modelfile))
+          format(datetime.now() - train_start_t, best_score, best_epoch, save_model_path))
