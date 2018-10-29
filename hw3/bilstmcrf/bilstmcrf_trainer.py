@@ -54,7 +54,7 @@ if __name__ == '__main__':
     model = BiLSTM_Enc_Dec_CRF(len(word_idx), len(speech_tag_idx), len(tag2idx), device)
     print('Done')
 
-    optimizer = optim.SGD(model.parameters(), lr=config.learning_rate, momentum=0.8)
+    optimizer = optim.SGD(model.parameters(), lr=config.learning_rate)
 
     model.to(device)
     print('Start training')
