@@ -6,6 +6,55 @@ from bilstmcrf import util, bilstmcrf_config as config
 START_IDX = 0
 END_IDX = 1
 
+class Encoder_decoder(nn.Module):
+    def __init__(self, vocab_size, speech_tag_size, tagset_size, device):
+        super(Encoder_decoder, self).__init__()
+        self.device = device
+
+        word_embedding_dimension = config.elmo_dimension
+        self.hidden_dim = config.hidden_unit_dimension
+        self.speech_embeddings = nn.Embedding(speech_tag_size, config.speech_embedding_dimension)
+        self.encoder = nn.LSTM(word_embedding_dimension + config.speech_embedding_dimension,
+                            config.hidden_unit_dimension,
+                            num_layers=config.LSTM_layer,
+                            bidirectional=True)
+        self.decoder = self.lstm = nn.LSTM(word_embedding_dimension + config.speech_embedding_dimension,
+                            config.hidden_unit_dimension,
+                            num_layers=config.LSTM_layer,
+                            bidirectional=True)
+        self.hidden2tag = nn.Linear(config.hidden_unit_dimension * 2, tagset_size)
+
+        self.encode2init_h = nn.Linear(self.hidden_dim * 2 * config.LSTM_layer, self.hidden_dim * 2 * config.LSTM_layer)
+        self.encode2init_c = nn.Linear(self.hidden_dim * 2 * config.LSTM_layer, self.hidden_dim * 2 * config.LSTM_layer)
+        self.crf = CRF(tagset_size, device)
+
+    def init_hidden(self):
+        return (torch.zeros(2*config.LSTM_layer, 1, self.hidden_dim).to(self.device),
+                torch.zeros(2*config.LSTM_layer, 1, self.hidden_dim).to(self.device))
+
+    def NLLloss(self, sentence, speech_tags, tags):
+        enc_hidden = self.init_hidden()
+        sentence_length = len(sentence)
+        word_embeds = sentence
+        speech_embeds = self.speech_embeddings(speech_tags)
+        embeds = torch.cat((word_embeds, speech_embeds), 1)
+
+        _, (enc_hidden, enc_cell) = self.encoder(embeds.view(sentence_length, 1, -1), enc_hidden)
+
+        enc_hidden = enc_hidden.view(1, -1)
+        enc_cell = enc_cell.view(1, -1)
+        init_h = self.encode2init_h(enc_hidden).view(2*config.LSTM_layer, 1, self.hidden_dim)
+        init_c = self.encode2init_c(enc_cell).view(2*config.LSTM_layer, 1, self.hidden_dim)
+
+        lstm_out, _ = self.decoder(embeds.view(sentence_length, 1, -1), (init_h, init_c))
+        lstm_feats = self.hidden2tag(lstm_out.view(sentence_length, -1))
+
+        forward_score = self.crf(lstm_feats)
+        gold_score = self.crf.score(lstm_feats, tags)
+
+        return forward_score - gold_score
+
+
 class BiLSTM_CRF(nn.Module):
     def __init__(self, vocab_size, speech_tag_size, tagset_size, device):
         super(BiLSTM_CRF, self).__init__()
@@ -18,10 +67,8 @@ class BiLSTM_CRF(nn.Module):
 
     def NLLloss(self, sentence, speech_tags, tags):
         h = self.bilstm(sentence, speech_tags)
-        # print('h:', h.data)
         forward_score = self.crf(h)
         gold_score = self.crf.score(h, tags)
-        # print('scores:', forward_score.data, gold_score.data)
 
         return forward_score - gold_score
 
@@ -35,10 +82,8 @@ class BiLSTM(nn.Module):
         self.device = device
         self.hidden_dim = config.hidden_unit_dimension
 
-        if config.use_elmo:
-            word_embedding_dimension = config.elmo_dimension
+        word_embedding_dimension = config.elmo_dimension
 
-        self.word_embeddings = nn.Embedding(vocab_size, word_embedding_dimension)
         self.speech_embeddings = nn.Embedding(speech_tag_size, config.speech_embedding_dimension)
         self.lstm = nn.LSTM(word_embedding_dimension + config.speech_embedding_dimension,
                             config.hidden_unit_dimension,
@@ -72,7 +117,6 @@ class CRF(nn.Module):
         self.tagset_size = tagset_size
         self.device = device
         self.transitions = nn.Parameter(torch.randn(tagset_size, tagset_size)) # [C, C]
-        # self.transitions = torch.randn(tagset_size, tagset_size) # [C, C]
 
         self.transitions.data[START_IDX, :] = -10000
         self.transitions.data[:, END_IDX] = -10000
@@ -86,7 +130,6 @@ class CRF(nn.Module):
             forward_var = forward_var.view(1, -1).expand(self.tagset_size, -1)
             forward_score_t = forward_var + self.transitions + emit_score
             forward_var = util.log_sum_exp(forward_score_t)
-            # print('forward_var:', forward_var.data)
 
         terminal_var = forward_var.view(-1) + self.transitions[END_IDX]
         forward_score = util.log_sum_exp(terminal_var)
@@ -98,7 +141,6 @@ class CRF(nn.Module):
 
         for i, emit_score in enumerate(h):
             score += self.transitions[tags[i+1], tags[i]] + emit_score[tags[i+1]]
-            # print('gold score:', score)
         score += self.transitions[END_IDX, tags[-1]]
         return score
 

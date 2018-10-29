@@ -4,7 +4,7 @@ sys.path.append('../')
 import perc
 import optparse, os
 from bilstmcrf.util import *
-from bilstmcrf.BiLSTM_CRF import BiLSTM_CRF
+from bilstmcrf.BiLSTM_CRF import BiLSTM_CRF, Encoder_decoder
 from bilstmcrf import bilstmcrf_config as config
 from datetime import datetime
 import os.path as osp
@@ -51,7 +51,7 @@ if __name__ == '__main__':
     test_tuples = prepare_test_data(test_data, speech_tag_idx)
     print('Done')
     print("initializing BiLSTM-CRF model... ", file=sys.stderr)
-    model = BiLSTM_CRF(len(word_idx), len(speech_tag_idx), len(tag2idx), device)
+    model = Encoder_decoder(len(word_idx), len(speech_tag_idx), len(tag2idx), device)
     print('Done')
 
     optimizer = optim.SGD(model.parameters(), lr=config.learning_rate, momentum=0.8)
