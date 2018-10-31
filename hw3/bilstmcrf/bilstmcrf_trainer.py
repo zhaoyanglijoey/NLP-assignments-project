@@ -5,7 +5,6 @@ import perc
 import optparse, os
 from bilstmcrf.util import *
 from bilstmcrf.BiLSTM_CRF import BiLSTM_CRF, BiLSTM_Enc_Dec_CRF
-from bilstmcrf import bilstmcrf_config as config
 from datetime import datetime
 import os.path as osp
 
@@ -29,6 +28,7 @@ if __name__ == '__main__':
     argparser.add_argument('-ly', dest='layer', type=int, default=2, help='number of layers')
     argparser.add_argument('--pos-dim', type=int, default=64, help='POS tag embedding dimension')
     argparser.add_argument('-r', '--resume', help='resume training from saved model')
+    argparser.add_argument('--prototype', default=False, action='store_true', help='prototyping mode')
     args= argparser.parse_args()
 
     device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
@@ -46,7 +46,7 @@ if __name__ == '__main__':
 
     word_idx, speech_tag_idx = build_vocab(train_data)
     tag2idx, idx2tag = build_tag_index(tagset)
-    if config.prototyping_mode:
+    if args.prototype:
         train_data = train_data[1:8]
         test_data = test_data[1:8]
 

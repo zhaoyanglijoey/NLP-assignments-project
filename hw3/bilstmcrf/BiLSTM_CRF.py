@@ -1,7 +1,7 @@
 import torch
 import torch.nn as nn
 
-from bilstmcrf import util, bilstmcrf_config as config
+from bilstmcrf import util
 
 START_IDX = 0
 END_IDX = 1
@@ -73,13 +73,14 @@ class BiLSTM_Enc_Dec_CRF(nn.Module):
         return self.crf.decode(lstm_feats)
 
 class BiLSTM_CRF(nn.Module):
-    def __init__(self, vocab_size, speech_tag_size, tagset_size, device):
+    def __init__(self, speech_tag_size, tagset_size, device,
+                 layer, hidden_dim, pos_dim):
         super(BiLSTM_CRF, self).__init__()
-        self.vocab_size = vocab_size
         self.speech_tag_size = speech_tag_size
         self.tagset_size = tagset_size
 
-        self.bilstm = BiLSTM(vocab_size, speech_tag_size, tagset_size, device)
+        self.bilstm = BiLSTM(speech_tag_size, tagset_size, device,
+                             layer, hidden_dim, pos_dim)
         self.crf = CRF(tagset_size, device)
 
     def NLLloss(self, sentence, speech_tags, tags):
@@ -94,26 +95,28 @@ class BiLSTM_CRF(nn.Module):
         return self.crf.decode(h)
 
 class BiLSTM(nn.Module):
-    def __init__(self, vocab_size, speech_tag_size, tagset_size, device):
+    def __init__(self, speech_tag_size, tagset_size, device,
+                 layer, hidden_dim, pos_dim):
         super(BiLSTM, self).__init__()
         self.device = device
-        self.hidden_dim = config.hidden_unit_dimension
+        self.hidden_dim = hidden_dim
+        self.layer = layer
 
-        word_embedding_dimension = config.elmo_dimension
+        word_embedding_dimension = ELMO_DIM
 
-        self.speech_embeddings = nn.Embedding(speech_tag_size, config.speech_embedding_dimension)
-        self.lstm = nn.LSTM(word_embedding_dimension + config.speech_embedding_dimension,
-                            config.hidden_unit_dimension,
-                            num_layers=config.LSTM_layer,
+        self.speech_embeddings = nn.Embedding(speech_tag_size, pos_dim)
+        self.lstm = nn.LSTM(word_embedding_dimension + pos_dim,
+                            hidden_dim,
+                            num_layers=layer,
                             bidirectional=True)
 
         # The linear layer that maps from hidden state space to tag space
-        self.hidden2tag = nn.Linear(config.hidden_unit_dimension * 2, tagset_size)
+        self.hidden2tag = nn.Linear(hidden_dim * 2, tagset_size)
         self.hidden = self.init_hidden()
 
     def init_hidden(self):
-        return (torch.zeros(2*config.LSTM_layer, 1, self.hidden_dim).to(self.device),
-                torch.zeros(2*config.LSTM_layer, 1, self.hidden_dim).to(self.device))
+        return (torch.zeros(2*self.layer, 1, self.hidden_dim).to(self.device),
+                torch.zeros(2*self.layer, 1, self.hidden_dim).to(self.device))
 
     def forward(self, sentence, speech_tags):
         self.hidden = self.init_hidden()
