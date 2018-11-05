@@ -28,7 +28,7 @@ if __name__ == '__main__':
     if args.prototype:
         test_data = test_data[0:8]
 
-    print('Loading model...', file=sys.stderr)
+    print('loading model...', file=sys.stderr)
     model_data = load_model(args.modelfile)
 
     word_idx = model_data['word_index']
@@ -40,11 +40,11 @@ if __name__ == '__main__':
                                args.layer, args.hidden, args.pos_dim)
     model.load_state_dict(model_data['model'])
     model.to(device)
-    print('Done', file=sys.stderr)
-    print('Preparing testing data...', file=sys.stderr)
+    print('done.', file=sys.stderr)
+    print('preparing testing data...', file=sys.stderr)
     test_tuples = prepare_test_data(test_data, speech_tag_idx)
-    print('Done', file=sys.stderr)
+    print('done.', file=sys.stderr)
     predicted_tags = test_model(model, test_tuples, idx2tag, device)
 
     output = format_prediction(predicted_tags, test_data)
-    print('F1 score:{:.5}'.format(compute_score(output)))
+    print(output)

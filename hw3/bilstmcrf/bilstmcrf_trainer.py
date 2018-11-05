@@ -54,13 +54,13 @@ if __name__ == '__main__':
     training_tuples = prepare_training_data(train_data, speech_tag_idx, tag2idx)
     print('preparing testing data...')
     test_tuples = prepare_test_data(test_data, speech_tag_idx)
-    print('Done')
-    print("initializing BiLSTM-CRF model... ", file=sys.stderr)
+    print('done.')
+    print("initializing BiLSTM-CRF model...", file=sys.stderr)
     model = BiLSTM_Enc_Dec_CRF(len(speech_tag_idx), len(tag2idx), device,
                                args.layer, args.hidden, args.pos_dim)
-    print('Done')
+    print('done.')
     if args.resume:
-        print('Loading model...', file=sys.stderr)
+        print('loading model...', file=sys.stderr)
         model_data = load_model(args.resume)
 
         word_idx = model_data['word_index']
@@ -72,13 +72,14 @@ if __name__ == '__main__':
     optimizer = optim.SGD(model.parameters(), lr=args.lr)
 
     model.to(device)
-    print('Start training')
+    print('start training...')
     train_start_t = datetime.now()
 
     best_score = 0
     best_epoch = None
-    save_model_path = osp.join('models', 'h{}layer{}lr{}enc.model'.format(
-        args.hidden, args.layer, args.lr))
+    # save_model_path = osp.join('models', 'h{}layer{}lr{}enc.model'.format(
+    #     args.hidden, args.layer, args.lr))
+    save_model_path = args.modelfile
     steps_to_print = 500
     for epoch in range(args.numepochs):
         running_loss = 0.0
@@ -106,13 +107,13 @@ if __name__ == '__main__':
             best_score = f1score
             best_epoch = epoch+1
             dump_model(model.state_dict(), word_idx, speech_tag_idx, tag2idx, idx2tag, save_model_path)
-            print('model saved at', save_model_path)
+            print('best model so far saved at', save_model_path)
 
         print(f"epoch {epoch+1} done. F1 score = {f1score}",
               file=sys.stderr)
         save_ckpt_path = osp.join(args.ckpt, 'ckpt_e{}.model'.format(epoch+1))
         dump_model(model.state_dict(), word_idx, speech_tag_idx, tag2idx, idx2tag, save_ckpt_path)
-        print('model saved at', save_ckpt_path)
+        print('check-point model saved at', save_ckpt_path)
 
     print('Training completed in {}, best F1 score {} obtained after {} epochs. Model saved at {}'.
           format(datetime.now() - train_start_t, best_score, best_epoch, save_model_path))
