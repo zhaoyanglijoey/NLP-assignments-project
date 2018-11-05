@@ -1,6 +1,6 @@
 # bash
 
-python count-sentences.py -i ../data/train.txt.gz
+python ../count-sentences.py -i ../data/train.txt.gz
 
 echo "training..."
 python bilstmcrf_trainer.py -m bilstmcrf.model
