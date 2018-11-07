@@ -1,0 +1,5 @@
+ In this assignment I pointed out the direction of using BiLSTM model with ELMo word embedding.
+ I implemented the first two-layer BiLSTM model and did a lot of experiments with it.
+ First I tried using word embedding in pytorch, and then changed it to ELMo word embedding.
+ I then attempted to construct network by different parameters, such as layer count and hidden layer width.
+ I also wrote part of the documents, and participated in group discussion. 
