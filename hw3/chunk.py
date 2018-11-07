@@ -1,6 +1,4 @@
 import sys
-sys.path.append('../')
-
 import perc
 import optparse, os
 from bilstmcrf.util import *
@@ -15,13 +13,13 @@ import argparse
 
 if __name__ == '__main__':
     argparser = argparse.ArgumentParser()
-    argparser.add_argument("-t", "--tagsetfile", dest="tagsetfile", default=os.path.join("../data", "tagset.txt"), help="tagset that contains all the labels produced in the output, i.e. the y in \phi(x,y)")
-    argparser.add_argument("-i", "--trainfile", dest="trainfile", default=os.path.join("../data", "train.txt.gz"), help="input data, i.e. the x in \phi(x,y)")
-    argparser.add_argument("-f", "--featfile", dest="featfile", default=os.path.join("../data", "train.feats.gz"), help="precomputed features for the input data, i.e. the values of \phi(x,_) without y")
+    argparser.add_argument("-t", "--tagsetfile", dest="tagsetfile", default=os.path.join("data", "tagset.txt"), help="tagset that contains all the labels produced in the output, i.e. the y in \phi(x,y)")
+    argparser.add_argument("-i", "--trainfile", dest="trainfile", default=os.path.join("data", "train.txt.gz"), help="input data, i.e. the x in \phi(x,y)")
+    argparser.add_argument("-f", "--featfile", dest="featfile", default=os.path.join("data", "train.feats.gz"), help="precomputed features for the input data, i.e. the values of \phi(x,_) without y")
     argparser.add_argument("-e", "--numepochs", dest="numepochs", default=int(10), type=int, help="number of epochs of training; in each epoch we iterate over over all the training examples")
     argparser.add_argument("-m", "--modelfile", dest="modelfile", default=os.path.join("models", "default.model"), help="weights for all features stored on disk")
-    argparser.add_argument('-v', '--valfile', dest='valfile', default=os.path.join("../data", "dev.txt"), help='validation data')
-    argparser.add_argument("--vf", dest="valfeatfile", default=os.path.join("../data", "dev.feats"), help='validation feature')
+    argparser.add_argument('-v', '--valfile', dest='valfile', default=os.path.join("data", "dev.txt"), help='validation data')
+    argparser.add_argument("--vf", dest="valfeatfile", default=os.path.join("data", "dev.feats"), help='validation feature')
     argparser.add_argument('--ckpt', dest='ckpt', default='ckpt', help='check point dir')
     argparser.add_argument('-lr', dest='lr', type=float, default=0.01, help='learning rate')
     argparser.add_argument('-hd', dest='hidden', type=int, default=600, help='hidden dimension')
@@ -81,7 +79,7 @@ if __name__ == '__main__':
     #     args.hidden, args.layer, args.lr))
     save_model_path = args.modelfile
     steps_to_print = 500
-    ref_file = osp.join('../data', 'reference500.txt')
+    ref_file = osp.join('data', 'reference500.txt')
     for epoch in range(args.numepochs):
         running_loss = 0.0
         for i, (input_seq, input_tag, target_tag) in enumerate(training_tuples):

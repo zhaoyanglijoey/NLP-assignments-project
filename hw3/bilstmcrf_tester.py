@@ -1,5 +1,4 @@
 import sys
-sys.path.append('../')
 import os
 import perc
 import argparse
@@ -8,9 +7,9 @@ from bilstmcrf.BiLSTM_CRF import BiLSTM_CRF, BiLSTM_Enc_Dec_CRF
 
 if __name__ == '__main__':
     argparser = argparse.ArgumentParser()
-    argparser.add_argument("-t", "--tagsetfile", dest="tagsetfile", default=os.path.join("../data", "tagset.txt"), help="tagset that contains all the labels produced in the output, i.e. the y in \phi(x,y)")
-    argparser.add_argument("-i", "--inputfile", dest="inputfile", default=os.path.join("../data", "dev.txt"), help="input data, i.e. the x in \phi(x,y)")
-    argparser.add_argument("-f", "--featfile", dest="featfile", default=os.path.join("../data", "dev.feats"), help="precomputed features for the input data, i.e. the values of \phi(x,_) without y")
+    argparser.add_argument("-t", "--tagsetfile", dest="tagsetfile", default=os.path.join("data", "tagset.txt"), help="tagset that contains all the labels produced in the output, i.e. the y in \phi(x,y)")
+    argparser.add_argument("-i", "--inputfile", dest="inputfile", default=os.path.join("data", "dev.txt"), help="input data, i.e. the x in \phi(x,y)")
+    argparser.add_argument("-f", "--featfile", dest="featfile", default=os.path.join("data", "dev.feats"), help="precomputed features for the input data, i.e. the values of \phi(x,_) without y")
     argparser.add_argument("-m", "--modelfile", dest="modelfile", default=os.path.join("models", "default.model"), help="weights for all features stored on disk")
     argparser.add_argument('-hd', dest='hidden', type=int, default=600, help='hidden dimension')
     argparser.add_argument('-ly', dest='layer', type=int, default=2, help='number of layers')

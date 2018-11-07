@@ -138,10 +138,9 @@ def format_prediction(predicted_tags, test_data):
         output += ("\n".join(perc.conll_format(predicted_tags[idx], test_data[idx][0])))+'\n\n\n'
     return output
 
-def compute_score(output):
+def compute_score(output, ref_file):
     boundary = '-X-'
     outside = 'O'
-    ref_file = osp.join('../data', 'reference500.txt')
     test, _ = readTestFile(output, boundary, outside, False, 2)
     with open(ref_file) as f:
         reference, _ = readTestFile(f.read(), boundary, outside, False, 2)
