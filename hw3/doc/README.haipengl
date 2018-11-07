@@ -1,0 +1,1 @@
+I wrote code to enable bigram features (context features) as inputs for BiLSTM-CRF network models. And ran training and did experiments.
