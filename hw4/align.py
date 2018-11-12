@@ -87,3 +87,14 @@ if __name__ == '__main__':
       break
 
     llh_old = llh
+
+  for f, e in bitext:
+    for i, f_word in enumerate(f):
+      best_p = 0
+      best_j = 0
+      for j, e_word in enumerate(e):
+        if t[(f_word, e_word)] > best_p:
+          best_p = t[(f_word, e_word)]
+          best_j = j
+      print("{0}-{1}".format(i, best_j), end=" ")
+    print()
