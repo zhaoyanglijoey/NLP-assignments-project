@@ -2,6 +2,7 @@
 import optparse, sys, os, logging
 from collections import defaultdict
 from itertools import islice
+from tqdm import tqdm
 
 optparser = optparse.OptionParser()
 optparser.add_option("-d", "--datadir", dest="datadir", default="data", help="data directory (default=data)")
@@ -16,33 +17,31 @@ f_data = "%s.%s" % (os.path.join(opts.datadir, opts.fileprefix), opts.french)
 e_data = "%s.%s" % (os.path.join(opts.datadir, opts.fileprefix), opts.english)
 
 if opts.logfile:
-    logging.basicConfig(filename=opts.logfile, filemode='w', level=logging.INFO)
+        logging.basicConfig(filename=opts.logfile, filemode='w', level=logging.INFO)
 
 sys.stderr.write("Training with Dice's coefficient...")
 bitext = [[sentence.strip().split() for sentence in pair] for pair in islice(zip(open(f_data), open(e_data)), opts.num_sents)]
+# french_word: count
 f_count = defaultdict(int)
+# English_word: count
 e_count = defaultdict(int)
+# co-occurrence of french&english: count
 fe_count = defaultdict(int)
-for (n, (f, e)) in enumerate(bitext):
-  for f_i in set(f):
-    f_count[f_i] += 1
+for (n, (f, e)) in enumerate(tqdm(bitext)):
+    for f_i in set(f):
+        f_count[f_i] += 1
+        for e_j in set(e):
+            fe_count[(f_i,e_j)] += 1
     for e_j in set(e):
-      fe_count[(f_i,e_j)] += 1
-  for e_j in set(e):
-    e_count[e_j] += 1
-  if n % 500 == 0:
-    sys.stderr.write(".")
+        e_count[e_j] += 1
 
 dice = defaultdict(int)
-for (k, (f_i, e_j)) in enumerate(fe_count.keys()):
-  dice[(f_i,e_j)] = 2.0 * fe_count[(f_i, e_j)] / (f_count[f_i] + e_count[e_j])
-  if k % 5000 == 0:
-    sys.stderr.write(".")
-sys.stderr.write("\n")
+for (k, (f_i, e_j)) in enumerate(tqdm(fe_count.keys())):
+    dice[(f_i,e_j)] = 2.0 * fe_count[(f_i, e_j)] / (f_count[f_i] + e_count[e_j])
 
 for (f, e) in bitext:
-  for (i, f_i) in enumerate(f): 
-    for (j, e_j) in enumerate(e):
-      if dice[(f_i,e_j)] >= opts.threshold:
-        sys.stdout.write("%i-%i " % (i,j))
-  sys.stdout.write("\n")
+    for (i, f_i) in enumerate(f): 
+        for (j, e_j) in enumerate(e):
+            if dice[(f_i,e_j)] >= opts.threshold:
+                sys.stdout.write("%i-%i " % (i,j))
+    sys.stdout.write("\n")
