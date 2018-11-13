@@ -1,9 +1,8 @@
 #!/usr/bin/env python
 import optparse, sys, os, logging
-from collections import defaultdict
 from itertools import islice
-import math
 import pickle
+from tqdm import tqdm
 from ibmmodel1 import ibm_model_1
 
 
@@ -11,7 +10,7 @@ def build_vocab(bitext):
     sys.stderr.write("Building vocab...\n")
     f_vocab = set()
     e_vocab = set()
-    for f, e in bitext:
+    for f, e in tqdm(bitext):
         f_vocab = f_vocab | set(f)
         e_vocab = e_vocab | set(e)
     return (f_vocab, e_vocab)
