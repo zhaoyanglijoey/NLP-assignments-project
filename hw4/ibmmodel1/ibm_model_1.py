@@ -1,6 +1,7 @@
 import sys
 import math
 from collections import defaultdict
+from tqdm import tqdm
 
 
 def calculate_llh(bitext, t):
@@ -15,6 +16,7 @@ def calculate_llh(bitext, t):
 
 
 def train(bitext, f_vocab, e_vocab, max_iteration, epsilon):
+    sys.stderr.write("Training...\n")
     t0 = 1/len(f_vocab)
     t = defaultdict(float)
 
@@ -30,10 +32,11 @@ def train(bitext, f_vocab, e_vocab, max_iteration, epsilon):
             sys.stderr.write("Training finished.\n")
             break
 
+        sys.stderr.write("Iteration {0}\n".format(k))
         # Training
         count_pair = defaultdict(float)
         count_e = defaultdict(float)
-        for f, e in bitext:
+        for f, e in tqdm(bitext):
             for f_word in f:
                 z = 0
                 for e_word in e:

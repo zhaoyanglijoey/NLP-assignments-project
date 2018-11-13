@@ -48,7 +48,6 @@ if __name__ == '__main__':
         with open(load_model, 'rb') as f:
             t = pickle.load(f)
     else:
-        sys.stderr.write("Training...\n")
         t = ibm_model_1.train(bitext, f_vocab, e_vocab, opts.max_iteration, opts.epsilon)
 
         # save model file
