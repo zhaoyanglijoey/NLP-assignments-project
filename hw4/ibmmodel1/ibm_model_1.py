@@ -1,4 +1,5 @@
 import sys
+import pickle
 import math
 from collections import defaultdict
 from tqdm import tqdm
@@ -47,6 +48,9 @@ def train(bitext, f_vocab, e_vocab, max_iteration, epsilon):
                     count_e[e_word] += c
         for f_word, e_word in count_pair:
             t[(f_word, e_word)] = count_pair[(f_word, e_word)] / count_e[e_word]
+
+        with open("ibm_modeL_checkpoint.pickle", 'wb') as f:
+            pickle.dump(t, f)
 
         # Calculate log likelihood
         llh = calculate_llh(bitext, t)

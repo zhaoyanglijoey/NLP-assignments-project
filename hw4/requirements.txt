@@ -6,3 +6,4 @@ sklearn
 nltk
 notebook
 nbimporter
+tqdm
