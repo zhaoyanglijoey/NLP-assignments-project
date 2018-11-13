@@ -8,11 +8,13 @@ from ibmmodel1 import ibm_model_1
 
 def build_vocab(bitext):
     sys.stderr.write("Building vocab...\n")
-    f_vocab = set()
-    e_vocab = set()
+    f_list = []
+    e_list = []
     for f, e in tqdm(bitext):
-        f_vocab = f_vocab | set(f)
-        e_vocab = e_vocab | set(e)
+        f_list += f
+        e_list += e
+    f_vocab = set(f_list)
+    e_vocab = set(e_list)
     return (f_vocab, e_vocab)
 
 
