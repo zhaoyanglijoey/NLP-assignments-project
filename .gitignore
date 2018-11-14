@@ -1,6 +1,5 @@
-.vscode
-.idea
-playground.ipynb
-.DS_Store
+data/europarl.a
 .ipynb_checkpoints
-__pycache__
+.idea
+.DS_Store
+venv

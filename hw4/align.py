@@ -42,7 +42,8 @@ if __name__ == '__main__':
     bitext = [[sentence.strip().split() for sentence in pair] for pair in islice(zip(open(f_data), open(e_data)), opts.num_sents)]
 
     (f_vocab, e_vocab) = build_vocab(bitext)
-
+    print(len(f_vocab), len(e_vocab))
+    exit()
     load_model = opts.load_model
     if load_model:
         sys.stderr.write("Use model {}...\n".format(load_model))
