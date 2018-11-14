@@ -12,6 +12,10 @@ def calculate_llh(bitext, t):
             t_sum = 0
             for e_word in e:
                 t_sum += t[(f_word, e_word)]
+                if t[(f_word, e_word)] == 0:
+                    print(f_word, e_word)
+            if t_sum == 0:
+                print(f_word, e_word)
             llh += math.log(t_sum)
     return llh
 
@@ -21,9 +25,13 @@ def train(bitext, f_vocab, e_vocab, max_iteration, epsilon):
     t0 = 1/len(f_vocab)
     t = defaultdict(float)
 
-    for f_word in f_vocab:
-        for e_word in e_vocab:
-            t[(f_word, e_word)] = t0
+    # for f_word in f_vocab:
+    #     for e_word in e_vocab:
+    #         t[(f_word, e_word)] = t0
+    for f_sentence, e_sentence in bitext:
+        for f in f_sentence:
+            for e in e_sentence:
+                t[(f, e)] = 1/len(f_vocab)
 
     llh_old = calculate_llh(bitext, t)
     k = 0

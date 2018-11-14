@@ -6,11 +6,15 @@ from tqdm import tqdm
 def init_params(bitext):
     pr_trans = {}
     pr_emit = {}
+    pr_prior = {}
 
+    maxe_len = 0
     for f_sentence, e_sentence in bitext:
+        maxe_len = max(maxe_len, len(e_sentence))
         for j, f in enumerate(f_sentence):
             for i, e in enumerate(e_sentence):
                 pr_emit[(f, e)] = 1
+
 
 def main():
     argparser = argparse.ArgumentParser()
