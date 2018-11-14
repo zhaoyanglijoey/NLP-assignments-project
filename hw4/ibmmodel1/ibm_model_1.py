@@ -12,10 +12,7 @@ def calculate_llh(bitext, t):
             t_sum = 0
             for e_word in e:
                 t_sum += t[(f_word, e_word)]
-                if t[(f_word, e_word)] == 0:
-                    print(f_word, e_word)
-            if t_sum == 0:
-                print(f_word, e_word)
+
             llh += math.log(t_sum)
     return llh
 
