@@ -3,18 +3,53 @@ from itertools import islice
 import pickle
 from tqdm import tqdm
 
-def init_params(bitext):
+
+def build_vocab(bitext):
+    sys.stderr.write("Building vocab...\n")
+    f_list = []
+    e_list = []
+    for f, e in bitext:
+        f_list += f
+        e_list += e
+    f_vocab = set(f_list)
+    e_vocab = set(e_list)
+    return (f_vocab, e_vocab)
+
+def init_params(bitext, f_vocab_size):
     pr_trans = {}
     pr_emit = {}
     pr_prior = {}
 
+
     maxe_len = 0
     for f_sentence, e_sentence in bitext:
-        maxe_len = max(maxe_len, len(e_sentence))
+        e_length = len(e_sentence)
+        maxe_len = max(maxe_len, e_length)
         for j, f in enumerate(f_sentence):
             for i, e in enumerate(e_sentence):
-                pr_emit[(f, e)] = 1
+                pr_emit[(f, e)] = 1 / f_vocab_size
+        for offset in range(-e_length+1, e_length+1):
+            pr_trans[(offset, e_length)] = 1 / (2*e_length)
+    for i in range(maxe_len+1):
+        pr_prior[i] = 1 / (maxe_len+1)
 
+    return pr_trans, pr_emit, pr_prior
+
+def forward_backford(f_sentence, e_sentence, pr_trans, pr_emit, pr_prior):
+    forward_pr = []
+    backward_pr = []
+
+
+def train(bitext, max_iteration, epsilon):
+    f_vocab, e_vocab = build_vocab(bitext)
+    pr_trans, pr_emit, pr_prior = init_params(bitext, len(f_vocab))
+
+    iter = 0
+    while iter < max_iteration:
+        iter += 1
+        sys.stderr.write('iteration {}'.format(iter))
+        for f_sentence, e_sentence in tqdm(bitext):
+            forward_pr, backword_pr = forward_backford(f_sentence, e_sentence, pr_trans, pr_emit, pr_prior)
 
 def main():
     argparser = argparse.ArgumentParser()
@@ -37,6 +72,8 @@ def main():
             logging.basicConfig(filename=opts.logfile, filemode='w', level=logging.INFO)
 
     bitext = [[sentence.strip().split() for sentence in pair] for pair in islice(zip(open(f_data), open(e_data)), opts.num_sents)]
+
+
 
 
 
