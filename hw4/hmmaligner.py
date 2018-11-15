@@ -65,8 +65,8 @@ def forward_backford(f_sentence, e_sentence, pr_trans, pr_emit, pr_prior):
     I = len(e_sentence)
     J = len(f_sentence)
 
-    forward_pr = np.zeros((I, J))
-    backward_pr = np.zeros((I, J))
+    forward_pr = np.zeros((I, J), dtype=float)
+    backward_pr = np.zeros((I, J), dtype=float)
 
     for i in range(I):
         forward_pr[i][0] = pr_prior[(i, I)] * pr_emit[(f_sentence[0], e_sentence[i])]
@@ -91,7 +91,7 @@ def forward_backford(f_sentence, e_sentence, pr_trans, pr_emit, pr_prior):
     return forward_pr, backward_pr
 
 
-def train(iter, pr_trans, pr_emit, pr_prior, bitext, max_iteration, ckpt, epsilon = 1 ):
+def train(iter, pr_trans, pr_emit, pr_prior, bitext, max_iteration, ckpt, epsilon = 0.01 ):
     e_lens = set()
 
     for f_sentence, e_sentence in bitext:
@@ -113,7 +113,6 @@ def train(iter, pr_trans, pr_emit, pr_prior, bitext, max_iteration, ckpt, epsilo
             I = len(e_sentence)
             J = len(f_sentence)
             forward_pr, backword_pr = forward_backford(f_sentence, e_sentence, pr_trans, pr_emit, pr_prior)
-            # gamma = np.zeros((I, J))
             denominator = np.sum(forward_pr[:, J-1])
             for i in range(I):
                 for j in range(J):
@@ -131,7 +130,7 @@ def train(iter, pr_trans, pr_emit, pr_prior, bitext, max_iteration, ckpt, epsilo
                              pr_emit[(f_sentence[j+1], e_sentence[i])] / denominator
                         c_trans[(i-i_p, I)] += si
                         c_trans_margin[i_p] += si
-        for f_sentence, e_sentence in tqdm(bitext):
+        for f_sentence, e_sentence in bitext:
             I = len(e_sentence)
             J = len(f_sentence)
             for f in f_sentence:
@@ -152,15 +151,17 @@ def train(iter, pr_trans, pr_emit, pr_prior, bitext, max_iteration, ckpt, epsilo
         if abs(llh - prev_llh) < epsilon:
             break
 
+        prev_llh = llh
+
     return iter, pr_trans, pr_emit, pr_prior
 
 def viterbi_decode(f_sentence, e_sentence, pr_trans, pr_emit, pr_prior):
     I = len(e_sentence)
     J = len(f_sentence)
-    V = np.zeros((I, J), dtype=int)
+    V = np.zeros((I, J), dtype=float)
     backptr = np.zeros((I, J), dtype=int)
     for i in range(I):
-        V[i][0] = pr_prior[(i, I)] * pr_emit[(f_sentence[0], e_sentence[i])]
+        V[i][0] = math.log(pr_prior[(i, I)]) + math.log(pr_emit[(f_sentence[0], e_sentence[i])])
     for j in range(1, J):
         for i in range(I):
             for i_p in range(I):
@@ -185,7 +186,7 @@ def calc_llh(bitext, pr_trans, pr_emit, pr_prior):
     llh = 0
     for f_sentence, e_sentence in tqdm(bitext):
         llh += viterbi_decode(f_sentence, e_sentence, pr_trans, pr_emit, pr_prior)[1]
-    sys.stderr.write('done')
+    sys.stderr.write('done\n')
     return llh
 
 def main():
@@ -198,7 +199,7 @@ def main():
     argparser.add_argument("-t", "--threshold", dest="threshold", default=0.5, type=float, help="threshold for alignment (default=0.5)")
     argparser.add_argument("-n", "--num_sentences", dest="num_sents", default=sys.maxsize, type=int, help="Number of sentences to use for training and alignment")
     argparser.add_argument("--epsilon", dest="epsilon", default=1, type=float, help="Convergence check passes if |L(t_k)-L(t_k-1)|<epsilon")
-    argparser.add_argument("--max-iteration", dest="max_iteration", default=100, type=int, help="max number of iteration")
+    argparser.add_argument("--max-iteration", dest="max_iteration", default=1e-3, type=int, help="max number of iteration")
     argparser.add_argument("--save-model", dest="save_model", default="ibm_model_i.pickle", help="save variable t")
     argparser.add_argument("--load-model", dest="load_model", help="model file of variable t")
     argparser.add_argument('-r', '--resume', help='resume training')

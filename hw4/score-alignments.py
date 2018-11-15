@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 import optparse, sys, os
+from itertools import islice
 
 optparser = optparse.OptionParser()
 optparser.add_option("-d", "--datadir", dest="datadir", default="data", help="data directory (default=data)")
@@ -11,6 +12,8 @@ optparser.add_option("-l", "--logfile", dest="logfile", default=None, help="file
 optparser.add_option("-t", "--threshold", dest="threshold", default=0.5, type="float", help="threshold for alignment (default=0.5)")
 optparser.add_option("-n", "--num_display", dest="n", default=sys.maxsize, type="int", help="number of alignments to display")
 optparser.add_option("-i", "--inputfile", dest="inputfile", default=None, help="input alignments file (default=sys.stdin)")
+optparser.add_option("--ns", "--num_sentences", dest="num_sents", default=sys.maxsize, type="int",
+                     help="Number of sentences to use for training and alignment")
 (opts, _) = optparser.parse_args()
 f_data = "%s.%s" % (os.path.join(opts.datadir, opts.fileprefix), opts.french)
 e_data = "%s.%s" % (os.path.join(opts.datadir, opts.fileprefix), opts.english)
@@ -21,8 +24,9 @@ if opts.logfile:
 
 inp = sys.stdin if opts.inputfile is None else open(opts.inputfile, 'r')
 
+trizip = islice(zip(open(f_data), open(e_data), open(a_data), inp), opts.num_sents)
 (size_a, size_s, size_a_and_s, size_a_and_p) = (0.0,0.0,0.0,0.0)
-for (i, (f, e, g, a)) in enumerate(zip(open(f_data), open(e_data), open(a_data), inp)):
+for (i, (f, e, g, a)) in enumerate(trizip):
   fwords = f.strip().split()
   ewords = e.strip().split()
   sure = set([tuple(map(int, x.split("-"))) for x in filter(lambda x: x.find("-") > -1, g.strip().split())])
