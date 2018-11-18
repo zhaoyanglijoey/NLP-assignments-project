@@ -144,7 +144,6 @@ def train(iter, pr_trans, pr_emit, pr_prior, bitext, max_iteration, ckpt,
         e_lens.add(len(e_sentence))
     f_vocab, e_vocab = build_vocab(bitext)
     f_vocab_size = len(f_vocab)
-    print(len(f_vocab), len(e_vocab))
     if not no_break:
         prev_llh = calc_llh(bitext, pr_trans, pr_emit, pr_prior,
                             f_data, e_data, a_data, num_sents)[0]
@@ -170,7 +169,8 @@ def train(iter, pr_trans, pr_emit, pr_prior, bitext, max_iteration, ckpt,
             for i in range(I):
                 denominator += forward_pr[i][J-1]
             if denominator == 0:
-                print('0 denominator!')
+                sys.stderr.write('0 denominator!\n')
+                continue
             # print(denominator)
             for i in range(I):
                 for j in range(J):
@@ -214,7 +214,6 @@ def train(iter, pr_trans, pr_emit, pr_prior, bitext, max_iteration, ckpt,
     if not no_break:
         plt.figure()
         tmp = sorted(aers.items())
-        print(tmp)
         plt.plot([item[0] for item in tmp], [item[1] for item in tmp], '-')
         plt.xlabel('iteration')
         plt.ylabel('AER')
