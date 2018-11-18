@@ -28,7 +28,6 @@ def load_model(file):
     return iter, pr_trans, pr_emit, pr_prior
 
 def build_vocab(bitext):
-    sys.stderr.write("Building vocab...\n")
     f_list = []
     e_list = []
     for f, e in bitext:
@@ -36,7 +35,6 @@ def build_vocab(bitext):
         e_list += e
     f_vocab = set(f_list)
     e_vocab = set(e_list)
-    sys.stderr.write('done\n')
     return (f_vocab, e_vocab)
 
 def score_alignments(trizip, num_display = 0):
@@ -84,10 +82,11 @@ def score_alignments(trizip, num_display = 0):
     return precision, recall, aer
 
 def init_params(bitext):
+    sys.stderr.write('initializing parameters...\n')
+
     pr_trans = {}
     pr_emit = {}
     pr_prior = {}
-
 
     # maxe_len = 0
     for f_sentence, e_sentence in bitext:
@@ -102,7 +101,7 @@ def init_params(bitext):
                 pr_trans[(i, i_p, I)] = 1 / I
     # for i in range(maxe_len):
     #     pr_prior[i] = 1 / (maxe_len+1)
-
+    sys.stderr.write('done\n')
     return pr_trans, pr_emit, pr_prior
 
 def forward_backward(f_sentence, e_sentence, pr_trans, pr_emit, pr_prior, scale):
@@ -215,7 +214,8 @@ def train(iter, pr_trans, pr_emit, pr_prior, bitext, max_iteration, ckpt,
     if not no_break:
         plt.figure()
         tmp = sorted(aers.items())
-        plt.plot(tmp[0], tmp[1], '-')
+        print(tmp)
+        plt.plot([item[0] for item in tmp], [item[1] for item in tmp], '-')
         plt.xlabel('iteration')
         plt.ylabel('AER')
         plt.savefig('AER.png')
@@ -287,7 +287,7 @@ def main():
     argparser.add_argument("-f", "--french", dest="french", default="fr", help="suffix of French (source language) filename (default=fr)")
     argparser.add_argument("-l", "--logfile", dest="logfile", default=None, help="filename for logging output")
     argparser.add_argument("-t", "--threshold", dest="threshold", default=0.5, type=float, help="threshold for alignment (default=0.5)")
-    argparser.add_argument("-n", "--num_sentences", dest="num_sents", default=1300, type=int, help="Number of sentences to use for training and alignment")
+    argparser.add_argument("-n", "--num_sentences", dest="num_sents", default=sys.maxsize, type=int, help="Number of sentences to use for training and alignment")
     argparser.add_argument('-r', '--resume', default=None, help='resume training')
     argparser.add_argument("--epsilon", dest="epsilon", default=1, type=float, help="Convergence check passes if |L(t_k)-L(t_k-1)|<epsilon")
     argparser.add_argument("--max-iteration", dest="max_iteration", default=10, type=int, help="max number of iteration")
