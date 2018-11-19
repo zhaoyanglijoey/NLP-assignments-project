@@ -113,6 +113,8 @@ class HMMmodel():
         p_null = 0.2
         alpha = 0.4
         beta = 0.0
+        lambd = 0.1
+        tau = 1000
         while self.iter < max_iteration:
             self.iter += 1
             sys.stderr.write('training iter {}...\n'.format(self.iter))
@@ -121,6 +123,10 @@ class HMMmodel():
             c_emit_margin = defaultdict(lambda: 1e-100)
             c_prior = defaultdict(float)
             c_prior_margin = defaultdict(lambda: 1e-100)
+            c_word_trans = defaultdict(float)
+            c_word_trans_margin = defaultdict(lambda: 1e-100)
+            c_stay = defaultdict(float)
+            c_stay_margin = defaultdict(lambda: 1e-100)
             for f_sentence, e_sentence in tqdm(bitext):
                 I = len(e_sentence)
                 J = len(f_sentence)
@@ -148,7 +154,13 @@ class HMMmodel():
                         for i_p in range(I):
                             si = forward_pr[i_p][j] * self.pr_trans[(i, i_p, I)] * backword_pr[i][j+1] * \
                                  self.pr_emit[(f_sentence[j+1], e_sentence[i])] / denominator
-                            c_trans[(clip(i - i_p, -7, 7), I)] += si
+                            d = clip(i - i_p, -7, 7)
+                            c_trans[(d, I)] += si
+                            c_word_trans[(d, e_sentence[i_p], I)] += si
+                            c_word_trans_margin[(i_p, e_sentence[i_p]), I] += si
+                            if i == i_p:
+                                c_stay[e_sentence[i_p]] += si
+                            c_stay_margin[e_sentence[i_p]] += si
 
             for f_sentence, e_sentence in bitext:
                 for f in f_sentence:
@@ -163,6 +175,19 @@ class HMMmodel():
                         self.pr_trans[(i, i_p, I)] = alpha * 1 / I + (1-alpha) * (c_trans[(clip(i_pp-i_p, -7, 7), I)] / margin)
                 for i in range(I):
                     self.pr_prior[(i, I)] = alpha * 1 / I + (1-alpha) * (c_prior[(i, I)] / c_prior_margin[I])
+
+            for _, e_sentence in bitext:
+                I = len(e_sentence)
+                for i_p in range(I):
+                    for i in range(I):
+                        if i == i_p:
+                            p_stay = c_stay[e_sentence[i_p]] /  c_stay_margin[e_sentence[i_p]]
+                            self.pr_word_trans[(i, i_p, e_sentence[i_p], I)] = \
+                                lambd * self.pr_trans[(i, i_p, I)] + (1-lambd) * p_stay
+                        d = clip(i - i_p, -7, 7)
+                        self.pr_word_trans[(i, i_p, e_sentence[i_p], I)] = \
+                            (c_word_trans[(d, e_sentence[i_p], I)] + tau * self.pr_trans[(i, i_p, I)]) \
+                            / (c_word_trans_margin[(i_p, e_sentence[i_p], I)] + tau)
 
             self.dump_model(os.path.join(ckpt, 'iter{:03}.hmm'.format(self.iter)))
 
@@ -198,7 +223,7 @@ class HMMmodel():
             for i in range(I):
                 trans = 0
                 for i_p in range(I):
-                    trans += forward_pr[i_p][j - 1] * self.pr_trans[(i, i_p, I)]
+                    trans += forward_pr[i_p][j - 1] * self.pr_word_trans[(i, i_p, e_sentence[i_p], I)]
                 forward_pr[i][j] = self.pr_emit[(f_sentence[j], e_sentence[i])] * trans
 
         for i in range(I):
@@ -208,7 +233,8 @@ class HMMmodel():
             for i_p in range(I):
                 tmp = 0
                 for i in range(I):
-                    tmp += backward_pr[i][j + 1] * self.pr_trans[(i, i_p, I)] * self.pr_emit[(f_sentence[j + 1], e_sentence[i])]
+                    tmp += backward_pr[i][j + 1] * self.pr_word_trans[(i, i_p, e_sentence[i_p], I)] * \
+                           self.pr_emit[(f_sentence[j + 1], e_sentence[i])]
                 backward_pr[i_p][j] = tmp
 
         return forward_pr, backward_pr
