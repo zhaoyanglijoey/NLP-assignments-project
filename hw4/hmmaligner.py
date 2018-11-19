@@ -6,6 +6,7 @@ import numpy as np
 from collections import defaultdict
 import math
 import matplotlib.pyplot as plt
+from HMMmodel import HMMmodel
 
 def dump_model(file, iter, pr_trans, pr_emit, pr_prior):
     model = {
@@ -87,6 +88,7 @@ def init_params(bitext):
     pr_trans = {}
     pr_emit = {}
     pr_prior = {}
+    pr_word_trans = {}
 
     # maxe_len = 0
     for f_sentence, e_sentence in bitext:
@@ -99,10 +101,19 @@ def init_params(bitext):
             pr_prior[(i, I)] = 1 / I
             for i_p in range(I):
                 pr_trans[(i, i_p, I)] = 1 / I
+                pr_word_trans[(i, i_p, e_sentence[i_p], I)] = 1 / I
     # for i in range(maxe_len):
     #     pr_prior[i] = 1 / (maxe_len+1)
     sys.stderr.write('done\n')
-    return pr_trans, pr_emit, pr_prior
+
+    hmmmodel = {
+        'iter': 0,
+        'pr_trans': pr_trans,
+        'pr_word_trans': pr_word_trans,
+        'pr_emit': pr_emit,
+        'pr_prior': pr_prior
+    }
+    return hmmmodel
 
 def forward_backward(f_sentence, e_sentence, pr_trans, pr_emit, pr_prior, scale):
     I = len(e_sentence)
@@ -151,6 +162,7 @@ def train(iter, pr_trans, pr_emit, pr_prior, bitext, max_iteration, ckpt,
 
     aers = {}
 
+    p_null = 0.2
     alpha = 0.1
     beta = 0.0
     while iter < max_iteration:
@@ -310,26 +322,25 @@ def main():
 
     bitext = [[sentence.strip().split() for sentence in pair] for pair in islice(
         zip(f_data, e_data), 0, args.num_sents)]
+    hmmmodel = HMMmodel()
     if args.load_model:
-        iter, pr_trans, pr_emit, pr_prior = load_model(args.load_model)
+        hmmmodel.load_model(args.load_model)
     else:
         if not os.path.exists(args.ckptdir):
             os.mkdir(args.ckptdir)
 
         if args.resume:
-            iter, pr_trans, pr_emit, pr_prior = load_model(args.resume)
-            iter, pr_trans, pr_emit, pr_prior = \
-                train(iter, pr_trans, pr_emit, pr_prior, bitext, args.max_iteration,
-                      args.ckptdir, f_data, e_data, a_data, args.num_sents, args.epsilon)
+            hmmmodel.load_model(args.resume)
+            hmmmodel.train(bitext, args.max_iteration,
+                      args.ckptdir, f_data, e_data, a_data, args.epsilon)
         else:
-            pr_trans, pr_emit, pr_prior = init_params(bitext)
-            iter, pr_trans, pr_emit, pr_prior = \
-                train(0, pr_trans, pr_emit, pr_prior, bitext, args.max_iteration,
-                      args.ckptdir, f_data, e_data, a_data, args.num_sents, args.epsilon)
-        dump_model(args.save_model, iter, pr_trans, pr_emit, pr_prior)
+            hmmmodel.init_params(bitext)
+            hmmmodel.train(bitext, args.max_iteration,
+                      args.ckptdir, f_data, e_data, a_data, args.epsilon)
+        hmmmodel.dump_model(args.save_model)
     for f_sentence, e_sentence in bitext:
         J = len(f_sentence)
-        alignments, _ = viterbi_decode(f_sentence, e_sentence, pr_trans, pr_emit, pr_prior)
+        alignments, _ = hmmmodel.viterbi_decode(f_sentence, e_sentence)
         for j in range(J):
             print("{0}-{1}".format(j, alignments[j]), end=" ")
         print()

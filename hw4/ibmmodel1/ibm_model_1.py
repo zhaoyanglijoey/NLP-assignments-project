@@ -54,7 +54,7 @@ def train(bitext, f_vocab, e_vocab, max_iteration, epsilon):
         for f_word, e_word in count_pair:
             t[(f_word, e_word)] = count_pair[(f_word, e_word)] / count_e[e_word]
 
-        with open("ibm_modeL_checkpoint.pickle", 'wb') as f:
+        with open("ibm_model_checkpoint{:02}.pickle".format(k), 'wb') as f:
             pickle.dump(t, f)
 
         # Calculate log likelihood
