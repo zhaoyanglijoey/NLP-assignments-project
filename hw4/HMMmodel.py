@@ -31,34 +31,34 @@ def score_alignments(trizip, num_display = 0):
         size_a_and_s += len(alignment & sure)
         size_a_and_p += len(alignment & possible) + len(alignment & sure)
         if (i < num_display):
-            sys.stdout.write("  Alignment %i  KEY: ( ) = guessed, * = sure, ? = possible\n" % i)
-            sys.stdout.write("  ")
+            sys.stderr.write("  Alignment %i  KEY: ( ) = guessed, * = sure, ? = possible\n" % i)
+            sys.stderr.write("  ")
             for j in ewords:
-                sys.stdout.write("---")
-            sys.stdout.write("\n")
+                sys.stderr.write("---")
+            sys.stderr.write("\n")
             for (i, f_i) in enumerate(fwords):
-                sys.stdout.write(" |")
+                sys.stderr.write(" |")
                 for (j, _) in enumerate(ewords):
                     (left, right) = ("(", ")") if (i, j) in alignment else (" ", " ")
                     point = "*" if (i, j) in sure else "?" if (i, j) in possible else " "
-                    sys.stdout.write("%s%s%s" % (left, point, right))
-                sys.stdout.write(" | %s\n" % f_i)
-            sys.stdout.write("  ")
+                    sys.stderr.write("%s%s%s" % (left, point, right))
+                sys.stderr.write(" | %s\n" % f_i)
+            sys.stderr.write("  ")
             for j in ewords:
-                sys.stdout.write("---")
-            sys.stdout.write("\n")
+                sys.stderr.write("---")
+            sys.stderr.write("\n")
             for k in range(max(map(len, ewords))):
-                sys.stdout.write("  ")
+                sys.stderr.write("  ")
                 for word in ewords:
                     letter = word[k] if len(word) > k else " "
-                    sys.stdout.write(" %s " % letter)
-                sys.stdout.write("\n")
-            sys.stdout.write("\n")
+                    sys.stderr.write(" %s " % letter)
+                sys.stderr.write("\n")
+            sys.stderr.write("\n")
 
     precision = size_a_and_p / size_a
     recall = size_a_and_s / size_s
     aer = 1 - ((size_a_and_s + size_a_and_p) / (size_a + size_s))
-    sys.stdout.write("Precision = %f\nRecall = %f\nAER = %f\n" % (precision, recall, aer))
+    sys.stderr.write("Precision = %f\nRecall = %f\nAER = %f\n" % (precision, recall, aer))
     return precision, recall, aer
 
 class HMMmodel():
