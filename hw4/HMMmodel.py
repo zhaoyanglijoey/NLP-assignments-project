@@ -165,14 +165,17 @@ class HMMmodel():
             for f_sentence, e_sentence in bitext:
                 for f in f_sentence:
                     for e in e_sentence:
-                        self.pr_emit[(f, e)] = beta * (1 / f_vocab_size) + (1-beta) * (c_emit[(f, e)] / c_emit_margin[e])
+                        self.pr_emit[(f, e)] = (beta * (1 / f_vocab_size) + (1-beta) * (c_emit[(f, e)] / c_emit_margin[e])) * 10
             for I in e_lens:
                 for i_p in range(I):
                     margin = 0
                     for i_pp in range(I):
                         margin += c_trans[(clip(i_pp-i_p, -7, 7), I)]
+                    if margin == 0:
+                        sys.stderr.write('0 transition probability!\n')
+                        continue
                     for i in range(I):
-                        self.pr_trans[(i, i_p, I)] = alpha * 1 / I + (1-alpha) * (c_trans[(clip(i_pp-i_p, -7, 7), I)] / margin)
+                        self.pr_trans[(i, i_p, I)] = alpha * 1 / I + (1-alpha) * (c_trans[(clip(i-i_p, -7, 7), I)] / margin)
                 for i in range(I):
                     self.pr_prior[(i, I)] = alpha * 1 / I + (1-alpha) * (c_prior[(i, I)] / c_prior_margin[I])
 
