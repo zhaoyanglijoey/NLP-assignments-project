@@ -47,6 +47,8 @@ if __name__ == '__main__':
         sys.stderr.write("Use model {}...\n".format(load_model))
         with open(load_model, 'rb') as f:
             [t_1, t_2] = pickle.load(f)
+        for sentence_pair in bitext:
+            sentence_pair.reverse()
     else:
         t_1 = ibm_model_1.train(bitext, f_vocab, e_vocab, opts.max_iteration, opts.epsilon)
         for sentence_pair in bitext:

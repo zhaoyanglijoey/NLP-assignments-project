@@ -72,7 +72,8 @@ def train(bitext, f_vocab, e_vocab, max_iteration, epsilon):
 
 def decode(bitext, t):
     alignments_list = []
-    for f, e in bitext:
+    sys.stderr.write("Decoding\n")
+    for f, e in tqdm(bitext):
         alignments = []
         for i, f_word in enumerate(f):
             best_p = 0
