@@ -25,7 +25,8 @@ def score_alignments(trizip, num_display = 0):
         ewords = e.strip().split()
         sure = set([tuple(map(int, x.split("-"))) for x in filter(lambda x: x.find("-") > -1, g.strip().split())])
         possible = set([tuple(map(int, x.split("?"))) for x in filter(lambda x: x.find("?") > -1, g.strip().split())])
-        alignment = set([tuple(map(int, x.split("-"))) for x in a.strip().split()])
+        # alignment = set([tuple(map(int, x.split("-"))) for x in a.strip().split()])
+        alignment = set(a)
         size_a += len(alignment)
         size_s += len(sure)
         size_a_and_s += len(alignment & sure)
@@ -94,7 +95,7 @@ class HMMmodel():
         sys.stderr.write('done\n')
 
     def train(self, bitext, max_iteration, ckpt,
-                f_data, e_data, a_data, epsilon = None, no_break = False):
+                f_data, e_data, a_data, epsilon = None, validate = False):
 
         e_lens = set()
 
@@ -102,9 +103,9 @@ class HMMmodel():
             e_lens.add(len(e_sentence))
         f_vocab, e_vocab = build_vocab(bitext)
         f_vocab_size = len(f_vocab)
-        if not no_break:
-            prev_llh = self.calc_llh(bitext, f_data, e_data, a_data)[0]
-            sys.stderr.write('iteration {}, llh {}\n'.format(self.iter, prev_llh))
+        # if not no_break:
+        #     prev_llh = self.validate(bitext, f_data, e_data, a_data)[0]
+        #     sys.stderr.write('iteration {}, llh {}\n'.format(self.iter, prev_llh))
 
         aers = {}
 
@@ -115,8 +116,10 @@ class HMMmodel():
         beta = 0.0
         lambd = 0.1
         tau = 1000
-        while self.iter < max_iteration:
+        local_iter = 0
+        while local_iter < max_iteration:
             self.iter += 1
+            local_iter += 1
             sys.stderr.write('training iter {}...\n'.format(self.iter))
             c_emit = defaultdict(float)
             c_trans = defaultdict(float)
@@ -213,15 +216,15 @@ class HMMmodel():
 
             self.dump_model(os.path.join(ckpt, 'iter{:03}.hmm'.format(self.iter)))
 
-            if not no_break:
-                llh, aer = self.calc_llh(bitext, f_data, e_data, a_data)
+            if validate:
+                llh, aer = self.validate(bitext, f_data, e_data, a_data)
                 sys.stderr.write('iteration {}, llh {}\n'.format(self.iter, llh))
                 aers[self.iter] = aer
-                if abs(llh - prev_llh) < epsilon:
-                    break
-                prev_llh = llh
+                # if abs(llh - prev_llh) < epsilon:
+                #     break
+                # prev_llh = llh
 
-        if not no_break:
+        if validate:
             plt.figure()
             tmp = sorted(aers.items())
             plt.plot([item[0] for item in tmp], [item[1] for item in tmp], '-')
@@ -302,20 +305,26 @@ class HMMmodel():
         alignments.reverse()
         return (alignments, best_score)
 
-    def calc_llh(self, bitext, f_data, e_data, a_data):
+    def decode(self, bitext):
         sys.stderr.write('calculating log likelyhood...\n')
         llh = 0
         output = []
         for f_sentence, e_sentence in tqdm(bitext):
             alignments, llh_t = self.viterbi_decode(f_sentence, e_sentence)
             llh += llh_t
-            output_line = ''
+            output_line = []
             for j in range(len(f_sentence)):
-                output_line += "{0}-{1} ".format(j, alignments[j])
+                # output_line += "{0}-{1} ".format(j, alignments[j])
+                output_line.append((j, alignments[j]))
             output.append(output_line)
-        trizip = zip(f_data, e_data, a_data, output)
+
+        return output, llh
+
+    def validate(self, bitext, f_data, e_data, a_data):
+        alignments_list, llh = self.decode(bitext)
+        trizip = zip(f_data, e_data, a_data, alignments_list)
         aer = score_alignments(trizip)[2]
-        # sys.stderr.write('done\n')
+
         return llh, aer
 
     def dump_model(self, file):
@@ -335,3 +344,43 @@ class HMMmodel():
         self.pr_trans = model['pr_trans']
         self.pr_emit = model['pr_emit']
         self.pr_prior = model['pr_prior']
+
+class BiHMMmodel():
+    def __init__(self):
+        self.forward_model = HMMmodel()
+        self.backward_model = HMMmodel()
+
+    def load_forward(self, file):
+        self.forward_model.load_model(file)
+
+    def load_backward(self, file):
+        self.backward_model.load_model(file)
+
+    def reverse_alignments_list(self, alignments_list):
+        reversed_alignments_list = []
+        for alignments in alignments_list:
+            reversed_alignments = []
+            for i, j in alignments:
+                reversed_alignments.append((j, i))
+            reversed_alignments_list.append(reversed_alignments)
+
+        return reversed_alignments_list
+
+    def intersect_lists(self, list_1, list_2):
+        set_2 = set(list_2)
+        return [element for element in list_1 if element in set_2]
+
+    def decode(self, bitext, f_data, e_data):
+        alignment_forward, _ = self.forward_model.decode(bitext)
+        alignment_backward, _ = self.backward_model.decode(bitext)
+        alignment_backward_rev = self.reverse_alignments(alignment_backward)
+
+        alignments_list = []
+
+        for af, ab in zip(alignment_forward, alignment_backward_rev):
+            # alignments_1: alignment from French to English
+            # alignments_2: alignment from English to French
+            # So we need to make the direction same before intersection
+            alignments_list.append(self.intersect_lists(af, ab))
+
+        return alignments_list
