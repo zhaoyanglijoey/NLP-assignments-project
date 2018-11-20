@@ -169,13 +169,31 @@ class HMMmodel():
             for I in e_lens:
                 for i_p in range(I):
                     margin = 0
+                    c_m7 = 0
+                    c_p7 = 0
                     for i_pp in range(I):
-                        margin += c_trans[(clip(i_pp-i_p, -7, 7), I)]
+                        if i_pp - i_p < -7:
+                            c_m7 += 1
+                        elif i_pp - i_p == -7:
+                            c_m7 += 1
+                            margin += c_trans[(-7, I)]
+                        elif i_pp - i_p > 7:
+                            c_p7 += 1
+                        elif i_pp - i_p == 7:
+                            c_p7 += 1
+                            margin += c_trans[(7, I)]
+                        else:
+                            margin += c_trans[(i_pp-i_p, I)]
                     if margin == 0:
                         sys.stderr.write('0 transition probability!\n')
                         continue
                     for i in range(I):
-                        self.pr_trans[(i, i_p, I)] = alpha * 1 / I + (1-alpha) * (c_trans[(clip(i-i_p, -7, 7), I)] / margin)
+                        if i - i_p <= -7:
+                            self.pr_trans[(i, i_p, I)] = alpha * 1 / I + (1 - alpha) * (c_trans[(-7, I)] / c_m7 / margin)
+                        elif i - i_p >= 7:
+                            self.pr_trans[(i, i_p, I)] = alpha * 1 / I + (1 - alpha) * (c_trans[(7, I)] / c_p7 / margin)
+                        else:
+                            self.pr_trans[(i, i_p, I)] = alpha * 1 / I + (1-alpha) * (c_trans[(i-i_p, I)] / margin)
                 for i in range(I):
                     self.pr_prior[(i, I)] = alpha * 1 / I + (1-alpha) * (c_prior[(i, I)] / c_prior_margin[I])
 
@@ -187,8 +205,9 @@ class HMMmodel():
                             p_stay = c_stay[e_sentence[i_p]] /  c_stay_margin[e_sentence[i_p]]
                             self.pr_word_trans[(i, i_p, e_sentence[i_p], I)] = \
                                 lambd * self.pr_trans[(i, i_p, I)] + (1-lambd) * p_stay
-                        d = clip(i - i_p, -7, 7)
-                        self.pr_word_trans[(i, i_p, e_sentence[i_p], I)] = \
+                        else:
+                            d = clip(i - i_p, -7, 7)
+                            self.pr_word_trans[(i, i_p, e_sentence[i_p], I)] = \
                             (c_word_trans[(d, e_sentence[i_p], I)] + tau * self.pr_trans[(i, i_p, I)]) \
                             / (c_word_trans_margin[(i_p, e_sentence[i_p], I)] + tau)
 
