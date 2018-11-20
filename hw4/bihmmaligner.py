@@ -21,7 +21,7 @@ def main():
     argparser.add_argument("-n", "--num_sentences", dest="num_sents", default=sys.maxsize, type=int, help="Number of sentences to use for training and alignment")
     argparser.add_argument('-r', '--resume', default=None, help='resume training')
     argparser.add_argument("--epsilon", dest="epsilon", default=1, type=float, help="Convergence check passes if |L(t_k)-L(t_k-1)|<epsilon")
-    argparser.add_argument("--iter", dest="iter", default=10, type=int, help="number of iteration")
+    argparser.add_argument("--iter", dest="iter", default=5, type=int, help="number of iteration")
     argparser.add_argument("--save-model", dest="save_model", default="bihmm.m", help="save variable t")
     argparser.add_argument("--load-model", dest="load_model", help="model file of variable t")
     argparser.add_argument('--loadibm1')
@@ -61,8 +61,8 @@ def main():
                 bihmmmodel.load_from_ibm1(args.loadibm1)
                 bihmmmodel.validate(bitext, rev_bitext, f_data, e_data, a_data)
             bihmmmodel.train(bitext, rev_bitext, args.iter,
-                      args.ckptdir, f_data, e_data, a_data, validate=True)
-            bihmmmodel.dump_model(args.save_model)
+                      args.ckptdir, f_data, e_data, a_data)
+        bihmmmodel.dump_model(args.save_model)
 
     bihmmmodel.validate(bitext, f_data, e_data, a_data)
 

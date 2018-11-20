@@ -646,14 +646,19 @@ class BiHMMmodel():
         aer = score_alignments(zip(f_data, e_data, a_data, alignments_list))[2]
 
     def train(self, bitext, rev_bitext, max_iteration, ckpt,
-                f_data, e_data, a_data, validate = False):
+                f_data, e_data, a_data, validate = True):
 
         aer_bi = {}
-        pool = Pool(2)
+        pool = Pool(1)
         for i in range(max_iteration):
+            sys.stderr.write('training backward model...\n')
+            # self.backward_model.train(rev_bitext, 1, None, f_data, e_data, a_data, validate = False)
+            backward_res = pool.apply_async(func=self.backward_model.train, args=(
+                rev_bitext, 1, None, f_data, e_data, a_data, False))
+
             sys.stderr.write('training forward model...\n')
-            forward_res = pool.apply_async(func=self.forward_model.train, args=(
-                bitext, 1, None, f_data, e_data, a_data, validate))
+            # forward_res = pool.apply_async(func=self.forward_model.train, args=(
+            #     bitext, 1, None, f_data, e_data, a_data, validate))
             # t_forward = Thread(target=self.forward_model.train, args=(
             #     bitext, 1, None, f_data, e_data, a_data, validate))
             # t_forward.start()
@@ -661,11 +666,9 @@ class BiHMMmodel():
             # p_forward = multiprocessing.Process(target=self.forward_model.train, args=(
             #     bitext, 1, None, f_data, e_data, a_data, validate))
             # p_forward.start()
-            # self.forward_model.train(bitext, 1, None, f_data, e_data, a_data, validate = validate)
+            self.forward_model.train(bitext, 1, None, f_data, e_data, a_data, validate = validate)
 
-            sys.stderr.write('training backward model...\n')
-            backward_res = pool.apply_async(func=self.backward_model.train, args=(
-                rev_bitext, 1, None, f_data, e_data, a_data, False))
+
 
             # t_backward = Thread(target=self.backward_model.train, args=(
             #     rev_bitext, 1, None, f_data, e_data, a_data, False))
@@ -675,8 +678,10 @@ class BiHMMmodel():
             # p_backward.start()
             # self.backward_model.train(rev_bitext, 1, None, f_data, e_data, a_data, validate = False)
 
-            self.forward_model = forward_res.get()
+            # self.forward_model = forward_res.get()
             self.backward_model = backward_res.get()
+            # pool.close()
+            # pool.join()
 
             # t_forward.join()
             # t_backward.join()
