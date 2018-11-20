@@ -6,7 +6,7 @@ import numpy as np
 from collections import defaultdict
 import math
 import matplotlib.pyplot as plt
-from HMMmodel import HMMmodel
+from HMMmodel import BiHMMmodel, score_alignments
 
 def main():
     argparser = argparse.ArgumentParser()
@@ -20,9 +20,10 @@ def main():
     argparser.add_argument('-r', '--resume', default=None, help='resume training')
     argparser.add_argument("--epsilon", dest="epsilon", default=1, type=float, help="Convergence check passes if |L(t_k)-L(t_k-1)|<epsilon")
     argparser.add_argument("--iter", dest="iter", default=10, type=int, help="number of iteration")
-    argparser.add_argument("--save-model", dest="save_model", default="hmmmodel.pickle", help="save variable t")
+    argparser.add_argument("--save-model", dest="save_model", default="bihmm.m", help="save variable t")
     argparser.add_argument("--load-model", dest="load_model", help="model file of variable t")
-    argparser.add_argument('--ckptdir', default='hmmckpt', help='check point dir')
+    argparser.add_argument('--loadibm1')
+    argparser.add_argument('--ckptdir', default='bihmmckpt', help='check point dir')
     argparser.add_argument("-a", "--alignments", dest="alignment", default="a",
                          help="suffix of gold alignments filename (default=a)")
     args = argparser.parse_args()
@@ -39,32 +40,37 @@ def main():
 
     bitext = [[sentence.strip().split() for sentence in pair] for pair in islice(
         zip(f_data, e_data), 0, args.num_sents)]
-    hmmmodel = HMMmodel()
+    rev_bitext = [(e_sentence, f_setence) for f_setence, e_sentence in bitext]
+
+    bihmmmodel = BiHMMmodel()
     if args.load_model:
-        hmmmodel.load_model(args.load_model)
+        bihmmmodel.load_model(args.load_model)
     else:
         if not os.path.exists(args.ckptdir):
             os.mkdir(args.ckptdir)
 
         if args.resume:
-            hmmmodel.load_model(args.resume)
-            hmmmodel.train(bitext, args.iter,
+            bihmmmodel.load_model(args.resume)
+            bihmmmodel.train(bitext, rev_bitext, args.iter,
                       args.ckptdir, f_data, e_data, a_data)
         else:
-            hmmmodel.init_params(bitext)
-            # with open('ibm1_iter10.pickle', 'rb') as f:
-            #     ibmmodel = pickle.load(f)
-            #     hmmmodel.load_from_ibm1(ibmmodel[0])
-            # hmmmodel.validate(bitext, f_data, e_data, a_data)
-            hmmmodel.train(bitext, args.iter,
+            bihmmmodel.init_params(bitext, rev_bitext)
+            if args.loadibm1:
+                bihmmmodel.load_from_ibm1(args.loadibm1)
+                bihmmmodel.validate(bitext, rev_bitext, f_data, e_data, a_data)
+            bihmmmodel.train(bitext, rev_bitext, args.iter,
                       args.ckptdir, f_data, e_data, a_data, validate=True)
-        hmmmodel.dump_model(args.save_model)
-    for f_sentence, e_sentence in bitext:
-        J = len(f_sentence)
-        alignments, _ = hmmmodel.viterbi_decode(f_sentence, e_sentence)
-        for j in range(J):
-            print("{0}-{1}".format(j, alignments[j]), end=" ")
-        print()
+            bihmmmodel.dump_model(args.save_model)
+
+    bihmmmodel.validate(bitext, f_data, e_data, a_data)
+
+
+    # for f_sentence, e_sentence in bitext:
+    #     J = len(f_sentence)
+    #     alignments, _ = bihmmmodel.viterbi_decode(f_sentence, e_sentence)
+    #     for j in range(J):
+    #         print("{0}-{1}".format(j, alignments[j]), end=" ")
+    #     print()
 
 
 

@@ -95,7 +95,7 @@ class HMMmodel():
         sys.stderr.write('done\n')
 
     def train(self, bitext, max_iteration, ckpt,
-                f_data, e_data, a_data, epsilon = None, validate = False):
+                f_data, e_data, a_data, validate = False):
 
         e_lens = set()
 
@@ -213,8 +213,8 @@ class HMMmodel():
                             self.pr_word_trans[(i, i_p, e_sentence[i_p], I)] = \
                             (c_word_trans[(d, e_sentence[i_p], I)] + tau * self.pr_trans[(i, i_p, I)]) \
                             / (c_word_trans_margin[(i_p, e_sentence[i_p], I)] + tau)
-
-            self.dump_model(os.path.join(ckpt, 'iter{:03}.hmm'.format(self.iter)))
+            if ckpt is not None:
+                self.dump_model(os.path.join(ckpt, 'iter{:03}.hmm'.format(self.iter)))
 
             if validate:
                 llh, aer = self.validate(bitext, f_data, e_data, a_data)
@@ -282,7 +282,7 @@ class HMMmodel():
             for i in range(I):
                 for i_p in range(I):
                     try:
-                        tmp = V[i_p][j - 1] + math.log(self.pr_trans[(i, i_p, I)]) + \
+                        tmp = V[i_p][j - 1] + math.log(self.pr_word_trans[(i, i_p, e_sentence[i_p], I)]) + \
                               math.log(self.pr_emit[(f_sentence[j], e_sentence[i])])
                     except ValueError:
                         tmp = -10000000
@@ -306,10 +306,10 @@ class HMMmodel():
         return (alignments, best_score)
 
     def decode(self, bitext):
-        sys.stderr.write('calculating log likelyhood...\n')
+        # sys.stderr.write('calculating log likelyhood...\n')
         llh = 0
         output = []
-        for f_sentence, e_sentence in tqdm(bitext):
+        for f_sentence, e_sentence in (bitext[:447]):
             alignments, llh_t = self.viterbi_decode(f_sentence, e_sentence)
             llh += llh_t
             output_line = []
@@ -328,11 +328,56 @@ class HMMmodel():
         return llh, aer
 
     def dump_model(self, file):
+        model = self.get_model_params()
+        with open(file, 'wb') as f:
+            pickle.dump(model, f, pickle.HIGHEST_PROTOCOL)
+
+    def get_model_params(self):
         model = {
             'iter': self.iter,
             'pr_trans': self.pr_trans,
             'pr_emit': self.pr_emit,
-            'pr_prior': self.pr_prior
+            'pr_prior': self.pr_prior,
+            'pr_word_trans': self.pr_word_trans
+        }
+
+        return model
+
+    def load_model(self, file):
+        with open(file, 'rb') as f:
+            model = pickle.load(f)
+        self.set_model_params(model)
+
+    def set_model_params(self, model):
+        self.iter = model['iter']
+        self.pr_trans = model['pr_trans']
+        self.pr_emit = model['pr_emit']
+        self.pr_prior = model['pr_prior']
+        self.pr_word_trans = model['pr_word_trans']
+
+    def load_from_ibm1(self, ibm1model):
+        self.pr_emit = ibm1model
+
+class BiHMMmodel():
+    def __init__(self):
+        self.forward_model = HMMmodel()
+        self.backward_model = HMMmodel()
+
+    def init_params(self, bitext, rev_bitext):
+        sys.stderr.write('initializing parameters...\n')
+        self.forward_model.init_params(bitext)
+        self.backward_model.init_params(rev_bitext)
+
+    def load_forward(self, file):
+        self.forward_model.load_model(file)
+
+    def load_backward(self, file):
+        self.backward_model.load_model(file)
+
+    def dump_model(self, file):
+        model = {
+            'forward': self.forward_model.get_model_params(),
+            'backward': self.backward_model.get_model_params()
         }
         with open(file, 'wb') as f:
             pickle.dump(model, f, pickle.HIGHEST_PROTOCOL)
@@ -340,21 +385,15 @@ class HMMmodel():
     def load_model(self, file):
         with open(file, 'rb') as f:
             model = pickle.load(f)
-        self.iter = model['iter']
-        self.pr_trans = model['pr_trans']
-        self.pr_emit = model['pr_emit']
-        self.pr_prior = model['pr_prior']
 
-class BiHMMmodel():
-    def __init__(self):
-        self.forward_model = HMMmodel()
-        self.backward_model = HMMmodel()
+        self.forward_model.set_model_params(model['forward'])
+        self.backward_model.set_model_params(model['backward'])
 
-    def load_forward(self, file):
-        self.forward_model.load_model(file)
-
-    def load_backward(self, file):
-        self.backward_model.load_model(file)
+    def load_from_ibm1(self, file):
+        with open(file, 'rb') as f:
+            model = pickle.load(f)
+        self.forward_model.load_from_ibm1(model[0])
+        self.backward_model.load_from_ibm1(model[1])
 
     def reverse_alignments_list(self, alignments_list):
         reversed_alignments_list = []
@@ -370,17 +409,36 @@ class BiHMMmodel():
         set_2 = set(list_2)
         return [element for element in list_1 if element in set_2]
 
-    def decode(self, bitext, f_data, e_data):
+    def decode(self, bitext, rev_bitext):
         alignment_forward, _ = self.forward_model.decode(bitext)
-        alignment_backward, _ = self.backward_model.decode(bitext)
-        alignment_backward_rev = self.reverse_alignments(alignment_backward)
+        alignment_backward, _ = self.backward_model.decode(rev_bitext)
+        alignment_backward_rev = self.reverse_alignments_list(alignment_backward)
 
         alignments_list = []
 
         for af, ab in zip(alignment_forward, alignment_backward_rev):
-            # alignments_1: alignment from French to English
-            # alignments_2: alignment from English to French
-            # So we need to make the direction same before intersection
             alignments_list.append(self.intersect_lists(af, ab))
 
         return alignments_list
+
+    def validate(self, bitext, rev_bitext, f_data, e_data, a_data):
+        # self.forward_model.validate(bitext, f_data, e_data, a_data)
+        alignments_list = self.decode(bitext, rev_bitext)
+        score_alignments(zip(f_data, e_data, a_data, alignments_list))
+
+    def train(self, bitext, rev_bitext, max_iteration, ckpt,
+                f_data, e_data, a_data, validate = False):
+
+        for i in range(max_iteration):
+            sys.stderr.write('training forward model...\n')
+            self.forward_model.train(bitext, 1, None, f_data, e_data, a_data, validate = False)
+            sys.stderr.write('training backward model...\n')
+            self.backward_model.train(rev_bitext, 1, None, f_data, e_data, a_data, validate = False)
+
+            if ckpt is not None:
+                self.dump_model(os.path.join(ckpt, 'bihmm_iter{}.m'.format(self.forward_model.iter)))
+
+            if validate:
+                self.validate(bitext, rev_bitext, f_data, e_data, a_data)
+
+
