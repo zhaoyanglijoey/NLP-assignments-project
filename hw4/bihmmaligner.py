@@ -1,3 +1,5 @@
+import matplotlib
+matplotlib.use('Agg')
 import argparse, sys, os, logging
 from itertools import islice
 import pickle
@@ -40,7 +42,7 @@ def main():
 
     bitext = [[sentence.strip().split() for sentence in pair] for pair in islice(
         zip(f_data, e_data), 0, args.num_sents)]
-    rev_bitext = [(e_sentence, f_setence) for f_setence, e_sentence in bitext]
+    rev_bitext = [[e_sentence, f_setence] for f_setence, e_sentence in bitext]
 
     bihmmmodel = BiHMMmodel()
     if args.load_model:
