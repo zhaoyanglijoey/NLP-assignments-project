@@ -21,7 +21,7 @@ def main():
     argparser.add_argument("-n", "--num_sentences", dest="num_sents", default=sys.maxsize, type=int, help="Number of sentences to use for training and alignment")
     argparser.add_argument('-r', '--resume', default=None, help='resume training')
     argparser.add_argument("--epsilon", dest="epsilon", default=1, type=float, help="Convergence check passes if |L(t_k)-L(t_k-1)|<epsilon")
-    argparser.add_argument("--iter", dest="iter", default=5, type=int, help="number of iteration")
+    argparser.add_argument("--iter", dest="iter", default=10, type=int, help="number of iteration")
     argparser.add_argument("--save-model", dest="save_model", default="bihmm.m", help="save variable t")
     argparser.add_argument("--load-model", dest="load_model", help="model file of variable t")
     argparser.add_argument('--loadibm1')
@@ -32,8 +32,15 @@ def main():
     f_data = "%s.%s" % (os.path.join(args.datadir, args.fileprefix), args.french)
     e_data = "%s.%s" % (os.path.join(args.datadir, args.fileprefix), args.english)
     a_data = "%s.%s" % (os.path.join(args.datadir, args.fileprefix), args.alignment)
-    with open(f_data) as f, open(e_data) as e, open(a_data) as a:
-        f_data, e_data, a_data = f.readlines()[:args.num_sents],\
+    validate = True
+    if args.fileprefix != 'hansards':
+        validate = False
+        with open(f_data) as f, open(e_data) as e:
+            f_data, e_data = f.readlines(), e.readlines()
+            a_data = None
+    else:
+        with open(f_data) as f, open(e_data) as e, open(a_data) as a:
+            f_data, e_data, a_data = f.readlines()[:args.num_sents],\
                                  e.readlines()[:args.num_sents], \
                                  a.readlines()[:args.num_sents]
 
@@ -54,14 +61,14 @@ def main():
         if args.resume:
             bihmmmodel.load_model(args.resume)
             bihmmmodel.train(bitext, rev_bitext, args.iter,
-                      args.ckptdir, f_data, e_data, a_data)
+                      args.ckptdir, f_data, e_data, a_data, validate)
         else:
             bihmmmodel.init_params(bitext, rev_bitext)
             if args.loadibm1:
                 bihmmmodel.load_from_ibm1(args.loadibm1)
                 bihmmmodel.validate(bitext, rev_bitext, f_data, e_data, a_data)
             bihmmmodel.train(bitext, rev_bitext, args.iter,
-                      args.ckptdir, f_data, e_data, a_data)
+                      args.ckptdir, f_data, e_data, a_data, validate)
         bihmmmodel.dump_model(args.save_model)
 
     bihmmmodel.validate(bitext, rev_bitext, f_data, e_data, a_data)

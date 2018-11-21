@@ -329,7 +329,7 @@ class HMMmodel():
                                  self.pr_emit[(f_sentence[j+1], e_sentence[i])] / denominator
                             d = clip(i - i_p, -7, 7)
                             c_trans[(d, I)] += si
-                            c_word_trans[(d, e_sentence[i_p], I)] += si
+                            c_word_trans[(d, e_sentence[i_p])] += si
                             if i == i_p:
                                 c_stay[e_sentence[i_p]] += si
                             c_stay_margin[e_sentence[i_p]] += si
@@ -381,14 +381,14 @@ class HMMmodel():
                             c_m7 += 1
                         elif i_pp - i_p == -7:
                             c_m7 += 1
-                            word_trans_margin_i_p += c_word_trans[(i_pp - i_p, e_sentence[i_p], I)]
+                            word_trans_margin_i_p += c_word_trans[(i_pp - i_p, e_sentence[i_p])]
                         elif i_pp - i_p > 7:
                             c_p7 += 1
                         elif i_pp - i_p == 7:
                             c_p7 += 1
-                            word_trans_margin_i_p += c_word_trans[(i_pp - i_p, e_sentence[i_p], I)]
+                            word_trans_margin_i_p += c_word_trans[(i_pp - i_p, e_sentence[i_p])]
                         else:
-                            word_trans_margin_i_p += c_word_trans[(i_pp - i_p, e_sentence[i_p], I)]
+                            word_trans_margin_i_p += c_word_trans[(i_pp - i_p, e_sentence[i_p])]
 
                     for i in range(I):
                         if i == i_p:
@@ -399,15 +399,15 @@ class HMMmodel():
                             d = clip(i - i_p, -7, 7)
                             if i - i_p <= -7:
                                 self.pr_word_trans[(i, i_p, e_sentence[i_p], I)] = \
-                                (c_word_trans[(d, e_sentence[i_p], I)] / c_m7 + tau * self.pr_trans[(i, i_p, I)]) \
+                                (c_word_trans[(d, e_sentence[i_p])] / c_m7 + tau * self.pr_trans[(i, i_p, I)]) \
                                 / (word_trans_margin_i_p + tau)
                             elif i - i_p >= 7:
                                 self.pr_word_trans[(i, i_p, e_sentence[i_p], I)] = \
-                                (c_word_trans[(d, e_sentence[i_p], I)] / c_p7 + tau * self.pr_trans[(i, i_p, I)]) \
+                                (c_word_trans[(d, e_sentence[i_p])] / c_p7 + tau * self.pr_trans[(i, i_p, I)]) \
                                 / (word_trans_margin_i_p + tau)
                             else:
                                 self.pr_word_trans[(i, i_p, e_sentence[i_p], I)] = \
-                                    (c_word_trans[(d, e_sentence[i_p], I)] + tau * self.pr_trans[(i, i_p, I)]) \
+                                    (c_word_trans[(d, e_sentence[i_p])] + tau * self.pr_trans[(i, i_p, I)]) \
                                     / (word_trans_margin_i_p + tau)
 
             if ckpt is not None:
@@ -651,14 +651,11 @@ class BiHMMmodel():
         aer_bi = {}
         pool = Pool(1)
         for i in range(max_iteration):
-            sys.stderr.write('training backward model...\n')
-            # self.backward_model.train(rev_bitext, 1, None, f_data, e_data, a_data, validate = False)
-            backward_res = pool.apply_async(func=self.backward_model.train, args=(
-                rev_bitext, 1, None, f_data, e_data, a_data, False))
+
 
             sys.stderr.write('training forward model...\n')
-            # forward_res = pool.apply_async(func=self.forward_model.train, args=(
-            #     bitext, 1, None, f_data, e_data, a_data, validate))
+            forward_res = pool.apply_async(func=self.forward_model.train, args=(
+                bitext, 1, None, f_data, e_data, a_data, validate))
             # t_forward = Thread(target=self.forward_model.train, args=(
             #     bitext, 1, None, f_data, e_data, a_data, validate))
             # t_forward.start()
@@ -666,10 +663,12 @@ class BiHMMmodel():
             # p_forward = multiprocessing.Process(target=self.forward_model.train, args=(
             #     bitext, 1, None, f_data, e_data, a_data, validate))
             # p_forward.start()
-            self.forward_model.train(bitext, 1, None, f_data, e_data, a_data, validate = validate)
+            # self.forward_model.train(bitext, 1, None, f_data, e_data, a_data, validate = validate)
 
-
-
+            sys.stderr.write('training backward model...\n')
+            self.backward_model.train(rev_bitext, 1, None, f_data, e_data, a_data, validate = False)
+            # backward_res = pool.apply_async(func=self.backward_model.train, args=(
+            #     rev_bitext, 1, None, f_data, e_data, a_data, False))
             # t_backward = Thread(target=self.backward_model.train, args=(
             #     rev_bitext, 1, None, f_data, e_data, a_data, False))
             # t_backward.start()
@@ -678,8 +677,8 @@ class BiHMMmodel():
             # p_backward.start()
             # self.backward_model.train(rev_bitext, 1, None, f_data, e_data, a_data, validate = False)
 
-            # self.forward_model = forward_res.get()
-            self.backward_model = backward_res.get()
+            self.forward_model = forward_res.get()
+            # self.backward_model = backward_res.get()
             # pool.close()
             # pool.join()
 
