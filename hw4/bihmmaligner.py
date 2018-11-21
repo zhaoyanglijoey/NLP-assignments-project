@@ -64,7 +64,7 @@ def main():
                       args.ckptdir, f_data, e_data, a_data)
         bihmmmodel.dump_model(args.save_model)
 
-    bihmmmodel.validate(bitext, f_data, e_data, a_data)
+    bihmmmodel.validate(bitext, rev_bitext, f_data, e_data, a_data)
 
 
     # for f_sentence, e_sentence in bitext:
