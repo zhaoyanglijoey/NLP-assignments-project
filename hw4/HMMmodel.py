@@ -10,16 +10,12 @@ import math
 import matplotlib.pyplot as plt
 import multiprocessing
 from multiprocessing import Pool, Process, Lock, Manager
-from multiprocessing.managers import BaseManager, DictProxy
 from threading import Thread
 from datetime import datetime
 
-class MyManager(BaseManager):
-    pass
-
-MyManager.register('defaultdict', defaultdict, DictProxy)
 
 clip = lambda x, l, u: l if x < l else u if x > u else x
+
 def epsilon():
     return 1e-100
 
@@ -106,133 +102,8 @@ class HMMmodel():
                 for i_p in range(I):
                     self.pr_trans[(i, i_p, I)] = (1 / I)
                     self.pr_word_trans[(i, i_p, e_sentence[i_p], I)] = (1 / I)
-        # for i in range(maxe_len):
-        #     pr_prior[i] = 1 / (maxe_len+1)
+
         sys.stderr.write('done\n')
-
-
-
-    def expectation_step(self, f_sentence, e_sentence, c_emit, c_trans, c_emit_margin, c_prior,
-                       c_prior_margin, c_word_trans, c_word_trans_margin, c_stay, c_stay_margin):
-
-
-        I = len(e_sentence)
-        J = len(f_sentence)
-        # for i in range(I):
-        #     e_sentence.append('null')
-        forward_pr, backward_pr = self.forward_backward(f_sentence, e_sentence)
-        denominator = 0
-        for i in range(I):
-            denominator += forward_pr[i][J - 1]
-        if denominator == 0:
-            # sys.stderr.write('0 denominator!\n')
-            return
-        # print(denominator)
-        for i in range(I):
-            for j in range(J):
-                gamma = forward_pr[i][j] * backward_pr[i][j] / denominator
-                c_emit[(f_sentence[j], e_sentence[i])] += gamma
-                c_emit_margin[e_sentence[i]] += gamma
-                if j == 0:
-                    c_prior[(i, I)] += gamma
-                    c_prior_margin[I] += gamma
-
-        for j in range(J - 1):
-            for i in range(I):
-                for i_p in range(I):
-                    si = forward_pr[i_p][j] * self.pr_trans[(i, i_p, I)] * backward_pr[i][j + 1] * \
-                         self.pr_emit[(f_sentence[j + 1], e_sentence[i])] / denominator
-                    d = clip(i - i_p, -7, 7)
-                    c_trans[(d, I)] += si
-                    c_word_trans[(d, e_sentence[i_p], I)] += si
-                    if i == i_p:
-                        c_stay[e_sentence[i_p]] += si
-                    c_stay_margin[e_sentence[i_p]] += si
-
-    def get_c_trans(self, bitext, forward_and_backward_prs):
-        c_trans = defaultdict(float)
-        for i, (f_sentence, e_sentence) in enumerate(tqdm(bitext)):
-            I = len(e_sentence)
-            J = len(f_sentence)
-
-            forward_pr, backward_pr, _, sis = forward_and_backward_prs[i]
-
-            if sis is None:
-                continue
-
-            for j in range(J - 1):
-                for i in range(I):
-                    for i_p in range(I):
-                        si = sis[i][i_p][j]
-                        d = clip(i - i_p, -7, 7)
-                        c_trans[(d, I)] += si
-
-        return c_trans
-
-    def get_c_word_trans(self, bitext, forward_and_backward_prs):
-        c_word_trans = defaultdict(float)
-        for i, (f_sentence, e_sentence) in enumerate(tqdm(bitext)):
-            I = len(e_sentence)
-            J = len(f_sentence)
-
-            forward_pr, backward_pr, _, sis = forward_and_backward_prs[i]
-
-            if sis is None:
-                continue
-            for j in range(J - 1):
-                for i in range(I):
-                    for i_p in range(I):
-                        si = sis[i][i_p][j]
-                        d = clip(i - i_p, -7, 7)
-                        c_word_trans[(d, e_sentence[i_p], I)] += si
-
-        return c_word_trans
-
-    def get_c_stay(self, bitext, forward_and_backward_prs):
-        c_stay = defaultdict(float)
-        c_stay_margin = defaultdict(epsilon)
-        for i, (f_sentence, e_sentence) in enumerate(tqdm(bitext)):
-            I = len(e_sentence)
-            J = len(f_sentence)
-
-            forward_pr, backward_pr, _, sis = forward_and_backward_prs[i]
-
-            if sis is None:
-                continue
-            for j in range(J - 1):
-                for i in range(I):
-                    for i_p in range(I):
-                        si = sis[i][i_p][j]
-                        if i == i_p:
-                            c_stay[e_sentence[i_p]] += si
-                        c_stay_margin[e_sentence[i_p]] += si
-
-        return c_stay, c_stay_margin
-
-    def get_c_emit_prior(self, bitext, forward_and_backward_prs):
-        c_emit = defaultdict(float)
-        c_emit_margin = defaultdict(epsilon)
-        c_prior = defaultdict(float)
-        c_prior_margin = defaultdict(epsilon)
-
-        for i, (f_sentence, e_sentence) in enumerate(tqdm(bitext)):
-            I = len(e_sentence)
-            J = len(f_sentence)
-
-            forward_pr, backword_pr, gammas, _ = forward_and_backward_prs[i]
-
-            if gammas is None:
-                continue
-            for i in range(I):
-                for j in range(J):
-                    gamma = gammas[i][j]
-                    c_emit[(f_sentence[j], e_sentence[i])] += gamma
-                    c_emit_margin[e_sentence[i]] += gamma
-                    if j == 0:
-                        c_prior[(i, I)] += gamma
-                        c_prior_margin[I] += gamma
-
-        return c_emit, c_emit_margin, c_prior, c_prior_margin
 
 
     def train(self, bitext, max_iteration, ckpt,
@@ -244,9 +115,6 @@ class HMMmodel():
             e_lens.add(len(e_sentence))
         f_vocab, e_vocab = build_vocab(bitext)
         f_vocab_size = len(f_vocab)
-        # if not no_break:
-        #     prev_llh = self.validate(bitext, f_data, e_data, a_data)[0]
-        #     sys.stderr.write('iteration {}, llh {}\n'.format(self.iter, prev_llh))
 
         self.aers = {}
 
@@ -275,35 +143,14 @@ class HMMmodel():
             c_stay = defaultdict(float)
             c_stay_margin = defaultdict(epsilon)
 
-            # c_emit = mgr.defaultdict(float)
-            # c_trans = mgr.defaultdict(float)
-            # c_emit_margin = mgr.defaultdict(epsilon)
-            # c_prior = mgr.defaultdict(float)
-            # c_prior_margin = mgr.defaultdict(epsilon)
-            # c_word_trans = mgr.defaultdict(float)
-            # c_word_trans_margin = mgr.defaultdict(epsilon)
-            # c_stay = mgr.defaultdict(float)
-            # c_stay_margin = mgr.defaultdict(epsilon)
-            # start = datetime.now()
-            # forward_and_backward_prs = pool.map(self.forward_backward, bitext)
-            #
-            # c_emit_prior_res = \
-            #     pool.apply_async(self.get_c_emit_prior, args=(bitext, forward_and_backward_prs))
-            #
-            # c_trans_res = pool.apply_async(self.get_c_trans, args=(bitext, forward_and_backward_prs))
-            # c_word_trans_res = pool.apply_async(self.get_c_word_trans, args=(bitext, forward_and_backward_prs))
-            # c_stay_res = pool.apply_async(self.get_c_stay, args=(bitext, forward_and_backward_prs))
-            #
-            # c_emit, c_emit_margin, c_prior, c_prior_margin = c_emit_prior_res.get()
-            # c_trans = c_trans_res.get()
-            # c_word_trans = c_word_trans_res.get()
-            # c_stay, c_stay_margin = c_stay_res.get()
 
             for f_sentence, e_sentence in tqdm(bitext):
                 I = len(e_sentence)
                 J = len(f_sentence)
                 # for i in range(I):
                 #     e_sentence.append('null')
+
+                # expectation step
                 forward_pr, backword_pr = self.forward_backward([f_sentence, e_sentence])
 
                 denominator = 0
@@ -312,7 +159,6 @@ class HMMmodel():
                 if denominator == 0:
                     # sys.stderr.write('0 denominator!\n')
                     continue
-                # print(denominator)
                 for i in range(I):
                     for j in range(J):
                         gamma = forward_pr[i][j] * backword_pr[i][j] / denominator
@@ -335,6 +181,7 @@ class HMMmodel():
                             c_stay_margin[e_sentence[i_p]] += si
             # print(datetime.now() - start)
 
+            # minimization step
             for f_sentence, e_sentence in bitext:
                 for f in f_sentence:
                     for e in e_sentence:
@@ -415,19 +262,8 @@ class HMMmodel():
 
             if validate:
                 llh, aer = self.validate(bitext, f_data, e_data, a_data)
-                # sys.stderr.write('iteration {}, llh {}\n'.format(self.iter, llh))
                 self.aers[self.iter] = aer
-                # if abs(llh - prev_llh) < epsilon:
-                #     break
-                # prev_llh = llh
 
-        # if validate:
-        #     plt.figure()
-        #     tmp = sorted(aers.items())
-        #     plt.plot([item[0] for item in tmp], [item[1] for item in tmp], '-')
-        #     plt.xlabel('iteration')
-        #     plt.ylabel('AER')
-        #     plt.savefig('AER.png')
         return self
 
     def forward_backward(self, pair):
@@ -436,8 +272,6 @@ class HMMmodel():
         I = len(e_sentence)
         J = len(f_sentence)
 
-        # forward_pr = np.zeros((I, J), dtype=np.float64)
-        # backward_pr = np.zeros((I, J), dtype=np.float64)
         forward_pr = [[0.] * J for _ in range(I)]
         backward_pr = [[0.] * J for _ in range(I)]
 
@@ -462,25 +296,6 @@ class HMMmodel():
                            self.pr_emit[(f_sentence[j + 1], e_sentence[i])]
                 backward_pr[i_p][j] = tmp
 
-        # denominator = 0
-        # for i in range(I):
-        #     denominator += forward_pr[i][J - 1]
-        # if denominator == 0:
-        #     return (forward_pr, backward_pr, None, None)
-        #
-        # gamma = [[0.] * J for _ in range(I)]
-        # for i in range(I):
-        #     for j in range(J):
-        #         gamma[i][j] = forward_pr[i][j] * backward_pr[i][j] / denominator
-        #
-        # si = [[[0.] * J for _ in range(I)] for _ in range(I)]
-        # for j in range(J - 1):
-        #     for i in range(I):
-        #         for i_p in range(I):
-        #             si[i][i_p][j] = forward_pr[i_p][j] * self.pr_trans[(i, i_p, I)] * backward_pr[i][j + 1] * \
-        #                  self.pr_emit[(f_sentence[j + 1], e_sentence[i])] / denominator
-        #
-        # return (forward_pr, backward_pr, gamma, si)
         return forward_pr, backward_pr
 
     def viterbi_decode(self, f_sentence, e_sentence):
@@ -656,36 +471,15 @@ class BiHMMmodel():
             sys.stderr.write('training forward model...\n')
             forward_res = pool.apply_async(func=self.forward_model.train, args=(
                 bitext, 1, None, f_data, e_data, a_data, validate))
-            # t_forward = Thread(target=self.forward_model.train, args=(
-            #     bitext, 1, None, f_data, e_data, a_data, validate))
-            # t_forward.start()
 
-            # p_forward = multiprocessing.Process(target=self.forward_model.train, args=(
-            #     bitext, 1, None, f_data, e_data, a_data, validate))
-            # p_forward.start()
             # self.forward_model.train(bitext, 1, None, f_data, e_data, a_data, validate = validate)
 
             sys.stderr.write('training backward model...\n')
             self.backward_model.train(rev_bitext, 1, None, f_data, e_data, a_data, validate = False)
-            # backward_res = pool.apply_async(func=self.backward_model.train, args=(
-            #     rev_bitext, 1, None, f_data, e_data, a_data, False))
-            # t_backward = Thread(target=self.backward_model.train, args=(
-            #     rev_bitext, 1, None, f_data, e_data, a_data, False))
-            # t_backward.start()
-            # p_backward = multiprocessing.Process(target=self.backward_model.train, args=(
-            #     rev_bitext, 1, None, f_data, e_data, a_data, False))
-            # p_backward.start()
-            # self.backward_model.train(rev_bitext, 1, None, f_data, e_data, a_data, validate = False)
+
 
             self.forward_model = forward_res.get()
             # self.backward_model = backward_res.get()
-            # pool.close()
-            # pool.join()
-
-            # t_forward.join()
-            # t_backward.join()
-            # p_forward.join()
-            # p_backward.join()
 
             if ckpt is not None:
                 self.dump_model(os.path.join(ckpt, 'bihmm_iter{}.m'.format(self.forward_model.iter)))
