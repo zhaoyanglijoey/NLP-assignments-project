@@ -66,20 +66,21 @@ def main():
             bihmmmodel.init_params(bitext, rev_bitext)
             if args.loadibm1:
                 bihmmmodel.load_from_ibm1(args.loadibm1)
-                # bihmmmodel.validate(bitext, rev_bitext, f_data, e_data, a_data)
+                if validate:
+                    bihmmmodel.validate(bitext, rev_bitext, f_data, e_data, a_data)
             bihmmmodel.train(bitext, rev_bitext, args.iter,
                       args.ckptdir, f_data, e_data, a_data, validate)
         bihmmmodel.dump_model(args.save_model)
 
-    bihmmmodel.validate(bitext, rev_bitext, f_data, e_data, a_data)
+    if validate:
+        bihmmmodel.validate(bitext, rev_bitext, f_data, e_data, a_data)
 
+    alignments_list = bihmmmodel.decode(bitext, rev_bitext)
+    for alignments in alignments_list:
+        for i, j in alignments:
+            print("{0}-{1}".format(i, j), end=" ")
+        print()
 
-    # for f_sentence, e_sentence in bitext:
-    #     J = len(f_sentence)
-    #     alignments, _ = bihmmmodel.viterbi_decode(f_sentence, e_sentence)
-    #     for j in range(J):
-    #         print("{0}-{1}".format(j, alignments[j]), end=" ")
-    #     print()
 
 
 

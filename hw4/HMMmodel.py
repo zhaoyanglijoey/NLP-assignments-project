@@ -343,7 +343,7 @@ class HMMmodel():
         # sys.stderr.write('calculating log likelyhood...\n')
         llh = 0
         output = []
-        for f_sentence, e_sentence in (bitext[:447]):
+        for f_sentence, e_sentence in (bitext):
             alignments, llh_t = self.viterbi_decode(f_sentence, e_sentence)
             llh += llh_t
             output_line = []
@@ -355,7 +355,7 @@ class HMMmodel():
         return output, llh
 
     def validate(self, bitext, f_data, e_data, a_data):
-        alignments_list, llh = self.decode(bitext)
+        alignments_list, llh = self.decode(bitext[:len(a_data)])
         trizip = zip(f_data, e_data, a_data, alignments_list)
         aer = score_alignments(trizip)[2]
 
