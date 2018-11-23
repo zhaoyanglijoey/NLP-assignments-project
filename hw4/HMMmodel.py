@@ -457,7 +457,7 @@ class BiHMMmodel():
 
     def validate(self, bitext, rev_bitext, f_data, e_data, a_data):
         # self.forward_model.validate(bitext, f_data, e_data, a_data)
-        alignments_list = self.decode(bitext, rev_bitext)
+        alignments_list = self.decode(bitext[:len(a_data)], rev_bitext[:len(a_data)])
         aer = score_alignments(zip(f_data, e_data, a_data, alignments_list))[2]
 
     def train(self, bitext, rev_bitext, max_iteration, ckpt,
