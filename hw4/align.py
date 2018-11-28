@@ -32,7 +32,7 @@ def main():
     f_data = "%s.%s" % (os.path.join(args.datadir, args.fileprefix), args.french)
     e_data = "%s.%s" % (os.path.join(args.datadir, args.fileprefix), args.english)
     a_data = "%s.%s" % (os.path.join(args.datadir, args.fileprefix), args.alignment)
-    validate = True
+    validate = False
     if args.fileprefix != 'hansards':
         validate = False
         with open(f_data) as f, open(e_data) as e:
@@ -59,17 +59,21 @@ def main():
             os.mkdir(args.ckptdir)
 
         if args.resume:
+            # resume training from previouly saved model
             bihmmmodel.load_model(args.resume)
             bihmmmodel.train(bitext, rev_bitext, args.iter,
-                      args.ckptdir, f_data, e_data, a_data, validate)
+                      args.ckptdir, f_data, e_data, None, validate)
         else:
+            # start training from scratch
             bihmmmodel.init_params(bitext, rev_bitext)
             if args.loadibm1:
+                # load pretrained ibm1 model parameters
                 bihmmmodel.load_from_ibm1(args.loadibm1)
                 if validate:
+                    # computer AER score
                     bihmmmodel.validate(bitext, rev_bitext, f_data, e_data, a_data)
             bihmmmodel.train(bitext, rev_bitext, args.iter,
-                      args.ckptdir, f_data, e_data, a_data, validate)
+                      args.ckptdir, f_data, e_data, None, validate)
         bihmmmodel.dump_model(args.save_model)
 
     if validate:

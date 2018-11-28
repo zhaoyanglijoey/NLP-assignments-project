@@ -81,6 +81,7 @@ class HMMmodel():
         self.pr_prior = {}
         self.pr_word_trans = {}
         self.iter = None
+        self.aers = {}
 
     def init_params(self, bitext):
         sys.stderr.write('initializing parameters...\n')
@@ -108,6 +109,9 @@ class HMMmodel():
 
     def train(self, bitext, max_iteration, ckpt,
                 f_data, e_data, a_data, validate = False):
+        '''
+        train unidirectional HMM model
+        '''
 
         e_lens = set()
 
@@ -116,7 +120,6 @@ class HMMmodel():
         f_vocab, e_vocab = build_vocab(bitext)
         f_vocab_size = len(f_vocab)
 
-        self.aers = {}
 
         clip = lambda x, l, u: l if x < l else u if x > u else x
 
@@ -134,23 +137,37 @@ class HMMmodel():
             self.iter += 1
             local_iter += 1
             sys.stderr.write('training iter {}...\n'.format(self.iter))
+            # emit prob count: p(f | e)
             c_emit = defaultdict(float)
+            # marginalize out f
             c_emit_margin = defaultdict(epsilon)
+
+            # prior prob count: p(a[0]=i | I)
             c_prior = defaultdict(float)
+            # maringalize out i
             c_prior_margin = defaultdict(epsilon)
+
+            # transition prob count: p(a[j] | a[j-1], I)
             c_trans = defaultdict(float)
+
+            # word transition prob count: p(a[j] | a[j-1], e[a[j-1]], I)
             c_word_trans = defaultdict(float)
+
+            # stay prob count: p(stay | e[a[j-1]]) = p(a[j] = a[j-1] | e[a[j-1]])
             c_stay = defaultdict(float)
+            # marginalize a[j]
             c_stay_margin = defaultdict(epsilon)
 
-
+            '''
+            expectation step; compute the counts using the parameters
+            '''
             for f_sentence, e_sentence in tqdm(bitext):
                 I = len(e_sentence)
                 J = len(f_sentence)
                 # for i in range(I):
                 #     e_sentence.append('null')
 
-                # expectation step
+
                 forward_pr, backword_pr = self.forward_backward([f_sentence, e_sentence])
 
                 denominator = 0
@@ -161,6 +178,7 @@ class HMMmodel():
                     continue
                 for i in range(I):
                     for j in range(J):
+                        # gamma: prob of a[j] = i
                         gamma = forward_pr[i][j] * backword_pr[i][j] / denominator
                         c_emit[(f_sentence[j], e_sentence[i])] += gamma
                         c_emit_margin[e_sentence[i]] += gamma
@@ -171,6 +189,7 @@ class HMMmodel():
                 for j in range(J-1):
                     for i in range(I):
                         for i_p in range(I):
+                            # si: prob of a[j] = i and a[j-1] = i_p
                             si = forward_pr[i_p][j] * self.pr_trans[(i, i_p, I)] * backword_pr[i][j+1] * \
                                  self.pr_emit[(f_sentence[j+1], e_sentence[i])] / denominator
                             d = clip(i - i_p, -7, 7)
@@ -181,11 +200,20 @@ class HMMmodel():
                             c_stay_margin[e_sentence[i_p]] += si
             # print(datetime.now() - start)
 
-            # minimization step
+            '''
+            minimization step; re-estimate parameters using counts
+            '''
+            # emition prob
             for f_sentence, e_sentence in bitext:
                 for f in f_sentence:
                     for e in e_sentence:
                         self.pr_emit[(f, e)] = (beta * (1 / f_vocab_size) + (1-beta) * (c_emit[(f, e)] / c_emit_margin[e]))
+
+            # transition prob
+            # note that the distortion counts c(i-i_p) are put into buckets of
+            # c(d<=-7), c(d=-6), ..., c(d>=7)
+            # the counts of c(d<=-7) and c(d>=7) are evenly distributed
+            # the final estimated transition prob is smoothed by alpha
             for I in e_lens:
                 for i_p in range(I):
                     margin = 0
@@ -217,6 +245,8 @@ class HMMmodel():
                 for i in range(I):
                     self.pr_prior[(i, I)] = alpha * 1 / I + (1-alpha) * (c_prior[(i, I)] / c_prior_margin[I])
 
+            # word transition prob
+            # counts art in buckets similar to transition counts
             for _, e_sentence in bitext:
                 I = len(e_sentence)
                 for i_p in range(I):
@@ -238,6 +268,7 @@ class HMMmodel():
                             word_trans_margin_i_p += c_word_trans[(i_pp - i_p, e_sentence[i_p])]
 
                     for i in range(I):
+                        # model fertility
                         if i == i_p:
                             p_stay = c_stay[e_sentence[i_p]] /  c_stay_margin[e_sentence[i_p]]
                             self.pr_word_trans[(i, i_p, e_sentence[i_p], I)] = \
@@ -267,6 +298,11 @@ class HMMmodel():
         return self
 
     def forward_backward(self, pair):
+        '''
+        run forward_backward algorithm,
+        :param pair: French and English sensence pair
+        :return: forward probability and backward probability
+        '''
         f_sentence, e_sentence = pair
 
         I = len(e_sentence)
@@ -444,6 +480,11 @@ class BiHMMmodel():
         return [element for element in list_1 if element in set_2]
 
     def decode(self, bitext, rev_bitext):
+        '''
+        decode alignments
+        :return: alignments
+        '''
+
         alignment_forward, _ = self.forward_model.decode(bitext)
         alignment_backward, _ = self.backward_model.decode(rev_bitext)
         alignment_backward_rev = self.reverse_alignments_list(alignment_backward)
@@ -456,31 +497,56 @@ class BiHMMmodel():
         return alignments_list
 
     def validate(self, bitext, rev_bitext, f_data, e_data, a_data):
+        '''
+        compute AER score
+        :param bitext:
+        :param rev_bitext: reverse bitext
+        :param f_data: French corpus
+        :param e_data: English corpus
+        :param a_data: reference alignments
+        :return: AER score
+        '''
+
+
         # self.forward_model.validate(bitext, f_data, e_data, a_data)
         alignments_list = self.decode(bitext[:len(a_data)], rev_bitext[:len(a_data)])
         aer = score_alignments(zip(f_data, e_data, a_data, alignments_list))[2]
+        return aer
 
     def train(self, bitext, rev_bitext, max_iteration, ckpt,
                 f_data, e_data, a_data, validate = True):
+        '''
+        training for bidirectional
+        :param bitext:
+        :param rev_bitext: reverse bitext
+        :param max_iteration:
+        :param ckpt: checkout point directory
+        :param f_data: French corpus
+        :param e_data: English corpus
+        :param a_data: Alignment reference
+        :param validate: Flag for computing score or not
+        :return: None
+        '''
 
         aer_bi = {}
         pool = Pool(1)
+        # training using 2 processes. Note this requires *large* memory if training on 100K corpus
         for i in range(max_iteration):
-
-
+            # train forward HMM model for 1 iteration using process in pool
             sys.stderr.write('training forward model...\n')
             forward_res = pool.apply_async(func=self.forward_model.train, args=(
                 bitext, 1, None, f_data, e_data, a_data, validate))
 
             # self.forward_model.train(bitext, 1, None, f_data, e_data, a_data, validate = validate)
 
+            # train backward HMM model for 1 iteration using main process
             sys.stderr.write('training backward model...\n')
             self.backward_model.train(rev_bitext, 1, None, f_data, e_data, a_data, validate = False)
-
 
             self.forward_model = forward_res.get()
             # self.backward_model = backward_res.get()
 
+            # save checkpoint
             if ckpt is not None:
                 self.dump_model(os.path.join(ckpt, 'bihmm_iter{}.m'.format(self.forward_model.iter)))
 
@@ -490,8 +556,8 @@ class BiHMMmodel():
         if validate:
             plt.figure()
             iters = sorted(aer_bi.keys())
-            plt.plot(iters, [aer_bi[i] for i in iters], '-')
-            plt.plot(iters, [self.forward_model.aers[i] for i in iters], '-')
+            plt.plot(iters, [aer_bi[i] for i in iters])
+            plt.plot(iters, [self.forward_model.aers[i] for i in iters])
             plt.legend(['bidirection_hmm', 'hmm'])
             plt.xlabel('iteration')
             plt.ylabel('AER')
