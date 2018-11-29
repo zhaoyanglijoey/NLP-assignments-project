@@ -5,7 +5,7 @@ from torch.utils.data import Dataset, DataLoader, TensorDataset
 from dataloader import TweetsDataset
 import pandas as pd
 import torch.optim as optim
-from util import convert_data_to_features
+from util import convert_data_to_features, check_path
 from tqdm import tqdm
 import numpy as np
 
@@ -14,9 +14,13 @@ def accuracy(out, labels):
     outputs = np.argmax(out, axis=1)
     return np.sum(outputs == labels)
 
+def f1score(out, labels):
+    outputs = np.argmax(out, axis=1)
+    tp = outputs == labels
+
 
 class TwitterSentiment():
-    def __init__(self, train_file, test_file, batch_size=32, num_epoch=10, log_interval=100, prototype=False):
+    def __init__(self, train_file, test_file, batch_size=8, num_epoch=10, log_interval=100, prototype=False):
         self.log_interval = log_interval
         self.batch_size = batch_size
         self.device = 'cuda' if torch.cuda.is_available() else 'cpu'
@@ -24,8 +28,8 @@ class TwitterSentiment():
         self.train_data = pd.read_csv(train_file)
         self.test_data = pd.read_csv(test_file)
         if prototype:
-            self.train_data = self.train_data[:10000]
-            self.test_data = self.test_data[:1000]
+            self.train_data = self.train_data[:5000]
+            self.test_data = self.test_data[:500]
         # self.train_set = TweetsDataset(train_file, tokenizer)
         # self.test_data = TweetsDataset(test_file, tokenizer)
         train_features = convert_data_to_features(self.train_data, [0, 1], 200, tokenizer)
@@ -59,7 +63,7 @@ class TwitterSentiment():
     def train_epoch(self, epoch):
         self.model.train()
         running_ls = 0
-        for i, batch  in enumerate(tqdm(self.train_loader)):
+        for i, batch  in enumerate(self.train_loader):
             (input_ids, input_mask, label_ids) = tuple(t.to(self.device) for t in batch)
 
             self.model.zero_grad()
@@ -76,27 +80,41 @@ class TwitterSentiment():
         self.model.eval()
         eval_loss = 0
         eval_accuracy = 0
-        count = 0
+        batches_count = 0
+        data_count = 0
         with torch.no_grad():
             for i, batch in enumerate(tqdm(self.test_loader)):
-                count += 1
+                batches_count += 1
                 (input_ids, input_mask, label_ids) = tuple(t.to(self.device) for t in batch)
+                data_count += input_ids.shape[0]
                 loss, logits = self.model(input_ids, attention_mask=input_mask, labels=label_ids)
                 eval_loss += loss.item()
-                logits = logits.cpu.numpy()
-                label_ids = label_ids.cpu.numpy()
+                logits = logits.cpu().numpy()
+                label_ids = label_ids.cpu().numpy()
                 eval_accuracy += accuracy(logits, label_ids)
 
-        eval_loss /= count
-        eval_accuracy /= len(self.test_loader)
+        eval_loss /= batches_count
+        eval_accuracy /= data_count
+
         print('evaluation loss: {:.4}, accuracy: {:.4}%'.format(eval_loss, eval_accuracy * 100))
+
+    def save_model(self, file):
+        torch.save(self.model.state_dict(), file)
 
 
 if __name__ == '__main__':
     train_file = 'data/train.csv'
     test_file = 'data/test.csv'
-    num_epoch = 10
-    twitter_sentiment = TwitterSentiment(train_file, test_file, num_epoch=num_epoch, prototype=True)
+    save_file = 'saved_model/bert_seq_tuned.m'
+    check_path('saved_model')
+    ckpt_file = 'saved_model/bert_ckpt.m'
+    num_epoch = 5
+    batch_size = 8
+    log_interval = 20
+    twitter_sentiment = TwitterSentiment(train_file, test_file, num_epoch=num_epoch,
+                                         batch_size=batch_size, log_interval=log_interval, prototype=False)
     for e in range(num_epoch):
         twitter_sentiment.train_epoch(e+1)
         twitter_sentiment.test()
+        twitter_sentiment.save_model(ckpt_file)
+    twitter_sentiment.save_model()

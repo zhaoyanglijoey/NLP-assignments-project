@@ -1,5 +1,5 @@
 from tqdm import tqdm
-
+import os
 
 class InputFeatures(object):
     """A single set of features of data."""
@@ -41,13 +41,13 @@ def convert_data_to_features(data, label_list, max_seq_length, tokenizer):
         assert len(input_mask) == max_seq_length
 
         label_id = label_map[label]
-        if ex_index < 5:
-            print("*** Example ***")
-            print("tokens: %s" % " ".join(
-                    [str(x) for x in tokens]))
-            print("input_ids: %s" % " ".join([str(x) for x in input_ids]))
-            print("input_mask: %s" % " ".join([str(x) for x in input_mask]))
-            print("label: %s (id = %d)" % (label, label_id))
+        # if ex_index < 5:
+        #     print("*** Example ***")
+        #     print("tokens: %s" % " ".join(
+        #             [str(x) for x in tokens]))
+        #     print("input_ids: %s" % " ".join([str(x) for x in input_ids]))
+        #     print("input_mask: %s" % " ".join([str(x) for x in input_mask]))
+        #     print("label: %s (id = %d)" % (label, label_id))
 
         features.append(
                 InputFeatures(input_ids=input_ids,
@@ -55,3 +55,7 @@ def convert_data_to_features(data, label_list, max_seq_length, tokenizer):
                               label_id=label_id))
         ex_index += 1
     return features
+
+def check_path(path):
+    if not os.path.exists(path):
+        os.mkdir(path)
