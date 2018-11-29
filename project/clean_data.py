@@ -41,6 +41,7 @@ if __name__ == '__main__':
     df['invalid'] = df.tweet.apply(check_invalid)
     cleandf = df[df.invalid == 0]
     cleandf = cleandf.reset_index(drop=True)
+    cleandf['tag'][cleandf['tag'] == 4] = 1
     train, test = train_test_split(cleandf, test_size=0.1)
     train = train.reset_index(drop=True)
     test = test.reset_index(drop=True)

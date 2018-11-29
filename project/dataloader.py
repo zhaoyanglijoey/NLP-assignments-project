@@ -5,9 +5,10 @@ import pandas as pd
 
 
 class TweetsDataset(Dataset):
-    def __init__(self, data, tokenizer):
+    def __init__(self, data, tokenizer, max_seq_length):
         self.data = data
         self.tokenizer = tokenizer
+        self.max_seq_length = max_seq_length
 
     def __len__(self):
         return len(self.data)
@@ -16,15 +17,31 @@ class TweetsDataset(Dataset):
         '''
         :param index:
         :return:
-            img: [ , 224, 224, 3] tensor
-            word_ind: [ , T] word indices tensor
+            token_ids: index of tokens
+            input_mask:
+            label: GT label
         '''
 
         entry = self.data.iloc[index]
-        tag = torch.tensor([entry['tag']], dtype=torch.long)
+        label = torch.tensor([entry['tag']], dtype=torch.long)
         tweet = entry['cleaned_tweet']
         tokenized_tweet = self.tokenizer.tokenize(tweet)
-        indexed_tokens = self.tokenizer.convert_tokens_to_ids(tokenized_tweet)
-        tokens_tensor = torch.tensor([indexed_tokens])
+        if len(tokenized_tweet) > self.max_seq_length - 2:
+            tokenized_tweet = tokenized_tweet[0:(self.max_seq_length - 2)]
 
-        return tokens_tensor, tag
+        tokenized_tweet.insert(0, '[CLS]')
+        tokenized_tweet.append('[SEP]')
+        indexed_tokens = self.tokenizer.convert_tokens_to_ids(tokenized_tweet)
+
+        token_ids = [0] * self.max_seq_length
+        token_ids[:len(indexed_tokens)] = indexed_tokens
+        input_mask = [0] * self.max_seq_length
+        input_mask[:len(indexed_tokens)] = 1
+
+        assert len(token_ids) == self.max_seq_length
+        assert len(input_mask) == self.max_seq_length
+
+        token_ids = torch.tensor(token_ids, dtype=torch.long)
+        input_mask = torch.tensor(input_mask, dtype=torch.long)
+
+        return token_ids, input_mask, label
