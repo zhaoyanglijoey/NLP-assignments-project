@@ -42,8 +42,15 @@ if __name__ == '__main__':
     cleandf = df[df.invalid == 0]
     cleandf = cleandf.reset_index(drop=True)
     cleandf['tag'][cleandf['tag'] == 4] = 1
-    train, test = train_test_split(cleandf, test_size=0.1)
-    train = train.reset_index(drop=True)
-    test = test.reset_index(drop=True)
-    train.to_csv('data/train.csv', index=False, columns=['tag', 'cleaned_tweet'])
-    test.to_csv('data/test.csv', index=False, columns=['tag', 'cleaned_tweet'])
+    small_df, _ = train_test_split(cleandf, test_size=0.8)
+    small_train, small_test = train_test_split(small_df, test_size=0.1)
+    small_train = small_train.reset_index(drop=True)
+    small_test = small_test.reset_index(drop=True)
+    small_train.to_csv('data/small_train.csv', index=False, columns=['tag', 'cleaned_tweet'])
+    small_test.to_csv('data/small_test.csv', index=False, columns=['tag', 'cleaned_tweet'])
+
+    # train, test = train_test_split(cleandf, test_size=0.1)
+    # train = train.reset_index(drop=True)
+    # test = test.reset_index(drop=True)
+    # train.to_csv('data/train.csv', index=False, columns=['tag', 'cleaned_tweet'])
+    # test.to_csv('data/test.csv', index=False, columns=['tag', 'cleaned_tweet'])

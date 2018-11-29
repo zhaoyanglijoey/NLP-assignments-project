@@ -8,7 +8,7 @@ import torch.optim as optim
 from util import convert_data_to_features, check_path
 from tqdm import tqdm
 import numpy as np
-
+import time
 
 def accuracy(out, labels):
     outputs = np.argmax(out, axis=1)
@@ -25,25 +25,27 @@ class TwitterSentiment():
         self.batch_size = batch_size
         self.device = 'cuda' if torch.cuda.is_available() else 'cpu'
         tokenizer = BertTokenizer.from_pretrained('bert-base-uncased')
-        self.train_data = pd.read_csv(train_file)
-        self.test_data = pd.read_csv(test_file)
+        self.train_data = pd.read_csv(train_file, dtype={'tag':int, 'cleaned_tweet':str})
+        self.test_data = pd.read_csv(test_file, dtype={'tag':int, 'cleaned_tweet':str})
         if prototype:
             self.train_data = self.train_data[:5000]
             self.test_data = self.test_data[:500]
-        # self.train_set = TweetsDataset(train_file, tokenizer)
-        # self.test_data = TweetsDataset(test_file, tokenizer)
-        train_features = convert_data_to_features(self.train_data, [0, 1], 200, tokenizer)
-        train_input_ids = torch.tensor([f.input_ids for f in train_features], dtype=torch.long)
-        train_input_mask = torch.tensor([f.input_mask for f in train_features], dtype=torch.long)
-        train_label_ids = torch.tensor([f.label_id for f in train_features], dtype=torch.long)
-        self.train_set = TensorDataset(train_input_ids, train_input_mask, train_label_ids)
-        self.train_loader = DataLoader(self.train_set, batch_size=batch_size, shuffle=True)
+        self.train_set = TweetsDataset(self.train_data, tokenizer, 200)
+        self.test_set = TweetsDataset(self.test_data, tokenizer, 200)
 
-        test_features = convert_data_to_features(self.test_data, [0, 1], 200, tokenizer)
-        test_input_ids = torch.tensor([f.input_ids for f in test_features], dtype=torch.long)
-        test_input_mask = torch.tensor([f.input_mask for f in test_features], dtype=torch.long)
-        test_label_ids = torch.tensor([f.label_id for f in test_features], dtype=torch.long)
-        self.test_set = TensorDataset(test_input_ids, test_input_mask, test_label_ids)
+        # train_features = convert_data_to_features(self.train_data, [0, 1], 200, tokenizer)
+        # train_input_ids = torch.tensor([f.input_ids for f in train_features], dtype=torch.long)
+        # train_input_mask = torch.tensor([f.input_mask for f in train_features], dtype=torch.long)
+        # train_label_ids = torch.tensor([f.label_id for f in train_features], dtype=torch.long)
+        # self.train_set = TensorDataset(train_input_ids, train_input_mask, train_label_ids)
+        #
+        # test_features = convert_data_to_features(self.test_data, [0, 1], 200, tokenizer)
+        # test_input_ids = torch.tensor([f.input_ids for f in test_features], dtype=torch.long)
+        # test_input_mask = torch.tensor([f.input_mask for f in test_features], dtype=torch.long)
+        # test_label_ids = torch.tensor([f.label_id for f in test_features], dtype=torch.long)
+        # self.test_set = TensorDataset(test_input_ids, test_input_mask, test_label_ids)
+
+        self.train_loader = DataLoader(self.train_set, batch_size=batch_size, shuffle=True)
         self.test_loader = DataLoader(self.test_set, batch_size=batch_size)
 
         self.model = BertForSequenceClassification.from_pretrained('bert-base-uncased')
@@ -63,6 +65,8 @@ class TwitterSentiment():
     def train_epoch(self, epoch):
         self.model.train()
         running_ls = 0
+        start = time.time()
+        num_batches = len(self.train_loader)
         for i, batch  in enumerate(self.train_loader):
             (input_ids, input_mask, label_ids) = tuple(t.to(self.device) for t in batch)
 
@@ -73,7 +77,14 @@ class TwitterSentiment():
             self.optimizer.step()
 
             if (i+1) % self.log_interval == 0:
-                print('[{:>3}, {:>7}] loss:{:.4}'.format(epoch, (i+1)*self.batch_size, running_ls / self.log_interval))
+                elapsed = time.time() - start
+                iters_per_sec = (i+1) / elapsed
+                remaining = (num_batches - i - 1) / iters_per_sec
+                remaining_h = int(remaining // 3600)
+                remaining_m = int(remaining // 60 % 60)
+                remaining_s = int(remaining % 60)
+                print('[{:>3}, {:>7}/{}] loss:{:.4}  {:.3}iters/s {:02}:{:02}:{:02} left'.format(epoch, (i+1), num_batches,
+                        running_ls / self.log_interval, iters_per_sec, remaining_h, remaining_m, remaining_s))
                 running_ls = 0
 
     def test(self):
@@ -103,14 +114,14 @@ class TwitterSentiment():
 
 
 if __name__ == '__main__':
-    train_file = 'data/train.csv'
-    test_file = 'data/test.csv'
+    train_file = 'data/small_train.csv'
+    test_file = 'data/small_test.csv'
     save_file = 'saved_model/bert_seq_tuned.m'
     check_path('saved_model')
     ckpt_file = 'saved_model/bert_ckpt.m'
     num_epoch = 5
     batch_size = 8
-    log_interval = 20
+    log_interval = 100
     twitter_sentiment = TwitterSentiment(train_file, test_file, num_epoch=num_epoch,
                                          batch_size=batch_size, log_interval=log_interval, prototype=False)
     for e in range(num_epoch):

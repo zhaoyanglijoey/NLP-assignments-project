@@ -24,7 +24,7 @@ class TweetsDataset(Dataset):
 
         entry = self.data.iloc[index]
         label = torch.tensor([entry['tag']], dtype=torch.long)
-        tweet = entry['cleaned_tweet']
+        tweet = str(entry['cleaned_tweet'])
         tokenized_tweet = self.tokenizer.tokenize(tweet)
         if len(tokenized_tweet) > self.max_seq_length - 2:
             tokenized_tweet = tokenized_tweet[0:(self.max_seq_length - 2)]
@@ -36,7 +36,7 @@ class TweetsDataset(Dataset):
         token_ids = [0] * self.max_seq_length
         token_ids[:len(indexed_tokens)] = indexed_tokens
         input_mask = [0] * self.max_seq_length
-        input_mask[:len(indexed_tokens)] = 1
+        input_mask[:len(indexed_tokens)] = [1] * len(indexed_tokens)
 
         assert len(token_ids) == self.max_seq_length
         assert len(input_mask) == self.max_seq_length
