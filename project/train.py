@@ -1,5 +1,6 @@
 import torch
 import torch.nn as nn
+import torch.nn.functional as F
 from torch.nn import DataParallel
 from pytorch_pretrained_bert import BertTokenizer, BertModel, BertAdam, BertForSequenceClassification
 from torch.utils.data import Dataset, DataLoader, TensorDataset
@@ -15,9 +16,10 @@ def accuracy(out, labels):
     outputs = np.argmax(out, axis=1)
     return np.sum(outputs == labels)
 
-def f1score(out, labels):
-    outputs = np.argmax(out, axis=1)
-    tp = outputs == labels
+def positive_score(out):
+    outputs = F.softmax(out, dim=1)
+    score = torch.sum(outputs[:, 1])
+    return score
 
 
 class TwitterSentiment():
