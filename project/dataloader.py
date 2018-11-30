@@ -3,12 +3,15 @@ from pytorch_pretrained_bert import BertTokenizer, BertModel
 from torch.utils.data import Dataset
 import pandas as pd
 
+def tweet_len(tweet):
+    return len(str(tweet).split())
 
 class TweetsDataset(Dataset):
-    def __init__(self, data, tokenizer, max_seq_length):
+    def __init__(self, data, tokenizer, length_limit):
         self.data = data
         self.tokenizer = tokenizer
-        self.max_seq_length = max_seq_length
+        self.max_seq_length = data.cleaned_tweet.apply(tweet_len).max()
+        self.max_seq_length = min(self.max_seq_length, length_limit)
 
     def __len__(self):
         return len(self.data)
@@ -23,7 +26,7 @@ class TweetsDataset(Dataset):
         '''
 
         entry = self.data.iloc[index]
-        label = torch.tensor([entry['tag']], dtype=torch.long)
+        label = torch.tensor(entry['tag'], dtype=torch.long)
         tweet = str(entry['cleaned_tweet'])
         tokenized_tweet = self.tokenizer.tokenize(tweet)
         if len(tokenized_tweet) > self.max_seq_length - 2:
