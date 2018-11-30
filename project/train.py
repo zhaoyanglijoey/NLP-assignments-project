@@ -51,10 +51,11 @@ class TwitterSentiment():
         self.test_loader = DataLoader(self.test_set, batch_size=batch_size)
 
         self.model = BertForSequenceClassification.from_pretrained('bert-base-uncased')
-        if load_model:
-            self.model.load_state_dict(torch.load(load_model))
         if parallel:
             self.model = DataParallel(self.model)
+        if load_model:
+            self.model.load_state_dict(torch.load(load_model))
+
         self.model.to(self.device)
 
         param_optimizer = list(self.model.named_parameters())
@@ -133,12 +134,12 @@ if __name__ == '__main__':
     args = argparser.parse_args()
 
 
-    train_file = 'data/small_train.csv'
-    test_file = 'data/small_test.csv'
-    save_file = 'saved_model/bert_seq_tuned.m'
+    train_file = 'data/train.csv'
+    test_file = 'data/test.csv'
+    save_file = 'saved_model/bert_tweet_big.m'
     check_path('saved_model')
     ckpt_file = 'saved_model/bert_ckpt.m'
-    log_interval = 50
+    log_interval = 100
     twitter_sentiment = TwitterSentiment(train_file, test_file, num_epoch=args.num_epoch, load_model=args.load_model,
                             batch_size=args.batchsize, log_interval=log_interval, prototype=args.pt, parallel=True)
     if args.test:
