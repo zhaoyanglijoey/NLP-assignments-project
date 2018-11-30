@@ -27,6 +27,7 @@ class TwitterSentiment():
                  prototype=False, parallel=False, load_model=None):
         self.log_interval = log_interval
         self.batch_size = batch_size
+        self.num_epoch = num_epoch
         self.device = 'cuda' if torch.cuda.is_available() else 'cpu'
         tokenizer = BertTokenizer.from_pretrained('bert-base-uncased')
         self.train_data = pd.read_csv(train_file, dtype={'tag':int, 'cleaned_tweet':str})
@@ -34,8 +35,8 @@ class TwitterSentiment():
         if prototype:
             self.train_data = self.train_data[:10000]
             self.test_data = self.test_data[:1000]
-        self.train_set = TweetsDataset(self.train_data, tokenizer, 200)
-        self.test_set = TweetsDataset(self.test_data, tokenizer, 200)
+        self.train_set = TweetsDataset(self.train_data, tokenizer, 100)
+        self.test_set = TweetsDataset(self.test_data, tokenizer, 100)
 
         # train_features = convert_data_to_features(self.train_data, [0, 1], 200, tokenizer)
         # train_input_ids = torch.tensor([f.input_ids for f in train_features], dtype=torch.long)
@@ -49,7 +50,7 @@ class TwitterSentiment():
         # test_label_ids = torch.tensor([f.label_id for f in test_features], dtype=torch.long)
         # self.test_set = TensorDataset(test_input_ids, test_input_mask, test_label_ids)
 
-        self.train_loader = DataLoader(self.train_set, batch_size=batch_size, shuffle=True)
+        self.train_loader = DataLoader(self.train_set, batch_size=batch_size, shuffle=True, num_workers=8)
         self.test_loader = DataLoader(self.test_set, batch_size=batch_size)
 
         self.model = BertForSequenceClassification.from_pretrained('bert-base-uncased')
@@ -60,16 +61,16 @@ class TwitterSentiment():
 
         self.model.to(self.device)
 
-        param_optimizer = list(self.model.named_parameters())
-        no_decay = ['bias', 'gamma', 'beta']
-        optimizer_grouped_parameters = [
-            {'params': [p for n, p in param_optimizer if not any(nd in n for nd in no_decay)],
-             'weight_decay_rate': 0.01},
-            {'params': [p for n, p in param_optimizer if any(nd in n for nd in no_decay)], 'weight_decay_rate': 0.0}
-        ]
-        self.num_epoch = num_epoch
-        t_total = int(len(self.train_data) / batch_size * num_epoch)
-        self.optimizer = BertAdam(optimizer_grouped_parameters, 5e-5, warmup=0.1, t_total=t_total)
+        # param_optimizer = list(self.model.named_parameters())
+        # no_decay = ['bias', 'gamma', 'beta']
+        # optimizer_grouped_parameters = [
+        #     {'params': [p for n, p in param_optimizer if not any(nd in n for nd in no_decay)],
+        #      'weight_decay_rate': 0.01},
+        #     {'params': [p for n, p in param_optimizer if any(nd in n for nd in no_decay)], 'weight_decay_rate': 0.0}
+        # ]
+        # t_total = int(len(self.train_data) / batch_size * num_epoch)
+        # self.optimizer = BertAdam(optimizer_grouped_parameters, 5e-5, warmup=0.1, t_total=t_total)
+        self.optimizer = optim.Adam(self.model.parameters(), lr=5e-5)
 
     def train_epoch(self, epoch, save_interval, ckpt_file):
         self.model.train()

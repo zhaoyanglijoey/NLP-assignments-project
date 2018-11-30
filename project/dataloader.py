@@ -4,16 +4,11 @@ from torch.utils.data import Dataset
 import pandas as pd
 import sys
 
-def tweet_len(tweet):
-    return len(str(tweet).split())
-
 class TweetsDataset(Dataset):
     def __init__(self, data, tokenizer, length_limit):
         self.data = data
         self.tokenizer = tokenizer
-        self.max_seq_length = data.cleaned_tweet.apply(tweet_len).max()
-        self.max_seq_length = min(self.max_seq_length, length_limit)
-        sys.stderr.write('max_length:{}\n'.format(self.max_seq_length))
+        self.max_seq_length = length_limit
 
     def __len__(self):
         return len(self.data)
