@@ -61,16 +61,16 @@ class TwitterSentiment():
 
         self.model.to(self.device)
 
-        # param_optimizer = list(self.model.named_parameters())
-        # no_decay = ['bias', 'gamma', 'beta']
-        # optimizer_grouped_parameters = [
-        #     {'params': [p for n, p in param_optimizer if not any(nd in n for nd in no_decay)],
-        #      'weight_decay_rate': 0.01},
-        #     {'params': [p for n, p in param_optimizer if any(nd in n for nd in no_decay)], 'weight_decay_rate': 0.0}
-        # ]
-        # t_total = int(len(self.train_data) / batch_size * num_epoch)
-        # self.optimizer = BertAdam(optimizer_grouped_parameters, 5e-5, warmup=0.1, t_total=t_total)
-        self.optimizer = optim.Adam(self.model.parameters(), lr=5e-5)
+        param_optimizer = list(self.model.named_parameters())
+        no_decay = ['bias', 'gamma', 'beta']
+        optimizer_grouped_parameters = [
+            {'params': [p for n, p in param_optimizer if not any(nd in n for nd in no_decay)],
+             'weight_decay_rate': 0.01},
+            {'params': [p for n, p in param_optimizer if any(nd in n for nd in no_decay)], 'weight_decay_rate': 0.0}
+        ]
+        t_total = int(len(self.train_data) / batch_size * num_epoch)
+        self.optimizer = BertAdam(optimizer_grouped_parameters, 2e-5, t_total=t_total)
+        # self.optimizer = optim.Adam(self.model.parameters(), lr=5e-5)
 
     def train_epoch(self, epoch, save_interval, ckpt_file):
         self.model.train()
