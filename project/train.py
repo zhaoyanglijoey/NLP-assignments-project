@@ -167,7 +167,7 @@ if __name__ == '__main__':
     log_interval = 100
     twitter_sentiment = TwitterSentiment(train_file, test_file, num_epoch=args.num_epoch, load_model=args.load_model,
                                          batch_size=args.batchsize, log_interval=log_interval, prototype=args.pt,
-                                         parallel=False, num_labels=args.num_labels)
+                                         parallel=True, num_labels=args.num_labels)
     if args.test:
         twitter_sentiment.test()
     else:
