@@ -32,7 +32,7 @@ def positive_score(out):
 
 class TwitterSentiment():
     def __init__(self, train_file, test_file, batch_size=16, num_epoch=10, log_interval=100, max_seq_len=100,
-                 prototype=False, parallel=False, load_model=None):
+                 prototype=False, parallel=False, load_model=None, num_labels=2):
         self.log_interval = log_interval
         self.batch_size = batch_size
         self.num_epoch = num_epoch
@@ -61,7 +61,7 @@ class TwitterSentiment():
         self.train_loader = DataLoader(self.train_set, batch_size=batch_size, shuffle=True, num_workers=8)
         self.test_loader = DataLoader(self.test_set, batch_size=batch_size)
 
-        self.model = BertForSequenceClassification.from_pretrained('bert-base-uncased')
+        self.model = BertForSequenceClassification.from_pretrained('bert-base-uncased', num_labels=num_labels)
         if parallel:
             self.model = DataParallel(self.model)
         if load_model:
@@ -152,17 +152,19 @@ if __name__ == '__main__':
     argparser.add_argument('--pt', default=False, action='store_true', help='prototype mode')
     argparser.add_argument('-b', '--batchsize', type=int, default=32)
     argparser.add_argument('--save-interval', type=int, default=500)
+    argparser.add_argument('--num-labels', type=int, default=2)
     args = argparser.parse_args()
 
 
-    train_file = 'data/train.csv'
-    test_file = 'data/test.csv'
-    save_file = 'saved_model/bert_tweet_big.pth'
+    train_file = 'datastories-semeval2017-task4/small_train.csv'
+    test_file = 'datastories-semeval2017-task4/small_test.csv'
+    save_file = 'saved_model/bert_tweet_small_semeval.pth'
     check_path('saved_model')
-    ckpt_file = 'saved_model/bert_ckpt.pth'
+    ckpt_file = 'saved_model/bert_ckpt_semeval.pth'
     log_interval = 100
     twitter_sentiment = TwitterSentiment(train_file, test_file, num_epoch=args.num_epoch, load_model=args.load_model,
-                            batch_size=args.batchsize, log_interval=log_interval, prototype=args.pt, parallel=True)
+                                         batch_size=args.batchsize, log_interval=log_interval, prototype=args.pt,
+                                         parallel=True, num_labels=args.num_labels)
     if args.test:
         twitter_sentiment.test()
     else:
