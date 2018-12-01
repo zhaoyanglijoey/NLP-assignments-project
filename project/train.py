@@ -11,23 +11,25 @@ from util import convert_data_to_features, check_path
 from tqdm import tqdm
 import numpy as np
 import time, argparse
-from sklearn.metrics import confusion_matrix
+import sklearn.metrics
 
-def comp_scores(out, labels):
-    # return accuracy and f1 score
-    pred = np.argmax(out, axis=1)
-    correct = np.sum(pred == labels)
-    cm = confusion_matrix(labels, pred)
-    tn = cm[0][0]
-    fn = cm[1][0]
-    tp = cm[1][1]
-    fp = cm[0][1]
-    return correct, tp, tn, fp, fn
-
-def positive_score(out):
-    outputs = F.softmax(out, dim=1)
-    score = torch.sum(outputs[:, 1])
-    return score
+# def comp_scores(out, labels):
+#     # return accuracy and f1 score
+#     pred = np.argmax(out, axis=1)
+#     correct = np.sum(pred == labels)
+#     cm = sklearn.metrics.confusion_matrix(labels, pred)
+#     return correct, cm
+#
+#
+# def recall_scores(out, labels):
+#     pred = np.argmax(out, axis=1)
+#     return sklearn.metrics.recall_score(labels, pred, average=None)
+#
+#
+# def positive_score(out):
+#     outputs = F.softmax(out, dim=1)
+#     score = torch.sum(outputs[:, 1])
+#     return score
 
 
 class TwitterSentiment():
@@ -113,7 +115,9 @@ class TwitterSentiment():
         num_correct = 0
         batches_count = 0
         data_count = 0
-        tp, tn, fp, fn = 0, 0, 0, 0
+        cm_total = None
+        pred_total = []
+        gt_total = []
         with torch.no_grad():
             for i, batch in enumerate(tqdm(self.test_loader)):
                 batches_count += 1
@@ -124,21 +128,20 @@ class TwitterSentiment():
                 eval_loss += loss.item()
                 logits = logits.cpu().numpy()
                 label_ids = label_ids.cpu().numpy()
-                correct, tp_t, tn_t, fp_t, fn_t = comp_scores(logits, label_ids)
-                num_correct += correct
-                tp += tp_t
-                tn += tn_t
-                fp += fp_t
-                fn += fn_t
+                # correct, cm = comp_scores(logits, label_ids)
+                pred = np.argmax(logits, axis=1)
+                pred_total += pred
+                gt_total += label_ids
 
         eval_loss /= batches_count
+        num_correct = np.sum(pred_total == gt_total)
         eval_accuracy = num_correct / data_count
-        precision = tp / (tp + fp)
-        recall = tp / (tp + fn)
+        precision = sklearn.metrics.precision_score(gt_total, pred_total, average=None).mean()
+        recall = sklearn.metrics.recall_score(gt_total, pred_total, average=None).mean()
         f1 = 2 * precision * recall / (precision + recall)
 
-        print('evaluation loss: {:.4}, accuracy: {:.4}% f1 score: {:.4}'.format(
-            eval_loss, eval_accuracy * 100, f1))
+        print('evaluation loss: {:.4}, accuracy: {:.4}% f1 score: {:.4} AvgRec'.format(
+            eval_loss, eval_accuracy * 100, f1, recall))
 
     def save_model(self, file):
         torch.save(self.model.state_dict(), file)
@@ -164,7 +167,7 @@ if __name__ == '__main__':
     log_interval = 100
     twitter_sentiment = TwitterSentiment(train_file, test_file, num_epoch=args.num_epoch, load_model=args.load_model,
                                          batch_size=args.batchsize, log_interval=log_interval, prototype=args.pt,
-                                         parallel=True, num_labels=args.num_labels)
+                                         parallel=False, num_labels=args.num_labels)
     if args.test:
         twitter_sentiment.test()
     else:
