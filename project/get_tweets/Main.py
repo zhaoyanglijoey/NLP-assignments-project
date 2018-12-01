@@ -37,18 +37,19 @@ if __name__ == '__main__':
     os.makedirs(save_dir)
 
   # Chosen according to https://fanpagelist.com/category/celebrities/view/list/sort/influence/
-  celebrity_usernames = ['barackobama', 'realdonaldtrump', 'britneyspears', 'thebeatles', 'nineinchnails',
-                         'elvispresley', 'jtimberlake', 'rihanna', 'cher', 'michaeljackson',
-                         'beyonce', 'kingjames', 'ladygaga', 'rogerfederer', 'liltunechi']
+  # celebrity_usernames = ['barackobama', 'realdonaldtrump', 'britneyspears', 'thebeatles', 'nineinchnails',
+  #                        'elvispresley', 'jtimberlake', 'rihanna', 'cher', 'michaeljackson',
+  #                        'beyonce', 'kingjames', 'ladygaga', 'rogerfederer', 'liltunechi']
+  celebrity_usernames = ['barackobama', 'realdonaldtrump', 'britneyspears', 'thebeatles', 'nineinchnails']
   from_date = date(2018, 1, 1)
-  to_date = date(2018, 11, 28)
-  daily_fetch = 5000
+  to_date = date(2018, 10, 31)
+  daily_fetch = 1000
 
   # For testing
-  celebrity_usernames = ['barackobama']
-  from_date = date(2018, 11, 1)
-  to_date = date(2018, 11, 3)
-  daily_fetch = 100
+  # celebrity_usernames = ['barackobama']
+  # from_date = date(2018, 11, 1)
+  # to_date = date(2018, 11, 3)
+  # daily_fetch = 100
 
   for celebrity_username in celebrity_usernames:
     keyword = "@%s"%(celebrity_username)
@@ -72,10 +73,10 @@ if __name__ == '__main__':
         # pdb.set_trace()
         try:
           if keyword in tweet.text.lower():
-            print(tweet.username)
-            print(tweet.date)
-            print(tweet.text)
-            print('\n')
+            # print(tweet.username)
+            # print(tweet.date)
+            # print(tweet.text)
+            # print('\n')
             f.write("%s\n"%tweet.text)
         except:
           # Tweet might inlude non-ASCII characters
