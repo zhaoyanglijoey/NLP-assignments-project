@@ -1,2 +1,4 @@
 torch
-pytorch-pretrained-bert
+tqdm
+pandas
+pytorch-pretrained-bert==0.2
