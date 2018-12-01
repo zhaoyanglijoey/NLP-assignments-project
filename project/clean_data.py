@@ -36,7 +36,7 @@ def check_invalid(tweet):
 
 if __name__ == '__main__':
     path = os.path.join('data', 'tweets.csv')
-    df = pd.read_csv(path, encoding='latin1', usecols=[0, 5], header=None, names=['tag', 'tweet'])
+    df = pd.read_csv(path, encoding='latin1', usecols=[0, 5], header=None, names=['tag', 'tweet'], quoting=3)
     df['cleaned_tweet'] = df.tweet.apply(clean_tweet)
     df['invalid'] = df.tweet.apply(check_invalid)
     cleandf = df[df.invalid == 0]

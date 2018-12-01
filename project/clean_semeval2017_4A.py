@@ -8,7 +8,9 @@ import clean_data
 
 
 def txt_to_clean_csv(filepath_txt):
-    df = pd.read_csv(filepath_txt, encoding='latin1', usecols=[1, 2], header=None, names=['tag', 'tweet'],  delimiter='\t')
+    df = pd.read_csv(filepath_txt, encoding='latin1', usecols=[1, 2],
+                     header=None, names=['tag', 'tweet'],  delimiter='\t',
+                     quoting=3)
     df['cleaned_tweet'] = df.tweet.apply(clean_data.clean_tweet)
     df['invalid'] = df.tweet.apply(clean_data.check_invalid)
     cleandf = df[df.invalid == 0]
@@ -23,8 +25,8 @@ def txt_to_clean_csv(filepath_txt):
 
 if __name__ == '__main__':
     folder = os.path.join('datastories-semeval2017-task4')
-    train_path = os.path.join(folder, 'train.txt')
-    test_path = os.path.join(folder, 'test.txt')
+    train_path = os.path.join(folder, 'train.tsv')
+    test_path = os.path.join(folder, 'test.tsv')
     train_df = txt_to_clean_csv(train_path)
     test_df = txt_to_clean_csv(test_path)
     # small_df, _ = train_test_split(cleandf, test_size=0.8)
