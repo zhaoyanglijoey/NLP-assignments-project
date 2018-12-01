@@ -7,10 +7,8 @@ import html
 import clean_data
 
 
-if __name__ == '__main__':
-    folder = os.path.join('datastories-semeval2017-task4')
-    path = os.path.join(folder, 'train.txt')
-    df = pd.read_csv(path, encoding='latin1', usecols=[1, 2], header=None, names=['tag', 'tweet'],  delimiter='\t')
+def txt_to_clean_csv(filepath_txt):
+    df = pd.read_csv(filepath_txt, encoding='latin1', usecols=[1, 2], header=None, names=['tag', 'tweet'],  delimiter='\t')
     df['cleaned_tweet'] = df.tweet.apply(clean_data.clean_tweet)
     df['invalid'] = df.tweet.apply(clean_data.check_invalid)
     cleandf = df[df.invalid == 0]
@@ -19,13 +17,19 @@ if __name__ == '__main__':
     cleandf['tag'][cleandf['tag'] == 'negative'] = 0
     cleandf['tag'][cleandf['tag'] == 'neutral'] = 1
     cleandf['tag'][cleandf['tag'] == 'positive'] = 2
+
+    return cleandf
+
+
+if __name__ == '__main__':
+    folder = os.path.join('datastories-semeval2017-task4')
+    train_path = os.path.join(folder, 'train.txt')
+    test_path = os.path.join(folder, 'test.txt')
+    train_df = txt_to_clean_csv(train_path)
+    test_df = txt_to_clean_csv(test_path)
     # small_df, _ = train_test_split(cleandf, test_size=0.8)
-    small_df = cleandf
-    small_train, small_test = train_test_split(small_df, test_size=0.1)
-    small_train = small_train.reset_index(drop=True)
-    small_test = small_test.reset_index(drop=True)
-    small_train.to_csv(os.path.join(folder, 'small_train.csv'), index=False, columns=['tag', 'cleaned_tweet'])
-    small_test.to_csv(os.path.join(folder, 'small_test.csv'), index=False, columns=['tag', 'cleaned_tweet'])
+    train_df.to_csv(os.path.join(folder, 'train.csv'), index=False, columns=['tag', 'cleaned_tweet'])
+    test_df.to_csv(os.path.join(folder, 'test.csv'), index=False, columns=['tag', 'cleaned_tweet'])
 
     # train, test = train_test_split(cleandf, test_size=0.1)
     # train = train.reset_index(drop=True)
