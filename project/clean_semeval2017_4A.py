@@ -11,9 +11,10 @@ def txt_to_clean_csv(filepath_txt):
     df = pd.read_csv(filepath_txt, encoding='latin1', usecols=[1, 2],
                      header=None, names=['tag', 'tweet'],  delimiter='\t',
                      quoting=3)
-    df['cleaned_tweet'] = df.tweet.apply(clean_data.clean_tweet)
     df['invalid'] = df.tweet.apply(clean_data.check_invalid)
     cleandf = df[df.invalid == 0]
+    cleandf['cleaned_tweet'] = cleandf.tweet.apply(clean_data.clean_tweet)
+    cleandf = cleandf[cleandf.cleaned_tweet.apply(len) > 1]
     cleandf = cleandf.reset_index(drop=True)
     # cleandf['tag'][cleandf['tag'] >= 1] = 1
     cleandf['tag'][cleandf['tag'] == 'negative'] = 0

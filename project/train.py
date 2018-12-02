@@ -157,7 +157,7 @@ if __name__ == '__main__':
 
     train_file = 'datastories-semeval2017-task4/train.csv'
     test_file = 'datastories-semeval2017-task4/test.csv'
-    save_file = 'saved_model/bert_tweet_small_semeval.pth'
+    save_file = 'saved_model/bert_tweet_semeval_2.pth'
     check_path('saved_model')
     ckpt_file = 'saved_model/bert_ckpt_semeval.pth'
     log_interval = 100
