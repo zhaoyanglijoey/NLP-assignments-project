@@ -127,8 +127,8 @@ class TwitterSentiment():
                 logits = logits.cpu().numpy()
                 label_ids = label_ids.cpu().numpy()
                 pred = np.argmax(logits, axis=1)
-                pred_total += pred
-                gt_total += label_ids
+                pred_total += pred.tolist()
+                gt_total += label_ids.tolist()
 
         eval_loss /= batches_count
         num_correct = np.sum(pred_total == gt_total)
