@@ -137,7 +137,7 @@ class TwitterSentiment():
         recall = sklearn.metrics.recall_score(gt_total, pred_total, average=None).mean()
         f1 = 2 * precision * recall / (precision + recall)
 
-        print('evaluation loss: {:.4}, accuracy: {:.4}% f1 score: {:.4} AvgRec'.format(
+        print('evaluation loss: {:.4}, accuracy: {:.4}% f1 score: {:.4} AvgRec: {:.4}'.format(
             eval_loss, eval_accuracy * 100, f1, recall))
 
     def save_model(self, file):
