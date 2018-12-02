@@ -131,7 +131,7 @@ class TwitterSentiment():
                 gt_total += label_ids.tolist()
 
         eval_loss /= batches_count
-        num_correct = np.sum(pred_total == gt_total)
+        num_correct = np.sum(np.array(pred_total) == np.array(gt_total))
         eval_accuracy = num_correct / data_count
         precision = sklearn.metrics.precision_score(gt_total, pred_total, average=None).mean()
         recall = sklearn.metrics.recall_score(gt_total, pred_total, average=None).mean()
@@ -154,7 +154,6 @@ if __name__ == '__main__':
     argparser.add_argument('--save-interval', type=int, default=500)
     argparser.add_argument('--num-labels', type=int, default=2)
     args = argparser.parse_args()
-
 
     train_file = 'datastories-semeval2017-task4/train.csv'
     test_file = 'datastories-semeval2017-task4/test.csv'
