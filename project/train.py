@@ -112,10 +112,8 @@ class TwitterSentiment():
     def test(self):
         self.model.eval()
         eval_loss = 0
-        num_correct = 0
         batches_count = 0
         data_count = 0
-        cm_total = None
         pred_total = []
         gt_total = []
         with torch.no_grad():
@@ -128,7 +126,6 @@ class TwitterSentiment():
                 eval_loss += loss.item()
                 logits = logits.cpu().numpy()
                 label_ids = label_ids.cpu().numpy()
-                # correct, cm = comp_scores(logits, label_ids)
                 pred = np.argmax(logits, axis=1)
                 pred_total += pred
                 gt_total += label_ids
