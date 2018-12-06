@@ -31,7 +31,7 @@ def create_dataset(tweets, tokenizer, max_seq_len):
 def test(dataset, batchsize, model, device):
     dataloader = DataLoader(dataset, batch_size=batchsize)
     num_data = len(dataset)
-    probs = np.zeros(3)
+    probs = np.zeros(2)
     positives = 0
     negatives = 0
     with torch.no_grad():
@@ -40,14 +40,14 @@ def test(dataset, batchsize, model, device):
             mask = mask.to(device)
             logits = model(id, attention_mask=mask)
             pred = torch.argmax(logits, dim=-1)
-            # pred  = pred.detach().cpu().numpy()
-            # positives += np.sum(pred==2)
-            # negatives += np.sum(pred==0)
-            prob = softmax(logits, dim=-1).sum(dim=0).detach().cpu().numpy()
-            probs += prob
-        probs /= num_data
-        score = probs[-1] - probs[0]
-        # score = (positives - negatives) / num_data
+            pred  = pred.detach().cpu().numpy()
+            positives += np.sum(pred==1)
+            negatives += np.sum(pred==0)
+            # prob = softmax(logits, dim=-1).sum(dim=0).detach().cpu().numpy()
+            # probs += prob
+        # probs /= num_data
+        # score = probs[-1] - probs[0]
+        score = (positives - negatives) / num_data
     return score
 
 
