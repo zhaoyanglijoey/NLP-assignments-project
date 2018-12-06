@@ -1,5 +1,6 @@
 from tqdm import tqdm
 import os
+import torch
 
 class InputFeatures(object):
     """A single set of features of data."""
@@ -55,6 +56,27 @@ def convert_data_to_features(data, label_list, max_seq_length, tokenizer):
                               label_id=label_id))
         ex_index += 1
     return features
+
+def convert_to_bert_ids(seq, tokenizer, max_seq_len):
+    tokens = tokenizer.tokenize(seq)
+    if len(tokens) > max_seq_len - 2:
+        tokens = tokens[0:(max_seq_len-2)]
+    # length = len(tokens)
+    tokens.insert(0, '[CLS]')
+    tokens.append('[SEP]')
+    ids = tokenizer.convert_tokens_to_ids(tokens)
+    padded_ids = [0] * max_seq_len
+    padded_ids[:len(ids)] = ids
+    mask = [0] * max_seq_len
+    mask[:len(ids)] = [1] * len(ids)
+
+    # assert len(padded_ids) == max_seq_len
+    # assert len(mask) == max_seq_len
+
+    padded_ids = torch.tensor(padded_ids, dtype=torch.long)
+    mask = torch.tensor(mask, dtype=torch.long)
+
+    return padded_ids, mask
 
 def check_path(path):
     if not os.path.exists(path):

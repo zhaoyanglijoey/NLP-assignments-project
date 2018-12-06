@@ -3,6 +3,7 @@ from pytorch_pretrained_bert import BertTokenizer, BertModel
 from torch.utils.data import Dataset
 import pandas as pd
 import sys
+import util
 
 class TweetsDataset(Dataset):
     def __init__(self, data, tokenizer, length_limit):
@@ -25,23 +26,6 @@ class TweetsDataset(Dataset):
         entry = self.data.iloc[index]
         label = torch.tensor(entry['tag'], dtype=torch.long)
         tweet = str(entry['cleaned_tweet'])
-        tokenized_tweet = self.tokenizer.tokenize(tweet)
-        if len(tokenized_tweet) > self.max_seq_length - 2:
-            tokenized_tweet = tokenized_tweet[0:(self.max_seq_length - 2)]
+        ids, mask = util.convert_to_bert_ids(tweet, self.tokenizer, self.max_seq_length)
 
-        tokenized_tweet.insert(0, '[CLS]')
-        tokenized_tweet.append('[SEP]')
-        indexed_tokens = self.tokenizer.convert_tokens_to_ids(tokenized_tweet)
-
-        token_ids = [0] * self.max_seq_length
-        token_ids[:len(indexed_tokens)] = indexed_tokens
-        input_mask = [0] * self.max_seq_length
-        input_mask[:len(indexed_tokens)] = [1] * len(indexed_tokens)
-
-        assert len(token_ids) == self.max_seq_length
-        assert len(input_mask) == self.max_seq_length
-
-        token_ids = torch.tensor(token_ids, dtype=torch.long)
-        input_mask = torch.tensor(input_mask, dtype=torch.long)
-
-        return token_ids, input_mask, label
+        return ids, mask, label

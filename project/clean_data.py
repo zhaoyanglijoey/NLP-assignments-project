@@ -9,7 +9,8 @@ basic_tokenizer = BasicTokenizer()
 def clean_tweet(tweet):
     tweet = html.unescape(tweet)
     words = tweet.split()
-    words = ' '.join([word.lower() for word in words if not (word.startswith('@') or word.startswith('http'))])
+    words = ' '.join([word.lower() for word in words
+                      if not (word.startswith('@') or word.startswith('http') or '/' in word)])
     words = ''.join([ c if c.isalnum() or c in '\'\"?!' else ' ' for c in words ])
     return words
 

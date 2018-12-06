@@ -108,3 +108,4 @@ data/
 .DS_Store
 debug.ipynb
 saved_model/
+test_data/
