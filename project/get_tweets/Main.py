@@ -49,7 +49,7 @@ if __name__ == '__main__':
   #                        'beyonce', 'kingjames', 'ladygaga', 'rogerfederer', 'liltunechi']
   celebrity_usernames = ['sfu', 'ubc']
   from_date = date(2018, 1, 1)
-  to_date = date(2018, 10, 31)
+  to_date = date(2018, 10, 28)
   daily_fetch = 100
 
   # For testing
