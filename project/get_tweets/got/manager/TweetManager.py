@@ -21,7 +21,11 @@ class TweetManager:
 		active = True
 
 		while active:
-			json = TweetManager.getJsonReponse(tweetCriteria, refreshCursor, cookieJar, proxy)
+			try:
+			  json = TweetManager.getJsonReponse(tweetCriteria, refreshCursor, cookieJar, proxy)
+			except Exception as e:
+				raise e
+				break
 			if len(json['items_html'].strip()) == 0:
 				break
 
@@ -131,9 +135,8 @@ class TweetManager:
 		try:
 			response = opener.open(url)
 			jsonResponse = response.read()
-		except:
-			print "Twitter weird response. Try to see on browser: https://twitter.com/search?q=%s&src=typd" % urllib.quote(urlGetData)
-			sys.exit()
+		except Exception as e:
+			raise Exception("Twitter weird response. Try to see on browser: https://twitter.com/search?q=%s&src=typd" % urllib.quote(urlGetData))
 			return
 		
 		dataJson = json.loads(jsonResponse)

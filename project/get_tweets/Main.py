@@ -7,6 +7,13 @@ from datetime import date, timedelta
 from dateutil.rrule import rrule, DAILY
 import os
 import pdb
+import requests
+
+def get_proxy():
+    return requests.get("http://127.0.0.1:5010/get/").content
+
+def delete_proxy(proxy):
+    requests.get("http://127.0.0.1:5010/delete/?proxy={}".format(proxy))
 
 def printTweet(descr, t):
   print(descr)
@@ -40,10 +47,10 @@ if __name__ == '__main__':
   # celebrity_usernames = ['barackobama', 'realdonaldtrump', 'britneyspears', 'thebeatles', 'nineinchnails',
   #                        'elvispresley', 'jtimberlake', 'rihanna', 'cher', 'michaeljackson',
   #                        'beyonce', 'kingjames', 'ladygaga', 'rogerfederer', 'liltunechi']
-  celebrity_usernames = ['barackobama', 'realdonaldtrump', 'britneyspears', 'thebeatles', 'nineinchnails']
+  celebrity_usernames = ['sfu', 'ubc']
   from_date = date(2018, 1, 1)
   to_date = date(2018, 10, 31)
-  daily_fetch = 1000
+  daily_fetch = 100
 
   # For testing
   # celebrity_usernames = ['barackobama']
@@ -67,12 +74,29 @@ if __name__ == '__main__':
                       .setSince(dt_str) \
                       .setUntil(nxt_dt_str) \
                       .setMaxTweets(daily_fetch)
-      tweets = got.manager.TweetManager.getTweets(tweetCriteria)
+      success = False
+      retry_count = 5
+      proxy = get_proxy()
+      tweets = None
+      while not success:
+        if retry_count == 0:
+          retry_count = 5
+          delete_proxy(proxy)
+          proxy = get_proxy()
+        try:
+          tweets = got.manager.TweetManager.getTweets(tweetCriteria, proxy=proxy)
+        except Exception as e:
+          print(e)
+          retry_count -= 1
+        else:
+          success = True
+          break
+
       f = open(os.path.join(sub_save_dir, dt_str), "w")
       for tweet in tweets:
         # pdb.set_trace()
         try:
-          if keyword in tweet.text.lower():
+          if keyword in tweet.mentions.lower().split():
             # print(tweet.username)
             # print(tweet.date)
             # print(tweet.text)
