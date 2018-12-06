@@ -85,6 +85,7 @@ class TwitterSentiment():
     def train_epoch(self, epoch, save_interval, ckpt_file):
         self.model.train()
         running_ls = 0
+        acc_ls = 0
         start = time.time()
         num_batches = len(self.train_loader)
         for i, batch  in enumerate(self.train_loader):
@@ -94,17 +95,18 @@ class TwitterSentiment():
             loss, _ = self.model(input_ids, attention_mask=input_mask, labels=label_ids)
             loss.backward(torch.ones_like(loss))
             running_ls += loss.mean().item()
+            acc_ls += loss.mean().item()
             self.optimizer.step()
 
             if (i+1) % self.log_interval == 0:
-                elapsed = time.time() - start
-                iters_per_sec = (i+1) / elapsed
+                elapsed_time = time.time() - start
+                iters_per_sec = (i + 1) / elapsed_time
                 remaining = (num_batches - i - 1) / iters_per_sec
-                remaining_h = int(remaining // 3600)
-                remaining_m = int(remaining // 60 % 60)
-                remaining_s = int(remaining % 60)
-                print('[{:>3}, {:>7}/{}] loss:{:.4}  {:.3}iters/s {:02}:{:02}:{:02} left'.format(epoch, (i+1), num_batches,
-                        running_ls / self.log_interval, iters_per_sec, remaining_h, remaining_m, remaining_s))
+                remaining_fmt = time.strftime("%H:%M:%S", time.gmtime(remaining))
+                elapsed_fmt = time.strftime("%H:%M:%S", time.gmtime(elapsed_time))
+
+                print('[{:>3}, {:>7}/{}] loss:{:.4} acc_loss:{:.4}  {:.3}iters/s {}<{}'.format(epoch, (i+1), num_batches,
+                        running_ls / self.log_interval, acc_ls/(i+1), iters_per_sec, elapsed_fmt, remaining_fmt))
                 running_ls = 0
             if (i+1) % save_interval == 0:
                 self.save_model(ckpt_file)
@@ -147,7 +149,7 @@ class TwitterSentiment():
 if __name__ == '__main__':
     argparser = argparse.ArgumentParser()
     argparser.add_argument('--load-model', default=None)
-    argparser.add_argument('-e', '--num_epoch', type=int, default=5)
+    argparser.add_argument('-e', '--num-epoch', type=int, default=5)
     argparser.add_argument('-t', '--test', default=False, action='store_true')
     argparser.add_argument('--pt', default=False, action='store_true', help='prototype mode')
     argparser.add_argument('-b', '--batchsize', type=int, default=32)
@@ -155,11 +157,12 @@ if __name__ == '__main__':
     argparser.add_argument('--num-labels', type=int, default=2)
     args = argparser.parse_args()
 
-    train_file = 'datastories-semeval2017-task4/train.csv'
-    test_file = 'datastories-semeval2017-task4/test.csv'
-    save_file = 'saved_model/bert_tweet_semeval_2.pth'
+
+    train_file = 'data/train.csv'
+    test_file = 'data/test.csv'
+    save_file = 'saved_model/bert_tweet_cleaned.pth'
     check_path('saved_model')
-    ckpt_file = 'saved_model/bert_ckpt_semeval.pth'
+    ckpt_file = 'saved_model/bert_ckpt_cleaned.pth'
     log_interval = 100
     twitter_sentiment = TwitterSentiment(train_file, test_file, num_epoch=args.num_epoch, load_model=args.load_model,
                                          batch_size=args.batchsize, log_interval=log_interval, prototype=args.pt,
