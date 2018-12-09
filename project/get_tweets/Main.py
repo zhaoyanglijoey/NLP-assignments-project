@@ -8,6 +8,7 @@ from dateutil.rrule import rrule, DAILY
 import os
 import pdb
 import requests
+import time
 
 def get_proxy():
     return requests.get("http://127.0.0.1:5010/get/").content
@@ -48,9 +49,9 @@ if __name__ == '__main__':
   #                        'elvispresley', 'jtimberlake', 'rihanna', 'cher', 'michaeljackson',
   #                        'beyonce', 'kingjames', 'ladygaga', 'rogerfederer', 'liltunechi']
   celebrity_usernames = ['sfu', 'ubc']
-  from_date = date(2018, 1, 1)
-  to_date = date(2018, 10, 28)
-  daily_fetch = 100
+  from_date = date(2018, 5, 1)
+  to_date = date(2018, 11, 30)
+  daily_fetch = 200
 
   # For testing
   # celebrity_usernames = ['barackobama']
@@ -59,9 +60,10 @@ if __name__ == '__main__':
   # daily_fetch = 100
 
   for celebrity_username in celebrity_usernames:
-    keyword = "@%s"%(celebrity_username)
-
-    sub_save_dir = os.path.join(save_dir, celebrity_username)
+    # keyword = "@%s"%(celebrity_username)
+    keyword = 'us china trade war'
+    # sub_save_dir = os.path.join(save_dir, celebrity_username)
+    sub_save_dir = os.path.join(save_dir, 'tradewar')
     if not os.path.exists(sub_save_dir):
       os.makedirs(sub_save_dir)
 
@@ -76,15 +78,15 @@ if __name__ == '__main__':
                       .setMaxTweets(daily_fetch)
       success = False
       retry_count = 5
-      proxy = get_proxy()
+      # proxy = get_proxy()
       tweets = None
       while not success:
         if retry_count == 0:
           retry_count = 5
-          delete_proxy(proxy)
-          proxy = get_proxy()
+          # delete_proxy(proxy)
+          # proxy = get_proxy()
         try:
-          tweets = got.manager.TweetManager.getTweets(tweetCriteria, proxy=proxy)
+          tweets = got.manager.TweetManager.getTweets(tweetCriteria)
         except Exception as e:
           print(e)
           retry_count -= 1
@@ -96,7 +98,8 @@ if __name__ == '__main__':
       for tweet in tweets:
         # pdb.set_trace()
         try:
-          if keyword in tweet.mentions.lower().split():
+          # if keyword in tweet.mentions.lower().split():
+          if True:
             # print(tweet.username)
             # print(tweet.date)
             # print(tweet.text)
@@ -106,3 +109,4 @@ if __name__ == '__main__':
           # Tweet might inlude non-ASCII characters
           continue
       f.close()
+      time.sleep(60)

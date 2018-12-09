@@ -8,6 +8,7 @@ from torch.utils.data import Dataset, DataLoader, TensorDataset
 from torch.nn.functional import softmax
 import numpy as np
 import matplotlib.pyplot as plt
+import json
 
 def subDirPath (d):
     return list(filter(os.path.isdir, [os.path.join(d,f) for f in os.listdir(d)]))
@@ -31,7 +32,7 @@ def create_dataset(tweets, tokenizer, max_seq_len):
 def test(dataset, batchsize, model, device):
     dataloader = DataLoader(dataset, batch_size=batchsize)
     num_data = len(dataset)
-    probs = np.zeros(2)
+    probs = np.zeros(3)
     positives = 0
     negatives = 0
     with torch.no_grad():
@@ -39,15 +40,15 @@ def test(dataset, batchsize, model, device):
             id = id.to(device)
             mask = mask.to(device)
             logits = model(id, attention_mask=mask)
-            pred = torch.argmax(logits, dim=-1)
-            pred  = pred.detach().cpu().numpy()
-            positives += np.sum(pred==1)
-            negatives += np.sum(pred==0)
-            # prob = softmax(logits, dim=-1).sum(dim=0).detach().cpu().numpy()
-            # probs += prob
-        # probs /= num_data
-        # score = probs[-1] - probs[0]
-        score = (positives - negatives) / num_data
+            # pred = torch.argmax(logits, dim=-1)
+            # pred  = pred.detach().cpu().numpy()
+            # positives += np.sum(pred==1)
+            # negatives += np.sum(pred==0)
+            prob = softmax(logits, dim=-1).sum(dim=0).detach().cpu().numpy()
+            probs += prob
+        probs /= num_data
+        score = probs[-1] - probs[0]
+        # score = (positives - negatives) / num_data
     return score
 
 
@@ -72,27 +73,37 @@ if __name__ == '__main__':
     tokenizer = BertTokenizer.from_pretrained('bert-base-uncased')
     score_dict = {}
 
+    testoutput = 'testoutput'
+    if not os.path.exists(testoutput):
+        os.mkdir(testoutput)
+
     for data_dir in data_dirs:
         month_tweets_files = sorted(glob2.glob(os.path.join(data_dir, '*')))
-        scores = []
+        scores = {}
         account = os.path.basename(data_dir)
+        # if account != 'kevinspacey':
+        #     continue
         for month_tweets_file in month_tweets_files:
             print('testing', month_tweets_file)
+            time_str = os.path.basename(month_tweets_file).split('_')[0]
             with open(month_tweets_file, 'r') as f:
                 tweets = f.readlines()
             tweet_dataset = create_dataset(tweets, tokenizer, max_seq_len=200)
             score = test(tweet_dataset, args.batchsize, model, device)
             print(score)
-            scores.append(score)
+            scores[time_str] = score
         plt.figure()
-        plt.plot(range(1, len(scores)+1), scores)
-        plt.xlabel('week')
-        plt.ylabel('score')
-        plt.title('score for {}'.format(account))
+        plt.plot(scores.keys(), scores.values())
+        plt.xlabel('time', fontsize = 16)
+        plt.ylabel('score', fontsize = 16)
+        plt.title('score for {}'.format(account), fontsize = 16)
         plt.ylim(-1, 1)
-        plt.savefig(account+'.jpg')
+        plt.savefig(os.path.join(testoutput, account+'.jpg'))
         score_dict[account] = scores
-    with open(args.save, 'wb') as f:
+        with open(os.path.join(testoutput,'{}.json'.format(account)), 'w') as f:
+            json.dump(scores, f, indent=2)
+
+    with open(os.path.join(testoutput, args.save), 'wb') as f:
         pickle.dump(score_dict, f)
     plt.show()
 
