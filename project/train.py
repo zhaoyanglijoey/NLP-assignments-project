@@ -123,6 +123,7 @@ class TwitterSentiment():
                 batches_count += 1
                 (input_ids, input_mask, label_ids) = tuple(t.to(self.device) for t in batch)
                 data_count += input_ids.shape[0]
+                # print(label_ids)
                 loss, logits = self.model(input_ids, attention_mask=input_mask, labels=label_ids)
                 loss = loss.mean()
                 eval_loss += loss.item()
@@ -152,18 +153,18 @@ if __name__ == '__main__':
     argparser.add_argument('-e', '--num-epoch', type=int, default=5)
     argparser.add_argument('-t', '--test', default=False, action='store_true')
     argparser.add_argument('--pt', default=False, action='store_true', help='prototype mode')
-    argparser.add_argument('-b', '--batchsize', type=int, default=32)
-    argparser.add_argument('--save-interval', type=int, default=500)
-    argparser.add_argument('--num-labels', type=int, default=2)
+    argparser.add_argument('-b', '--batchsize', type=int, default=64)
+    argparser.add_argument('--save-interval', type=int, default=100)
+    argparser.add_argument('-n', '--num-labels', type=int, default=2)
     args = argparser.parse_args()
 
 
-    train_file = 'data/train.csv'
-    test_file = 'data/test.csv'
-    save_file = 'saved_model/bert_tweet_cleaned.pth'
+    train_file = 'data/sst_train.csv'
+    test_file = 'data/sst_valid.csv'
+    save_file = 'saved_model/bert_sst.pth'
     check_path('saved_model')
-    ckpt_file = 'saved_model/bert_ckpt_cleaned.pth'
-    log_interval = 100
+    ckpt_file = 'saved_model/bert_sst_ckpt.pth'
+    log_interval = 50
     twitter_sentiment = TwitterSentiment(train_file, test_file, num_epoch=args.num_epoch, load_model=args.load_model,
                                          batch_size=args.batchsize, log_interval=log_interval, prototype=args.pt,
                                          parallel=True, num_labels=args.num_labels)
@@ -174,4 +175,5 @@ if __name__ == '__main__':
             twitter_sentiment.train_epoch(e+1, args.save_interval, ckpt_file)
             twitter_sentiment.save_model(ckpt_file)
             twitter_sentiment.test()
+            twitter_sentiment.save_model('saved_model/bert_sst_ckpt_{}.pth'.format(e+1))
         twitter_sentiment.save_model(save_file)
