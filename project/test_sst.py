@@ -18,7 +18,6 @@ if __name__ == '__main__':
 
     argparser = argparse.ArgumentParser()
     argparser.add_argument('--load')
-    argparser.add_argument('-b', '--batchsize', type=int, default=128)
 
     args = argparser.parse_args()
 
@@ -26,7 +25,7 @@ if __name__ == '__main__':
     device = 'cuda' if torch.cuda.is_available() else 'cpu'
     model = BertForSequenceClassification.from_pretrained('bert-base-uncased')
     model = torch.nn.DataParallel(model)
-    # model.load_state_dict(torch.load(args.load))
+    model.load_state_dict(torch.load(args.load))
     model.to(device)
     tokenizer = BertTokenizer.from_pretrained('bert-base-uncased')
     output = open('SST-2.tsv', 'w')
