@@ -13,25 +13,6 @@ import numpy as np
 import time, argparse
 import sklearn.metrics
 
-# def comp_scores(out, labels):
-#     # return accuracy and f1 score
-#     pred = np.argmax(out, axis=1)
-#     correct = np.sum(pred == labels)
-#     cm = sklearn.metrics.confusion_matrix(labels, pred)
-#     return correct, cm
-#
-#
-# def recall_scores(out, labels):
-#     pred = np.argmax(out, axis=1)
-#     return sklearn.metrics.recall_score(labels, pred, average=None)
-#
-#
-# def positive_score(out):
-#     outputs = F.softmax(out, dim=1)
-#     score = torch.sum(outputs[:, 1])
-#     return score
-
-
 class TwitterSentiment():
     def __init__(self, train_file, test_file, batch_size=16, num_epoch=10, log_interval=100, max_seq_len=100,
                  prototype=False, parallel=False, load_model=None, num_labels=2):
@@ -47,18 +28,6 @@ class TwitterSentiment():
             self.test_data = self.test_data[:1000]
         self.train_set = TweetsDataset(self.train_data, tokenizer, max_seq_len)
         self.test_set = TweetsDataset(self.test_data, tokenizer, max_seq_len)
-
-        # train_features = convert_data_to_features(self.train_data, [0, 1], 200, tokenizer)
-        # train_input_ids = torch.tensor([f.input_ids for f in train_features], dtype=torch.long)
-        # train_input_mask = torch.tensor([f.input_mask for f in train_features], dtype=torch.long)
-        # train_label_ids = torch.tensor([f.label_id for f in train_features], dtype=torch.long)
-        # self.train_set = TensorDataset(train_input_ids, train_input_mask, train_label_ids)
-        #
-        # test_features = convert_data_to_features(self.test_data, [0, 1], 200, tokenizer)
-        # test_input_ids = torch.tensor([f.input_ids for f in test_features], dtype=torch.long)
-        # test_input_mask = torch.tensor([f.input_mask for f in test_features], dtype=torch.long)
-        # test_label_ids = torch.tensor([f.label_id for f in test_features], dtype=torch.long)
-        # self.test_set = TensorDataset(test_input_ids, test_input_mask, test_label_ids)
 
         self.train_loader = DataLoader(self.train_set, batch_size=batch_size, shuffle=True, num_workers=8)
         self.test_loader = DataLoader(self.test_set, batch_size=batch_size)
